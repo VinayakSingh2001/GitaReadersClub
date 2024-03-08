@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.carousel-container {
+    transition: transform 0.5s ease; /* Smooth transition */
+  }
+  
+  .carousel-item {
+    transition: transform 0.5s ease; /* Smooth transition */
+  }
