@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "./Wrapper";
 import { Link } from "react-scroll";
-import Modal from "./Modal";
+import Register from "./Register";
+import Login from "./Login";
 
 const Header = () => {
   const [show, setShow] = useState("translate-y-200");
@@ -76,8 +77,8 @@ const Header = () => {
             <button className="bg-graylight py-1 px-4 rounded-full cursor-pointer">
               Sign In
             </button> */}
-            <Modal />
-            <Modal />
+            
+            <Login />
           </div>
         </div>
       </Wrapper>
