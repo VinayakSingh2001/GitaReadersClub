@@ -1,17 +1,117 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { getDatabase ,ref,get} from 'firebase/database';
+import React, { useState,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+import {app} from '../firebase.config';
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
+  // const navigate = useNavigate();
+    const [details,setnewUser] = useState({
+        name: '',
+        email: '',
+        password: '',
+        mobile:'',
+        confirmPassword:''
+});
+const [err,seterr] = useState("");
+    
+    const handleChange=(e)=>{
+         setnewUser({...details,[e.target.name]:e.target.value});
+    }
+  
+      const encodeEmail = (email) => {
+    return email.replace(/\./g, ',')
+                .replace(/#/g, '%23');
+    };
+  const handleSubmit = async (e) => {
+    
+    const enco = encodeEmail(details.email);
     e.preventDefault();
-    // Handle form submission here
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+    let newErr = "";
+
+    if (details.name === "") {
+        newErr = "Please enter a valid username";
+        seterr(newErr);
+        return ;
+    }
+
+    if (details.email === "" || !details.email.includes("@") || !["gmail.com", "yahoo.com", "mnnit.ac.in"].includes(details.email.split('@')[1])) {
+        newErr += "\nInvalid email address";
+        seterr(newErr);
+        return ;
+    }
+    const db = getDatabase(app);
+        // console.log(db);
+        const dbRef = ref(db, `user/${enco}`);
+        // console.log(dbRef);
+        try{
+          const snapshot = await get(dbRef);
+          if(snapshot.exists()){
+          newErr += "email is already in use";
+          // console.log("")
+          seterr(newErr);
+          return ;
+          }
+          
+      }catch(error){
+          console.log(error.message);
+      }
+    if (details.mobile.length !== 10) {
+        newErr += "\nInvalid mobile no.";
+        seterr(newErr);
+        return ;
+    }
+
+    if (details.password !== details.confirmPassword) {
+      newErr += "\nPassword should match with confirm password";
+  } else if (details.password.length < 6 || !/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$#^!%?&])[A-Za-z\d@$#^!%?&]{6,30}/.test(details.password)) {
+      newErr += "\nPassword must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+  }
+
+    if (newErr !== "") {
+      alert(details.password+"   "+details.confirmPassword);
+        seterr(newErr);
+        return;
+    }
+
+    try {
+        const res = await fetch(
+            `https://abcd-5eaff-default-rtdb.firebaseio.com//user/${enco}.json`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: details.name,
+                    mobile: details.mobile,
+                    email: details.email,
+                    password: details.password,
+                    // confirmPassword:details.confirmPassword
+                })
+            });
+            alert("signed-up")
+        // setnewUser({
+        //     name: "",
+        //     email: "",
+        //     mobile: "",
+        //     password: "",
+        //     confirmPassword: ""
+        // });
+        seterr("");
+        setnewUser({
+          name: '',
+          email: '',
+          password: '',
+          mobile: '',
+          confirmPassword: ''
+        });
+        setShowModal(false);
+        
+    } catch (error) {
+        seterr(error.message);
+    }
+};
+
   // eslint-disable-next-line no-undef
   useEffect(() => {
     if (showModal) {
@@ -19,6 +119,9 @@ export default function Register() {
     } else {
       document.body.style.overflow = 'unset';
     }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [showModal]);
   return (
     <>
@@ -57,10 +160,11 @@ export default function Register() {
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="name"
+                        name="name"
                         type="text"
                         placeholder="Enter your Username"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={details.name} 
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -75,43 +179,46 @@ export default function Register() {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="email"
                         type="email"
+                        name="email"
                         placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={details.email}
+                        onChange={handleChange}
                         required
                       />
                     </div>
-                    <div className="mb-1">
+                    <div className="mb-7">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="phonenumber"
+                        className="mobile block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="mobile"
                       >
                         Phone Number
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
-                        id="password"
+                        className="mobile shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                        id="mobile"
+                        name='mobile'
                         type="text"
                         placeholder="Enter your Contact number"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={details.mobile}
+                        onChange={handleChange}
                         required
                       />
                     </div>
                     <div className="mb-1">
-                      <label
+                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="password"
-                      >
-                        Password
-                      </label>
+                      > 
+                         Password
+                      </label> 
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="password"
                         type="password"
+                        name='password'
                         placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={details.password}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -124,14 +231,16 @@ export default function Register() {
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
-                        id="password"
+                        id="confirmPassword"
+                        name='confirmPassword'
                         type="password"
                         placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={details.confirmPassword}
+                        onChange={handleChange}
                         required
                       />
                     </div>
+                    {err!=="" && <div>{err}</div>}
                     
                     
                   </form>
@@ -148,7 +257,7 @@ export default function Register() {
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="submit"
-                    onClick={() => setShowModal(false)}
+                    onClick={handleSubmit}
                   >
                     Submit
                   </button>

@@ -2,22 +2,85 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import Register from "./Register";
+import {app} from "../firebase.config"
+import {getDatabase, ref, get} from "firebase/database"
+import {auth} from "../firebase.config"
+import {GoogleAuthProvider,signInWithPopup} from "firebase/auth"
+// import { useNavigate } from 'react-router-dom';
 
 
-import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [showModal, setShowModal] = React.useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const signInwithGoogle=()=>{
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).
+    then((result)=>{
+        // console.log('Success :', result.user);
+        alert('Logged In');
+        localStorage.setItem("authToken",result.authToken);
+        setShowModal(false);
+    }).catch((error)=>{
+        console.log("Error:", error);
+    })
+}
+  const encodeEmail = (email) => {
+    return email.replace(/\./g, ',')
+                .replace(/#/g, '%23');
+    };
 
-  
+    // let [name, setName] = useState([]);
+    // const nav = useNavigate();
+    const fetchData = async () => {
+        const encoemail = encodeEmail(email);
+        const db = getDatabase(app);
+        console.log(db);
+        const dbRef = ref(db, `user/${encoemail}`);
+        console.log(dbRef);
+        try{
+            const snapshot = await get(dbRef);
+            if(snapshot.exists()){
+            
+            const data = snapshot.val();
+            var flag  =false;
+            for(let key in data){
+                if(data[key].password === password) flag = true;
+            }
+            if(flag){
+                alert('Welcome to Gita Readers Club');
+                localStorage.setItem("authToken",data.authToken);
+                
+                // nav('/');
+            }else{
+                alert('Incorrect Password');
+            }
+            }else alert('User not found Please create account');
+        }catch(error){
+            console.log(error.message);
+        }
+        
+
+    }
+   
+    const handleLogin=(e)=>{
+        
+          fetchData();
+          setEmail('');
+          setPassword('');
+          setShowModal(false);
+          
+    }
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [showModal]);
 
   const handleSubmit = (e) => {
@@ -51,10 +114,11 @@ export default function Login() {
                   
                   <form
                     onSubmit={handleSubmit}
+                    action=""
                     className="w-full max-w-md bg-white  rounded px-8 pt-6 pb-8"
                   >
                     <div className="flex items-center justify-center mb-4">
-                    <button  type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button  type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={signInwithGoogle}>
                     Google
                 </button>
                 
@@ -111,8 +175,8 @@ export default function Login() {
                   </button>
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
+                    type="submit"
+                    onClick={handleLogin}
                   >
                     Login
                   </button>
