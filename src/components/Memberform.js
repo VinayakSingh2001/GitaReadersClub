@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { app, auth } from '../firebase.config';
 import { getDatabase,ref,set,get } from 'firebase/database';
+import { toast } from 'react-toastify';
 
 function Memberform() {
     const [answer, setAnswer] = useState('');
@@ -12,7 +13,7 @@ function Memberform() {
     const addMember=async(e)=>{
 
         if(answer.trim().length <30){
-            seterr("Answer should be atleast 30 words")
+            toast.error("atleast 30 characters!!");
             return;
         }
         e.preventDefault();
@@ -27,7 +28,7 @@ function Memberform() {
                 answer:answer,
                 status:false
             });
-        alert("Answer Stored");
+        toast.success("We got your answer!!!");
         }
         setShowModal(false);
     }
@@ -47,7 +48,8 @@ function Memberform() {
         if (localStorage.getItem('authToken')) {
             setShowModal(true);
         } else {
-            alert('You need to login to become a member');
+            
+            toast.error("You are not logged in !!");
             // nav('/login');
         }
     };

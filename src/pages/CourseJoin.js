@@ -3,12 +3,13 @@ import Memberform from "../components/Memberform";
 import { useNavigate } from "react-router-dom";
 import { getDatabase,set,ref,get} from "firebase/database";
 import { app,auth } from "../firebase.config";
+import { ToastContainer,toast } from "react-toastify";
 
 
 const CourseJoin = () => {
   // const nav = useNavigate();
   const addCourse=async(e)=>{
-  
+    
     e.preventDefault();
     const user = auth.currentUser;
     if(user){
@@ -25,14 +26,19 @@ const CourseJoin = () => {
     if(!userCourseData.includes(courseId)){
         userCourseData.push(courseId);
         set(userCourseRef, userCourseData);
-        alert("Enrolled");
+        toast.success("Enrolled");
     }else{
-      alert('You are already enrolled in this course');
+      toast.error('You are already enrolled in this course');
     }
   }
-  }else{
-    alert('Please login to enroll in this course');
-    // nav('/login');
+}else{
+  if (!localStorage.getItem("notLoggedInToastShown")) {
+    toast.error("Please login to enroll in this course");
+    // Set a flag indicating that the toast has been shown
+    localStorage.setItem("notLoggedInToastShown", "true");
+    // Redirect to login page
+    
+  }
   }
   }
 
@@ -51,6 +57,7 @@ const CourseJoin = () => {
           </button>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };

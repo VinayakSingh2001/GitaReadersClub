@@ -7,6 +7,7 @@ import Logout from "./Logout";
 import logo from "../assets/logo22@3x-8.png";
 import { auth,app } from "../firebase.config";
 import { getDatabase,ref,set,get } from "firebase/database";
+import { ToastContainer } from "react-toastify";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -153,6 +154,7 @@ return unsubscribe; // Cleanup function
           </div>
         </div>
       </Wrapper>
+      <ToastContainer/>
     </div>
   );
 };
