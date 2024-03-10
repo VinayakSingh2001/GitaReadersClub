@@ -15,6 +15,9 @@ export default function ProfilePage() {
   const handleImageChange = (event) => {
     setProfileImage(URL.createObjectURL(event.target.files[0]));
   };
+  const handleChange = ()=>{
+    
+  }
 
   return (
     <div className="min-h-screen bg-zinc-300 text-white flex justify-center items-center">
@@ -51,15 +54,15 @@ export default function ProfilePage() {
         <div className="bg-black-light p-5 rounded-lg shadow-md w-full md:w-[60%]">
           <div className="mb-4 text-lg font-semibold">
             <label className="mr-2">Name:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            {isEditing ? <input className="text-black-darker" type="text" defaultValue="John Doe" /> : "John Doe"}
+            {isEditing ? <input className="text-black-darker" type="text" defaultValue="John Doe" onChange={handleChange}/> : "John Doe"}
           </div>
           <div className="mb-4 text-lg font-semibold">
             <label className="mr-2">DOB:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            {isEditing ? <input className="text-black-darker" type="text" defaultValue="01/01/1990" /> : "01/01/1990"}
+            {isEditing ? <input className="text-black-darker" type="text" defaultValue="01/01/1990" onChange={handleChange}/> : "01/01/1990"}
           </div>
           <div className="mb-4 text-lg font-semibold">
             <label className="mr-2">Gender:&nbsp;&nbsp;</label>
-            {isEditing ? <input className="text-black-darker" type="text" defaultValue="Male" /> : "Male"}
+            {isEditing ? <input className="text-black-darker" type="text" defaultValue="Male" cons/> : "Male"}
           </div>
           <h4 className="mb-4 text-lg font-semibold">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;john@example.com</h4>
           <div className="mb-4 text-lg font-semibold">
