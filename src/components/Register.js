@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { app, auth } from "../firebase.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  
 // import { getDatabase,ref,set } from "firebase/database";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
@@ -120,12 +123,13 @@ export default function Register() {
           password:details.password,
           mobile:details.mobile
         });
-        // alert("You are successfully Signed-up")
+         toast.success("registered successfully!!");
         seterr("");
         localStorage.setItem("authToken",auth.authToken);
         // navigate('/');
         window.location.reload();
     } catch (error) {
+        toast.error(error.message);
         seterr(error.message);
     }
   };
@@ -282,6 +286,7 @@ export default function Register() {
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <ToastContainer/>
         </>
       ) : null}
     </>

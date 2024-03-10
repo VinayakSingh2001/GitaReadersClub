@@ -2,6 +2,7 @@ import { signOut } from 'firebase/auth'
 import React, { useEffect } from 'react'
 import { auth } from '../firebase.config'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Logout = () => {
   // const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Logout = () => {
         await signOut(auth);
        
         localStorage.removeItem('authToken');
+        toast.success("Successfully logged out!!");
         
     }
     // useEffect(()=>{
