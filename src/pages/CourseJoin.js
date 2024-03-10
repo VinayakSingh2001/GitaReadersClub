@@ -38,7 +38,7 @@ const CourseJoin = () => {
 
   return (
     <div className="py-10 px-12">
-      <div className="bg-[#E0E4FE] border rounded-lg">
+      <div className="bg-[#edf6f9] border rounded-lg">
         <div className="py-5 flex justify-center ">
           {/* <button className="border bg-[#fefae0] rounded-lg py-5 px-10 transition-transform shadow-sm hover:scale-105 cursor-pointer">
             Join as a member
@@ -46,7 +46,7 @@ const CourseJoin = () => {
           <Memberform/>
         </div>
         <div className="py-5 flex justify-center">
-          <button className="border bg-[#fefae0] rounded-lg py-5 px-10 transition-transform shadow-sm hover:scale-105 cursor-pointer" onClick={addCourse}>
+          <button className="border bg-[#F9F0ED] rounded-lg py-5 px-10 transition-transform shadow-sm hover:scale-105 cursor-pointer" onClick={addCourse}>
             Join for Gita Weekly Courses
           </button>
         </div>

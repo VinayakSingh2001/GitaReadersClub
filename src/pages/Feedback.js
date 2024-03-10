@@ -1,17 +1,18 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 import Wrapper from "../components/Wrapper";
+
 const Feedback = () => {
   return (
-    <footer className="bg-black text-white pt-10 pb-6" id="contact">
-      <div className="text-[40px] font-bold text-center mb-8">Feedback</div>
+    <footer className="bg-black-darker text-white pt-10 pb-6" id="contact">
+      <div className="text-[40px] font-bold text-center mb-8">Contact Us</div>
       <Wrapper className="flex flex-col md:flex-row gap-[50px] md:gap-0 items-center justify-evenly md:items-start">
         {/* LEFT START */}
         <form className="gap-6 shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="flex flex-col gap-4 md:flex-row md:gap-5">
             <div className="mb-4">
               <label
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-white text-sm font-bold mb-2"
                 htmlFor="name"
               >
                 Name
@@ -25,7 +26,7 @@ const Feedback = () => {
             </div>
             <div className="mb-4">
               <label
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-white text-sm font-bold mb-2"
                 htmlFor="email"
               >
                 Email
@@ -39,7 +40,7 @@ const Feedback = () => {
             </div>
             <div className="mb-4">
               <label
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-white text-sm font-bold mb-2"
                 htmlFor="phone"
               >
                 Phone Number
@@ -55,7 +56,7 @@ const Feedback = () => {
 
           <div className="mb-6">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-white text-sm font-bold mb-2"
               htmlFor="message"
             >
               Message
