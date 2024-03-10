@@ -30,7 +30,7 @@ function App() {
       <HeroBanner />
       {/* <Notification /> */}
       <MissionVision />
-      <SocialMediaPages />
+      {/* <SocialMediaPages /> */}
       <About />
       <Quotes />
       <Courses />

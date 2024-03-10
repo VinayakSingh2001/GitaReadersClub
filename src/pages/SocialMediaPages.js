@@ -1,57 +1,39 @@
-import React from "react";
-// import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import Wrapper from "../components/Wrapper";
-import Testimonial from "../components/Testimonial";
+import React, { useEffect, useState } from "react";
 
-const SocialMediaPages = () => {
-  //   const responsive = {
-  //     desktop: {
-  //       breakpoint: { max: 3000, min: 1024 },
-  //       items: 3,
-  //     },
-  //     tablet: {
-  //       breakpoint: { max: 1024, min: 464 },
-  //       items: 2,
-  //     },
-  //     mobile: {
-  //       breakpoint: { max: 464, min: 0 },
-  //       items: 1,
-  //     },
-  //   };
+const RecentTweets = () => {
+  const [tweets, setTweets] = useState([]);
+
+  useEffect(() => {
+    const fetchTweets = async () => {
+      try {
+        const response = await fetch(
+          "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=YourTwitterScreenName&count=3",
+          {
+            headers: {
+              Authorization: `Bearer YOUR_TWITTER_API_BEARER_TOKEN`,
+            },
+          }
+        );
+        const data = await response.json();
+        setTweets(data);
+      } catch (error) {
+        console.error("Error fetching tweets:", error);
+      }
+    };
+
+    fetchTweets();
+  }, []);
+
   return (
     <div>
-      <Wrapper>
-        <div className="mt-[50px] md:mt-[100px] mb-[100px] py-12 md:mb-0">
-          <div className="text-2xl font-bold mb-5">Testimonials</div>
-          {/* <Carousel
-            responsive={responsive}
-            containerClass="-mx-[10px]"
-            itemClass="px-[10px]"
-          >
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-          </Carousel>
-          ; */}
-
-          <div className="flex items-center justify-center gap-5 my-14 px-5 md:px-0">
-            <Testimonial />
-            <Testimonial />
-            <Testimonial />
-          </div>
-        </div>
-      </Wrapper>
+      <h2>Recent Tweets</h2>
+      <ul>
+        {tweets.map((tweet) => (
+          <li key={tweet.id}>{tweet.text}</li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default SocialMediaPages;
+export default RecentTweets;

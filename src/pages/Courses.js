@@ -3,7 +3,7 @@ import { useRef } from "react";
 
 const Courses = () => {
   return (
-    <div className="">
+    <div className="" id="course">
       <HorizontalScrollCarousel />
     </div>
   );
@@ -41,7 +41,7 @@ const Card = ({ card }) => {
   return (
     <div
       key={card.id}
-      className="group relative h-[450px] w-[450px] overflow-hidden bg-neutral-200"
+      className="group relative h-[250px] w-[250px] md:h-[450px] md:w-[450px] overflow-hidden bg-neutral-200"
     >
       <div
         style={{
@@ -53,8 +53,10 @@ const Card = ({ card }) => {
       ></div>
       <div className="absolute inset-0 z-10 grid place-content-center">
         <div className="bg-gradient-to-br from-white/20 to-white/0 p-8  text-white backdrop-blur-lg">
-          <p className=" text-2xl font-black uppercase">{card.title}</p>
-          <p>
+          <p className="text-md md:text-2xl font-black uppercase">
+            {card.title}
+          </p>
+          <p className="md:text-md">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore ab
             soluta labore. Tenetur, ducimus consectetur amet alias, vero natus
             quod, quae modi deleniti eos blanditiis in accusantium itaque facere
