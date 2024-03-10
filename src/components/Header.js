@@ -21,6 +21,7 @@ const Header = () => {
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
     { name: "Donate", link: "/donate" },
+    { name: "Solutions", link: "/solutions"},
   ];
 
   const controlNavBar = () => {
@@ -147,6 +148,7 @@ return unsubscribe; // Cleanup function
           <div className=" flex gap-4">
           {!loggedin ? <Login />:<>
             <div>{data}</div>
+            {/* <a href="/profile">{data}</a> */}
             <div><Logout/></div>
             </>
             }
