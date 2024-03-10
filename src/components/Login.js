@@ -1,10 +1,64 @@
 import React from "react";
 import { useState } from "react";
+import { useEffect } from "react";
+import Register from "./Register";
+import {app} from "../firebase.config"
+import {getDatabase, ref, get} from "firebase/database"
+import {auth} from "../firebase.config"
+import {GoogleAuthProvider,signInWithEmailAndPassword,signInWithPopup} from "firebase/auth"
+// import { useNavigate } from 'react-router-dom';
 
-export default function Modal() {
+
+
+export default function Login() {
   const [showModal, setShowModal] = React.useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [err,seterr] = useState("");
+  
+  const signInwithGoogle=()=>{
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).
+    then((result)=>{
+        // console.log('Success :', result.user);
+        alert('Logged In');
+        localStorage.setItem("authToken",result.authToken);
+        setShowModal(false);
+    }).catch((error)=>{
+        console.log("Error:", error);
+    })
+}
+  
+
+   
+   
+    const handleLogin=async(e)=>{
+        e.preventDefault();
+        try {
+          await signInWithEmailAndPassword(auth,email,password);
+          localStorage.setItem('authToken',auth.authToken);
+          alert("logged-in");
+          localStorage.setItem('token','loggedin');
+          setShowModal(false);
+        } catch (error) {
+          seterr(error.message);
+          alert("Invalid Credentials")
+        }
+          
+         
+          
+          
+    }
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showModal]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,32 +73,36 @@ export default function Modal() {
         type="button"
         onClick={() => setShowModal(true)}
       >
-        Register
+        Login
       </button>
       {showModal ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">
+            <div className="relative p-4 w-full max-w-md max-h-full">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold text-center">Login</h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
+                <div className="flex items-center text-center justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
+                  <h3 className="text-3xl font-semibold text-center justify-center">Login</h3>
+                  
                 </div>
                 {/*body*/}
                 <div className="flex justify-center items-center">
+                  
                   <form
                     onSubmit={handleSubmit}
+                    action=""
                     className="w-full max-w-md bg-white  rounded px-8 pt-6 pb-8"
                   >
+                    <div className="flex items-center justify-center mb-4">
+                    <button  type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={signInwithGoogle}>
+                    Google
+                </button>
+                
+                    </div>
+                    <div className="flex items-center  justify-center font-semibold mb-2">
+                    or
+                    </div>
                     <div className="mb-4">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
@@ -62,7 +120,7 @@ export default function Modal() {
                         required
                       />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-1">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="password"
@@ -79,11 +137,12 @@ export default function Modal() {
                         required
                       />
                     </div>
-                    <div className="flex items-center justify-between"></div>
+                    
+                    
                   </form>
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b mt-2">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
@@ -93,12 +152,20 @@ export default function Modal() {
                   </button>
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
+                    type="submit"
+                    onClick={handleLogin}
                   >
                     Login
                   </button>
+                  
                 </div>
+                <div class="text-sm font-medium text-gray-500 dark:text-gray-300 mb-6 flex justify-center">
+                        Not registered? 
+                    </div>
+                <div className="justify-center  flex">
+                <Register/>
+                </div>
+                
               </div>
             </div>
           </div>

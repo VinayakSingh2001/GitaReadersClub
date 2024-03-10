@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "./Wrapper";
 import { Link } from "react-scroll";
-import Modal from "./Modal";
+import Register from "./Register";
+import Login from "./Login";
+import Logout from "./Logout";
 
 const Header = () => {
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
+  const [loggedin,setLoggedin] = useState("");
 
   const Links = [
     { name: "Home", link: "hero" },
@@ -76,8 +79,8 @@ const Header = () => {
             <button className="bg-graylight py-1 px-4 rounded-full cursor-pointer">
               Sign In
             </button> */}
-            <Modal />
-            <Modal />
+            
+            {!loggedin ? <Login />:<Logout/>}
           </div>
         </div>
       </Wrapper>
