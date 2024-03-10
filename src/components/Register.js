@@ -28,8 +28,8 @@ export default function Register() {
   // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const enco = encodeEmail(details.email);
-    // e.preventDefault();
+
+
     let newErr = "";
 
     if (details.name === "") {
