@@ -3,10 +3,12 @@ import Wrapper from "./Wrapper";
 import { Link } from "react-scroll";
 import Register from "./Register";
 import Login from "./Login";
+import Logout from "./Logout";
 
 const Header = () => {
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
+  const [loggedin,setLoggedin] = useState("");
 
   const Links = [
     { name: "Home", link: "hero" },
@@ -78,7 +80,7 @@ const Header = () => {
               Sign In
             </button> */}
             
-            <Login />
+            {!loggedin ? <Login />:<Logout/>}
           </div>
         </div>
       </Wrapper>

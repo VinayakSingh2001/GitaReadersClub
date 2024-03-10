@@ -5,7 +5,7 @@ import Register from "./Register";
 import {app} from "../firebase.config"
 import {getDatabase, ref, get} from "firebase/database"
 import {auth} from "../firebase.config"
-import {GoogleAuthProvider,signInWithPopup} from "firebase/auth"
+import {GoogleAuthProvider,signInWithEmailAndPassword,signInWithPopup} from "firebase/auth"
 // import { useNavigate } from 'react-router-dom';
 
 
@@ -14,6 +14,8 @@ export default function Login() {
   const [showModal, setShowModal] = React.useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [err,seterr] = useState("");
+  
   const signInwithGoogle=()=>{
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider).
@@ -26,50 +28,25 @@ export default function Login() {
         console.log("Error:", error);
     })
 }
-  const encodeEmail = (email) => {
-    return email.replace(/\./g, ',')
-                .replace(/#/g, '%23');
-    };
+  
 
-    // let [name, setName] = useState([]);
-    // const nav = useNavigate();
-    const fetchData = async () => {
-        const encoemail = encodeEmail(email);
-        const db = getDatabase(app);
-        console.log(db);
-        const dbRef = ref(db, `user/${encoemail}`);
-        console.log(dbRef);
-        try{
-            const snapshot = await get(dbRef);
-            if(snapshot.exists()){
-            
-            const data = snapshot.val();
-            var flag  =false;
-            for(let key in data){
-                if(data[key].password === password) flag = true;
-            }
-            if(flag){
-                alert('Welcome to Gita Readers Club');
-                localStorage.setItem("authToken",data.authToken);
-                
-                // nav('/');
-            }else{
-                alert('Incorrect Password');
-            }
-            }else alert('User not found Please create account');
-        }catch(error){
-            console.log(error.message);
-        }
-        
-
-    }
    
-    const handleLogin=(e)=>{
-        
-          fetchData();
-          setEmail('');
-          setPassword('');
+   
+    const handleLogin=async(e)=>{
+        e.preventDefault();
+        try {
+          await signInWithEmailAndPassword(auth,email,password);
+          localStorage.setItem('authToken',auth.authToken);
+          alert("logged-in");
+          localStorage.setItem('token','loggedin');
           setShowModal(false);
+        } catch (error) {
+          seterr(error.message);
+          alert("Invalid Credentials")
+        }
+          
+         
+          
           
     }
   useEffect(() => {

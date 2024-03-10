@@ -1,7 +1,8 @@
 import { getDatabase ,ref,get} from 'firebase/database';
 import React, { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {app} from '../firebase.config';
+import {app,auth} from '../firebase.config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
   // const navigate = useNavigate();
@@ -23,7 +24,7 @@ const [err,seterr] = useState("");
                 .replace(/#/g, '%23');
     };
   const handleSubmit = async (e) => {
-    
+    e.preventDefault();
     const enco = encodeEmail(details.email);
     e.preventDefault();
     let newErr = "";
@@ -39,22 +40,22 @@ const [err,seterr] = useState("");
         seterr(newErr);
         return ;
     }
-    const db = getDatabase(app);
-        // console.log(db);
-        const dbRef = ref(db, `user/${enco}`);
-        // console.log(dbRef);
-        try{
-          const snapshot = await get(dbRef);
-          if(snapshot.exists()){
-          newErr += "email is already in use";
-          // console.log("")
-          seterr(newErr);
-          return ;
-          }
+    // const db = getDatabase(app);
+    //     // console.log(db);
+    //     const dbRef = ref(db, 'user');
+    //     // console.log(dbRef);
+    //     try{
+    //       const snapshot = await get(dbRef);
+    //       if(snapshot.exists()){
+    //       newErr += "email is already in use";
+    //       // console.log("")
+    //       seterr(newErr);
+    //       return ;
+    //       }
           
-      }catch(error){
-          console.log(error.message);
-      }
+    //   }catch(error){
+    //       console.log(error.message);
+    //   }
     if (details.mobile.length !== 10) {
         newErr += "\nInvalid mobile no.";
         seterr(newErr);
@@ -63,19 +64,23 @@ const [err,seterr] = useState("");
 
     if (details.password !== details.confirmPassword) {
       newErr += "\nPassword should match with confirm password";
-  } else if (details.password.length < 6 || !/(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$#^!%?&])[A-Za-z\d@$#^!%?&]{6,30}/.test(details.password)) {
-      newErr += "\nPassword must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character";
-  }
+      seterr(newErr);
+      return;}
+  //   } else if (details.password.length < 6 || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{6,}$/
+  //   .test(details.password)) {
+  //     newErr += "\nPassword must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+  // }
 
     if (newErr !== "") {
-      alert(details.password+"   "+details.confirmPassword);
+      // alert(details.password+"   "+details.confirmPassword);
         seterr(newErr);
         return;
     }
 
     try {
+      const userCredential = await createUserWithEmailAndPassword(auth,details.email,details.password)
         const res = await fetch(
-            `https://abcd-5eaff-default-rtdb.firebaseio.com//user/${enco}.json`,
+            `https://abcd-5eaff-default-rtdb.firebaseio.com//user.json`,
             {
                 method: "POST",
                 headers: {
