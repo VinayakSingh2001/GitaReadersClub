@@ -5,13 +5,15 @@ import { Link as ScrollLink } from "react-scroll";
 import Login from "./Login";
 import Logout from "./Logout";
 import logo from "../assets/logo22@3x-8.png";
+import { auth,app } from "../firebase.config";
+import { getDatabase,ref,set,get } from "firebase/database";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
-
+  const [data,setData] = useState("");
   const Links = [
     { name: "Home", link: "/" },
     { name: "About", link: "about" },
@@ -33,7 +35,43 @@ const Header = () => {
     }
     setLastScrolly(window.scrollY);
   };
+///changes
 
+useEffect(()=>{
+  const fetchData = async()=>{
+   const userId = auth.currentUser.uid;
+  //  alert(userId);
+    const db = getDatabase(app);
+    const dbRef = ref(db,`user/${userId}`);
+    try {
+      const snapshot = await get(dbRef);
+     const val = snapshot.val();
+     setData(val.name);
+    } catch (error) {
+      // alert(error.message);
+    }
+    
+  }
+  const unsubscribe = auth.onAuthStateChanged(user => {
+    
+    if (user) {
+      console.log(auth);
+        setLoggedin(true);
+        console.log(user.displayName);
+    setData(user.displayName); // User is authenticated
+    fetchData();
+        
+    } else {
+      setData([]);
+        setLoggedin(false); // User is not authenticated
+    }
+});
+return unsubscribe; // Cleanup function
+},[]);
+
+
+
+//
   useEffect(() => {
     window.addEventListener("scroll", controlNavBar);
     return () => {
@@ -107,7 +145,11 @@ const Header = () => {
             </ul>
           </div>
           <div className=" flex gap-4">
-            {!loggedin ? <Login /> : <Logout />}
+          {!loggedin ? <Login />:<>
+            <div>{data}</div>
+            <div><Logout/></div>
+            </>
+            }
           </div>
         </div>
       </Wrapper>

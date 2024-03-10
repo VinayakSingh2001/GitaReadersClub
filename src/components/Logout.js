@@ -1,9 +1,27 @@
-import React from 'react'
+import { signOut } from 'firebase/auth'
+import React, { useEffect } from 'react'
+import { auth } from '../firebase.config'
+import { useNavigate } from 'react-router-dom'
 
 const Logout = () => {
-    const handleLogout = () => {
-        localStorage.clear();
+  // const navigate = useNavigate();
+ 
+    const handleLogout = async() => {
+      if(!window.confirm("are you sure think twice")){
+        return ;
+      }
+        await signOut(auth);
+       
+        localStorage.removeItem('authToken');
+        
     }
+    // useEffect(()=>{
+    //   const unsubscribe = auth.onAuthStateChanged(user => {
+    //     // console.log(user);
+    //     console.log(user);
+    // });
+    // return unsubscribe; // Cleanup function
+    // },[]);
   return (
     <div>
         <button
