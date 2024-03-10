@@ -1,8 +1,9 @@
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { app, auth } from "../firebase.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { getDatabase,ref,set } from "firebase/database";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
   // const navigate = useNavigate();
@@ -64,47 +65,68 @@ export default function Register() {
       return;
     }
 
+    // try {
+    //   const userCredential = await createUserWithEmailAndPassword(
+    //     auth,
+    //     details.email,
+    //     details.password
+    //   );
+    //   const res = await fetch(
+    //     `https://abcd-5eaff-default-rtdb.firebaseio.com//user.json`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         name: details.name,
+    //         mobile: details.mobile,
+    //         email: details.email,
+    //         password: details.password,
+    //         // confirmPassword:details.confirmPassword
+    //       }),
+    //     }
+    //   );
+    //   alert("signed-up");
+    //   // setnewUser({
+    //   //     name: "",
+    //   //     email: "",
+    //   //     mobile: "",
+    //   //     password: "",
+    //   //     confirmPassword: ""
+    //   // });
+    //   seterr("");
+    //   setnewUser({
+    //     name: "",
+    //     email: "",
+    //     password: "",
+    //     mobile: "",
+    //     confirmPassword: "",
+    //   });
+    //   setShowModal(false);
+    // } catch (error) {
+    //   seterr(error.message);
+    // }
+
+    //updated data setting
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        details.email,
-        details.password
-      );
-      const res = await fetch(
-        `https://abcd-5eaff-default-rtdb.firebaseio.com//user.json`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: details.name,
-            mobile: details.mobile,
-            email: details.email,
-            password: details.password,
-            // confirmPassword:details.confirmPassword
-          }),
-        }
-      );
-      alert("signed-up");
-      // setnewUser({
-      //     name: "",
-      //     email: "",
-      //     mobile: "",
-      //     password: "",
-      //     confirmPassword: ""
-      // });
-      seterr("");
-      setnewUser({
-        name: "",
-        email: "",
-        password: "",
-        mobile: "",
-        confirmPassword: "",
-      });
-      setShowModal(false);
+      const userCredential = await createUserWithEmailAndPassword(auth,details.email,details.password);
+        const user = userCredential.user;
+        const db =getDatabase(app);
+        set(ref(db,`user/${user.uid}`),{
+          name:details.name,
+          email:details.email,
+          password:details.password,
+          mobile:details.mobile
+        });
+        alert("signed-up")
+        seterr("");
+        localStorage.setItem("authToken",auth.authToken);
+        // navigate('/');
+        window.location.reload()
     } catch (error) {
-      seterr(error.message);
+        seterr(error.message);
     }
   };
 
