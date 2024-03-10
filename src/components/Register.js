@@ -20,12 +20,12 @@ export default function Register() {
     setnewUser({ ...details, [e.target.name]: e.target.value });
   };
 
-  const encodeEmail = (email) => {
-    return email.replace(/\./g, ",").replace(/#/g, "%23");
-  };
+  // const encodeEmail = (email) => {
+  //   return email.replace(/\./g, ",").replace(/#/g, "%23");
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const enco = encodeEmail(details.email);
+    // const enco = encodeEmail(details.email);
     e.preventDefault();
     let newErr = "";
 
