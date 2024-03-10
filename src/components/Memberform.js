@@ -9,6 +9,7 @@ function Memberform() {
     const [answer, setAnswer] = useState('');
     const [showModal,setShowModal]=useState(false);
     const [err,seterr]=useState("");
+
     const [details,setDetails] = useState({
         name:"",
         regNo:"",
@@ -39,6 +40,7 @@ function Memberform() {
         const mobileRegex = /^\d{10}$/;
         if (!details.contact.match(mobileRegex)) {
             seterr("Please enter a valid 10-digit mobile number");
+
             return;
         }
         const user = auth.currentUser;
@@ -60,6 +62,7 @@ function Memberform() {
             });
         alert("Answer Stored");
         
+
         }
         setDetails({
             name:"",
@@ -89,7 +92,8 @@ function Memberform() {
         if (localStorage.getItem('authToken')) {
             setShowModal(true);
         } else {
-            alert('You need to login to become a member');
+            
+            toast.error("You are not logged in !!");
             // nav('/login');
         }
     };

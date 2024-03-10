@@ -10,6 +10,9 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  
 // import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
@@ -18,6 +21,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [err, seterr] = useState("");
 
+  
+
   const signInwithGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -25,6 +30,7 @@ export default function Login() {
         // console.log('Success :', result.user);
         // alert("Logged In");
         localStorage.setItem("authToken", result.authToken);
+        toast.success("login successful");
         setShowModal(false);
       })
       .catch((error) => {
@@ -37,12 +43,13 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("authToken", auth.authToken);
-      alert("logged-in");
+      
+      toast.success("logged-in");
       localStorage.setItem("token", "loggedin");
       setShowModal(false);
     } catch (error) {
       seterr(error.message);
-      alert("Invalid Credentials");
+      toast.error("Invalid Credentials");
     }
   };
   useEffect(() => {
@@ -80,6 +87,8 @@ export default function Login() {
       >
         Login
       </button>
+      
+      
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">
@@ -91,6 +100,12 @@ export default function Login() {
                   <h3 className="text-3xl font-semibold text-center justify-center">
                     Login
                   </h3>
+                  <button onClick={() => setShowModal(false)} type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-right items-left dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                  </button>
                 </div>
                 {/*body*/}
                 <div className="flex justify-center items-center">
@@ -140,6 +155,7 @@ export default function Login() {
                       >
                         Login
                       </button>
+                      
                     </div>
                     <div class="text-sm font-medium text-gray-500 pt-2 gap-1 dark:text-gray-300 flex justify-center">
                       <p>Don't have an account?</p>
@@ -173,7 +189,10 @@ export default function Login() {
               </div>
             </div>
           </div>
+          <ToastContainer/>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        
+          
         </>
       ) : null}
     </>
