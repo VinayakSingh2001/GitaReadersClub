@@ -1,43 +1,61 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import Features from "./components/Features";
-import Testimonials from "./components/Testimonials";
-import Offer from "./components/Offer";
-import HeroBanner from "./components/HeroBanner";
-import MissionVision from "./pages/MissionVision";
-import SocialMediaPages from "./pages/SocialMediaPages";
-import About from "./pages/About";
-import Quotes from "./pages/Quotes";
-import QuoteBox from "./components/QuoteBox";
-import Courses from "./pages/Courses";
-import Feedback from "./pages/Feedback";
-import Speakers from "./pages/Speakers";
-import UpScroller from "./components/UpScroller";
-import Notification from "./components/Notification";
+// import Header from "./components/Header";
+// import Footer from "./components/Footer";
+// import HeroBanner from "./components/HeroBanner";
+// import MissionVision from "./pages/MissionVision";
+// import About from "./pages/About";
+// import Quotes from "./pages/Quotes";
+// import Courses from "./pages/Courses";
+// import Feedback from "./pages/Feedback";
+// import Speakers from "./pages/Speakers";
+import Layout from "./components/Layout";
+import Team from "./pages/Team";
+import Donate from "./pages/Donate";
+import Community from "./pages/Community";
+import HomePage from "./pages/HomePage";
+
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route />
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <HomePage />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/team"
+            element={
+              <Layout>
+                <Team />
+              </Layout>
+            }
+          />
+          <Route
+            path="/donate"
+            element={
+              <Layout>
+                <Donate />
+              </Layout>
+            }
+          />
+          <Route
+            path="/community"
+            element={
+              <Layout>
+                <Community />
+              </Layout>
+            }
+          />
         </Routes>
       </BrowserRouter>
-      <Header />
-      <HeroBanner />
-      {/* <Notification /> */}
-      <MissionVision />
-      {/* <SocialMediaPages /> */}
-      <About />
-      <Quotes />
-      <Courses />
-      <Speakers />
-
-      <Feedback />
-      <Footer />
     </>
   );
 }

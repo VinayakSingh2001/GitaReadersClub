@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "./Wrapper";
-import { Link } from "react-scroll";
-import Register from "./Register";
+import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import Login from "./Login";
 import Logout from "./Logout";
 
 const Header = () => {
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
-  const [loggedin,setLoggedin] = useState("");
+  const [loggedin, setLoggedin] = useState("");
 
   const Links = [
-    { name: "Home", link: "hero" },
+    { name: "Home", link: "/" },
     { name: "About", link: "about" },
     { name: "Courses", link: "courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
-    { name: "Donate", link: "donate" },
-    { name: "Our Team", link: "donate" },
-    { name: "Community", link: "donate" },
+    { name: "Donate", link: "/donate" },
   ];
 
   const controlNavBar = () => {
@@ -56,31 +54,30 @@ const Header = () => {
             >
               {Links.map((link) => (
                 <li className="md:ml-8 md:my-0 my-7 font-sans" key={link.name}>
-                  <Link
-                    activeClass="active"
-                    to={link.link}
-                    spy={true}
-                    smooth={true}
-                    duration={1000}
-                    className="text-gray-500  cursor-pointer hover:text-blue-400  duration-500"
-                  >
-                    {link.name}
-                  </Link>
+                  {link.link.startsWith("/") ? (
+                    <Link
+                      to={link.link}
+                      className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <ScrollLink
+                      to={link.link}
+                      spy={true}
+                      smooth={true}
+                      duration={1000}
+                      className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
+                    >
+                      {link.name}
+                    </ScrollLink>
+                  )}
                 </li>
               ))}
-
-              {/* Render Register Modal component */}
             </ul>
           </div>
           <div className=" flex gap-4">
-            {/* <button className="bg-graylight py-1 px-4 rounded-full cursor-pointer">
-              Login
-            </button>
-            <button className="bg-graylight py-1 px-4 rounded-full cursor-pointer">
-              Sign In
-            </button> */}
-            
-            {!loggedin ? <Login />:<Logout/>}
+            {!loggedin ? <Login /> : <Logout />}
           </div>
         </div>
       </Wrapper>
