@@ -23,7 +23,7 @@ export default function Login() {
     signInWithPopup(auth, provider)
       .then((result) => {
         // console.log('Success :', result.user);
-        alert("Logged In");
+        // alert("Logged In");
         localStorage.setItem("authToken", result.authToken);
         setShowModal(false);
       })
