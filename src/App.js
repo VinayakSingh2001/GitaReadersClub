@@ -16,6 +16,7 @@ import Community from "./pages/Community";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import Solutions from "./pages/Solutions";
+import ForgotPassword from "./pages/ForgotPassword";
 
 
 function App() {
@@ -71,6 +72,14 @@ function App() {
                 <Solutions />
               </Layout>
             }
+          />
+          <Route
+          path = "/forgotpassword"
+          element = {
+            <Layout>
+               <ForgotPassword/>
+              </Layout>
+          }
           />
         </Routes>
       </BrowserRouter>

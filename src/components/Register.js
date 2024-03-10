@@ -124,7 +124,7 @@ export default function Register() {
         seterr("");
         localStorage.setItem("authToken",auth.authToken);
         // navigate('/');
-        window.location.reload()
+        window.location.reload();
     } catch (error) {
         seterr(error.message);
     }
