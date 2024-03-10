@@ -1,28 +1,27 @@
-import { getDatabase ,ref,get} from 'firebase/database';
-import React, { useState,useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
-import {app,auth} from '../firebase.config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, get } from "firebase/database";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { app, auth } from "../firebase.config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
   // const navigate = useNavigate();
-    const [details,setnewUser] = useState({
-        name: '',
-        email: '',
-        password: '',
-        mobile:'',
-        confirmPassword:''
-});
-const [err,seterr] = useState("");
-    
-    const handleChange=(e)=>{
-         setnewUser({...details,[e.target.name]:e.target.value});
-    }
-  
-      const encodeEmail = (email) => {
-    return email.replace(/\./g, ',')
-                .replace(/#/g, '%23');
-    };
+  const [details, setnewUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    mobile: "",
+    confirmPassword: "",
+  });
+  const [err, seterr] = useState("");
+
+  const handleChange = (e) => {
+    setnewUser({ ...details, [e.target.name]: e.target.value });
+  };
+
+  const encodeEmail = (email) => {
+    return email.replace(/\./g, ",").replace(/#/g, "%23");
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const enco = encodeEmail(details.email);
@@ -30,112 +29,104 @@ const [err,seterr] = useState("");
     let newErr = "";
 
     if (details.name === "") {
-        newErr = "Please enter a valid username";
-        seterr(newErr);
-        return ;
+      newErr = "Please enter a valid username";
+      seterr(newErr);
+      return;
     }
 
-    if (details.email === "" || !details.email.includes("@") || !["gmail.com", "yahoo.com", "mnnit.ac.in"].includes(details.email.split('@')[1])) {
-        newErr += "\nInvalid email address";
-        seterr(newErr);
-        return ;
+    if (
+      details.email === "" ||
+      !details.email.includes("@") ||
+      !["gmail.com", "yahoo.com", "mnnit.ac.in"].includes(
+        details.email.split("@")[1]
+      )
+    ) {
+      newErr += "\nInvalid email address";
+      seterr(newErr);
+      return;
     }
-    // const db = getDatabase(app);
-    //     // console.log(db);
-    //     const dbRef = ref(db, 'user');
-    //     // console.log(dbRef);
-    //     try{
-    //       const snapshot = await get(dbRef);
-    //       if(snapshot.exists()){
-    //       newErr += "email is already in use";
-    //       // console.log("")
-    //       seterr(newErr);
-    //       return ;
-    //       }
-          
-    //   }catch(error){
-    //       console.log(error.message);
-    //   }
+
     if (details.mobile.length !== 10) {
-        newErr += "\nInvalid mobile no.";
-        seterr(newErr);
-        return ;
+      newErr += "\nInvalid mobile no.";
+      seterr(newErr);
+      return;
     }
 
     if (details.password !== details.confirmPassword) {
       newErr += "\nPassword should match with confirm password";
       seterr(newErr);
-      return;}
-  //   } else if (details.password.length < 6 || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{6,}$/
-  //   .test(details.password)) {
-  //     newErr += "\nPassword must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character";
-  // }
+      return;
+    }
 
     if (newErr !== "") {
       // alert(details.password+"   "+details.confirmPassword);
-        seterr(newErr);
-        return;
+      seterr(newErr);
+      return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth,details.email,details.password)
-        const res = await fetch(
-            `https://abcd-5eaff-default-rtdb.firebaseio.com//user.json`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: details.name,
-                    mobile: details.mobile,
-                    email: details.email,
-                    password: details.password,
-                    // confirmPassword:details.confirmPassword
-                })
-            });
-            alert("signed-up")
-        // setnewUser({
-        //     name: "",
-        //     email: "",
-        //     mobile: "",
-        //     password: "",
-        //     confirmPassword: ""
-        // });
-        seterr("");
-        setnewUser({
-          name: '',
-          email: '',
-          password: '',
-          mobile: '',
-          confirmPassword: ''
-        });
-        setShowModal(false);
-        
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        details.email,
+        details.password
+      );
+      const res = await fetch(
+        `https://abcd-5eaff-default-rtdb.firebaseio.com//user.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: details.name,
+            mobile: details.mobile,
+            email: details.email,
+            password: details.password,
+            // confirmPassword:details.confirmPassword
+          }),
+        }
+      );
+      alert("signed-up");
+      // setnewUser({
+      //     name: "",
+      //     email: "",
+      //     mobile: "",
+      //     password: "",
+      //     confirmPassword: ""
+      // });
+      seterr("");
+      setnewUser({
+        name: "",
+        email: "",
+        password: "",
+        mobile: "",
+        confirmPassword: "",
+      });
+      setShowModal(false);
     } catch (error) {
-        seterr(error.message);
+      seterr(error.message);
     }
-};
+  };
 
   // eslint-disable-next-line no-undef
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [showModal]);
   return (
     <>
       <button
-        className="bg-pink-500 text-white mx-3  font-bold uppercase text-sm px-2 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mb-4"
+        className=" text-blue-500 px-1 font-semibold  text-sm rounded  mr-1 mb-1 ease-linear transition-all duration-150 mb-4"
         type="button"
         onClick={() => setShowModal(true)}
       >
-        Register
+        Signup
       </button>
       {showModal ? (
         <>
@@ -145,12 +136,12 @@ const [err,seterr] = useState("");
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-center text-center justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold text-center justify-center">Signup</h3>
-                  
+                  <h3 className="text-3xl text-black font-semibold text-center justify-center">
+                    Signup
+                  </h3>
                 </div>
                 {/*body*/}
                 <div className="flex justify-center items-center">
-                  
                   <form
                     onSubmit={handleSubmit}
                     className="w-full max-w-md bg-white  rounded px-8 pt-6 pb-8"
@@ -168,7 +159,7 @@ const [err,seterr] = useState("");
                         name="name"
                         type="text"
                         placeholder="Enter your Username"
-                        value={details.name} 
+                        value={details.name}
                         onChange={handleChange}
                         required
                       />
@@ -191,7 +182,7 @@ const [err,seterr] = useState("");
                         required
                       />
                     </div>
-                    <div className="mb-7">
+                    <div className="mb-4">
                       <label
                         className="mobile block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="mobile"
@@ -201,7 +192,7 @@ const [err,seterr] = useState("");
                       <input
                         className="mobile shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
                         id="mobile"
-                        name='mobile'
+                        name="mobile"
                         type="text"
                         placeholder="Enter your Contact number"
                         value={details.mobile}
@@ -210,17 +201,17 @@ const [err,seterr] = useState("");
                       />
                     </div>
                     <div className="mb-1">
-                       <label
+                      <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="password"
-                      > 
-                         Password
-                      </label> 
+                      >
+                        Password
+                      </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="password"
                         type="password"
-                        name='password'
+                        name="password"
                         placeholder="Enter your password"
                         value={details.password}
                         onChange={handleChange}
@@ -237,7 +228,7 @@ const [err,seterr] = useState("");
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="confirmPassword"
-                        name='confirmPassword'
+                        name="confirmPassword"
                         type="password"
                         placeholder="Enter your password"
                         value={details.confirmPassword}
@@ -245,30 +236,26 @@ const [err,seterr] = useState("");
                         required
                       />
                     </div>
-                    {err!=="" && <div>{err}</div>}
-                    
-                    
+                    <button
+                      className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
+                      type="submit"
+                      onClick={handleSubmit}
+                    >
+                      Signup
+                    </button>
+                    {err !== "" && <div>{err}</div>}
                   </form>
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="text-red-500 background-transparent font-bold uppercase px-6  text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
                     Close
                   </button>
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                  
                 </div>
-                
               </div>
             </div>
           </div>

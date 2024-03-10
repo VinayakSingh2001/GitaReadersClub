@@ -12,7 +12,7 @@ const Service = ({ name, about1, about2, about3, desc, img }) => {
           />
         </div>
 
-        <div className="p-4 text-black-[0.9] h-[130px] flex flex-col items-center overflow-hidden">
+        <div className="p-4 text-black-[0.9] h-[190px] flex flex-col items-center overflow-hidden">
           <h2 className="text-2xl text-center font-medium">{name}</h2>
           <div className="text-black-[0.5]">
             <p className="mr-2 text-lg text-center text-slate-700">{about1}</p>

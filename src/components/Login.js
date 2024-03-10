@@ -2,61 +2,66 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import Register from "./Register";
-import {app} from "../firebase.config"
-import {getDatabase, ref, get} from "firebase/database"
-import {auth} from "../firebase.config"
-import {GoogleAuthProvider,signInWithEmailAndPassword,signInWithPopup} from "firebase/auth"
+import { app } from "../firebase.config";
+import { getDatabase, ref, get } from "firebase/database";
+import { auth } from "../firebase.config";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 // import { useNavigate } from 'react-router-dom';
-
-
 
 export default function Login() {
   const [showModal, setShowModal] = React.useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [err,seterr] = useState("");
-  
-  const signInwithGoogle=()=>{
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider).
-    then((result)=>{
-        // console.log('Success :', result.user);
-        alert('Logged In');
-        localStorage.setItem("authToken",result.authToken);
-        setShowModal(false);
-    }).catch((error)=>{
-        console.log("Error:", error);
-    })
-}
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, seterr] = useState("");
 
-   
-   
-    const handleLogin=async(e)=>{
-        e.preventDefault();
-        try {
-          await signInWithEmailAndPassword(auth,email,password);
-          localStorage.setItem('authToken',auth.authToken);
-          alert("logged-in");
-          localStorage.setItem('token','loggedin');
-          setShowModal(false);
-        } catch (error) {
-          seterr(error.message);
-          alert("Invalid Credentials")
-        }
-          
-         
-          
-          
+  const signInwithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // console.log('Success :', result.user);
+        alert("Logged In");
+        localStorage.setItem("authToken", result.authToken);
+        setShowModal(false);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      localStorage.setItem("authToken", auth.authToken);
+      alert("logged-in");
+      localStorage.setItem("token", "loggedin");
+      setShowModal(false);
+    } catch (error) {
+      seterr(error.message);
+      alert("Invalid Credentials");
     }
+  };
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = 'hidden';
+      // Disable scrolling
+      document.body.style.overflow = "hidden";
+      // Set screen height to 100vh
+      document.body.style.height = "100vh";
     } else {
-      document.body.style.overflow = 'unset';
+      // Enable scrolling
+      document.body.style.overflow = "unset";
+      // Reset screen height
+      document.body.style.height = "auto";
     }
+
+    // Cleanup function
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
+      document.body.style.height = "auto";
     };
   }, [showModal]);
 
@@ -83,32 +88,23 @@ export default function Login() {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-center text-center justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold text-center justify-center">Login</h3>
-                  
+                  <h3 className="text-3xl font-semibold text-center justify-center">
+                    Login
+                  </h3>
                 </div>
                 {/*body*/}
                 <div className="flex justify-center items-center">
-                  
                   <form
                     onSubmit={handleSubmit}
                     action=""
                     className="w-full max-w-md bg-white  rounded px-8 pt-6 pb-8"
                   >
-                    <div className="flex items-center justify-center mb-4">
-                    <button  type="button" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={signInwithGoogle}>
-                    Google
-                </button>
-                
-                    </div>
-                    <div className="flex items-center  justify-center font-semibold mb-2">
-                    or
-                    </div>
                     <div className="mb-4">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="email"
                       >
-                        Email Address
+                        Email
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -136,36 +132,43 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                       />
+                      <button
+                        className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
+                        type="submit"
+                        onClick={handleLogin}
+                      >
+                        Login
+                      </button>
                     </div>
-                    
-                    
+                    <div class="text-sm font-medium text-gray-500 pt-2 gap-1 dark:text-gray-300 flex justify-center">
+                      <p>Don't have an account?</p>
+                      <Register />
+                    </div>
+                    <div className="text-sm font-medium text-gray-500 text-center">
+                      Or
+                    </div>
+
+                    <div className="flex items-center justify-center mb-4">
+                      <button
+                        type="button"
+                        className=" bg-blue-700 hover:bg-blue-800 my-5 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
+                        onClick={signInwithGoogle}
+                      >
+                        Login with Google
+                      </button>
+                    </div>
                   </form>
                 </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b mt-2">
+
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200">
                   <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="text-red-500 background-transparent font-bold uppercase px-6  text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
                     Close
                   </button>
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="submit"
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </button>
-                  
                 </div>
-                <div class="text-sm font-medium text-gray-500 dark:text-gray-300 mb-6 flex justify-center">
-                        Not registered? 
-                    </div>
-                <div className="justify-center  flex">
-                <Register/>
-                </div>
-                
               </div>
             </div>
           </div>

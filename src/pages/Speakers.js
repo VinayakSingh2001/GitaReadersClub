@@ -28,9 +28,8 @@ const Speakers = () => {
       name: "Shivam Kumar",
       img: img3,
       about1: "B.Tech., IIT BHU",
-      about2: "Director of Umeed Foundation",
-      about3:
-        "Head of Communications at ICFDR(Indian Centre for Development and Rights)",
+      about2: "",
+      about3: "Head of Communications at ICFDR",
     },
     {
       name: "Prateek Bhardwaj",

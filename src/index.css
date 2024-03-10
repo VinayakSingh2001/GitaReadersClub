@@ -9,3 +9,14 @@
   .carousel-item {
     transition: transform 0.5s ease; /* Smooth transition */
   }
+
+  .marquee-container {
+    display: flex;
+    gap: 2rem; /* Adjust the gap between items as needed */
+    overflow: hidden;
+  }
+  
+  .marquee-item {
+    flex-shrink: 0;
+  }
+  

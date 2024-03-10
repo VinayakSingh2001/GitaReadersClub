@@ -8,6 +8,7 @@ import Quotes from "./Quotes";
 import Courses from "./Courses";
 import Speakers from "./Speakers";
 import Feedback from "./Feedback";
+import CourseJoin from "./CourseJoin";
 // import Footer from "../components/Footer";
 // import Header from "../components/Header";
 // import Test from "./Test";
@@ -16,8 +17,9 @@ const HomePage = () => {
   return (
     <div>
       <HeroBanner />
+      <CourseJoin />
       <MissionVision />
-      <SocialMediaPages />
+      {/* <SocialMediaPages /> */}
       <About />
       <Quotes />
       <Courses />

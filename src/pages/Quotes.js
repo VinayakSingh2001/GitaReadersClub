@@ -32,13 +32,18 @@ const Quotes = () => {
   ];
 
   return (
-    <div className="bg-[#F0F3F6] mx-5 md:mx-20 my-10 md:my-20 py-10 md:py-20 rounded-[10px] border">
+    <div className="bg-[#F0F3F6] mx-5 md:mx-20 md:my-20 py-10 md:py-20 rounded-[10px] border">
       <div>
         <h1 className="text-2xl md:text-4xl text-center font-bold mb-5 md:mb-10">
           What do Eminent Personalities say about Gita?
         </h1>
         <div className="pt-5 md:pt-10">
-          <Marquee speed={200} gradient={false} pauseOnHover={true}>
+          <Marquee
+            speed={200}
+            gradient={false}
+            pauseOnHover={true}
+            className="marquee-container"
+          >
             {slides.map((slide, index) => (
               <div className="marquee-item" key={index}>
                 <QuoteBox

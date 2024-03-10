@@ -1,7 +1,6 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 import Wrapper from "../components/Wrapper";
-import UpScroller from "../components/UpScroller";
 const Feedback = () => {
   return (
     <footer className="bg-black text-white pt-10 pb-6" id="contact">
@@ -114,7 +113,6 @@ const Feedback = () => {
           <FaInstagram size={20} />
         </div>
 
-        {/* <UpScroller /> */}
       </div>
       {/* RIGHT END */}
     </footer>
