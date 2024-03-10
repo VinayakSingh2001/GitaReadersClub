@@ -16,12 +16,12 @@ const Speakers = () => {
       img: img1,
       about1: "M.Tech. , IIT BHU",
       about2: "GATE AIR 44",
-      about3: "Youth Mentor and Chairperson at Umeed Foundation",
+      about3: "Youth Mentor and\nChairperson at Umeed\n Foundation",
     },
     {
       name: "Dr. Deepak K",
       img: img2,
-      about1: "Assistant Professor, IIT BHU",
+      about1: "Assistant Professor, IIT\n BHU",
       about2: "PhD Materials Science and Engineering from NTU Singapore",
     },
     {
@@ -70,6 +70,7 @@ const Speakers = () => {
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-10 px-5 md:px-0 justify-center">
               {speakers.map((item, index) => (
                 <div key={index}>
+                {/*  */}
                   <Service
                     name={item.name}
                     img={item.img}

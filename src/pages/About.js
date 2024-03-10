@@ -6,7 +6,6 @@ const About = () => {
   return (
     <div id="about" className=" font-sans">
       <Wrapper>
-        <hr />
         <div className="py-20 ">
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-center">
             Why should we read Gita ?

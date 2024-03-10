@@ -41,14 +41,14 @@ function App() {
               </Layout>
             }
           />
-          <Route
+          {/* <Route
             path="/donate"
             element={
               <Layout>
                 <Donate />
               </Layout>
             }
-          />
+          /> */}
           <Route
             path="/community"
             element={
@@ -57,22 +57,22 @@ function App() {
               </Layout>
             }
           />
-          <Route
+          {/* <Route
             path="/profile"
             element={
               <Layout>
                 <ProfilePage />
               </Layout>
             }
-          />
-          <Route
+          /> */}
+          {/* <Route
             path="/solutions"
             element={
               <Layout>
                 <Solutions />
               </Layout>
             }
-          />
+          /> */}
           <Route
           path = "/forgotpassword"
           element = {
