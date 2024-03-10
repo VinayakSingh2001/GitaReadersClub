@@ -7,7 +7,7 @@ const Logout = () => {
   // const navigate = useNavigate();
  
     const handleLogout = async() => {
-      if(!window.confirm("are you sure think twice")){
+      if(!window.confirm("Are you sure you want to Logout?")){
         return ;
       }
         await signOut(auth);

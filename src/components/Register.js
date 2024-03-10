@@ -120,7 +120,7 @@ export default function Register() {
           password:details.password,
           mobile:details.mobile
         });
-        alert("signed-up")
+        // alert("You are successfully Signed-up")
         seterr("");
         localStorage.setItem("authToken",auth.authToken);
         // navigate('/');
