@@ -14,6 +14,8 @@ import Team from "./pages/Team";
 import Donate from "./pages/Donate";
 import Community from "./pages/Community";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import Solutions from "./pages/Solutions";
 
 
 function App() {
@@ -51,6 +53,22 @@ function App() {
             element={
               <Layout>
                 <Community />
+              </Layout>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <Layout>
+                <ProfilePage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/solutions"
+            element={
+              <Layout>
+                <Solutions />
               </Layout>
             }
           />
