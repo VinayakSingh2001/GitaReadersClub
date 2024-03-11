@@ -11,12 +11,10 @@ const Logout = () => {
     try {
       await signOut(auth);
       localStorage.removeItem('authToken');
-      toast.success('Successfully logged out!!',{autoClose:2000});
+      toast.success('Successfully logged out!!');
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('An error occurred while logging out',{
-        autoClose:2000
-      });
+      toast.error('An error occurred while logging out');
     }
   };
 

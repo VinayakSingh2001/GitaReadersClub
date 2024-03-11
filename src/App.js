@@ -14,6 +14,9 @@ import Team from "./pages/Team";
 import Donate from "./pages/Donate";
 import Community from "./pages/Community";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import Solutions from "./pages/Solutions";
+import ForgotPassword from "./pages/ForgotPassword";
 
 
 function App() {
@@ -38,14 +41,14 @@ function App() {
               </Layout>
             }
           />
-          <Route
+          {/* <Route
             path="/donate"
             element={
               <Layout>
                 <Donate />
               </Layout>
             }
-          />
+          /> */}
           <Route
             path="/community"
             element={
@@ -53,6 +56,30 @@ function App() {
                 <Community />
               </Layout>
             }
+          />
+          {/* <Route
+            path="/profile"
+            element={
+              <Layout>
+                <ProfilePage />
+              </Layout>
+            }
+          /> */}
+          {/* <Route
+            path="/solutions"
+            element={
+              <Layout>
+                <Solutions />
+              </Layout>
+            }
+          /> */}
+          <Route
+          path = "/forgotpassword"
+          element = {
+            <Layout>
+               <ForgotPassword/>
+              </Layout>
+          }
           />
         </Routes>
       </BrowserRouter>

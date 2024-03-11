@@ -6,19 +6,18 @@ const About = () => {
   return (
     <div id="about" className=" font-sans">
       <Wrapper>
-        <hr />
         <div className="py-20 ">
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-center">
             Why should we read Gita ?
           </h1>
           <div className="w-full md:w-3/4  mx-auto py-8">
-            <p className="text-lg md:text-xl text-center py-4">
+            <p className="text-lg md:text-xl text-left py-4">
               The Bhagavad-gita is an ancient philosophical classic that offers
               insights about life and love, about yoga and spirituality, soul
               and mind, God and eternity, hope and happiness.
             </p>
-            <p className="text-lg md:text-xl text-center py-4">
-              {" "}
+            <p className="text-lg md:text-xl text-left py-4">
+              
               Bhagvad Gita teaches that true wisdom lies in understanding the
               temporary nature of the material world and recognizing the eternal
               nature of the soul.

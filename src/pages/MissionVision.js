@@ -9,7 +9,7 @@ const MissionVision = () => {
           <div className="w-full max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-center items-center gap-10">
               <div className="w-full md:w-1/2 order-2 md:order-1">
-                <h1 className="text-4xl md:text-6xl pb-5">Mission</h1>
+                <h1 className="text-3xl md:text-4xl pb-5">Mission</h1>
                 <p className="text-base md:text-lg">
                   To reduce the stress and problems faced by youths in day to
                   day life and implementing the teachings of scriptures in
@@ -37,7 +37,7 @@ const MissionVision = () => {
                 />
               </div>
               <div className="w-full md:w-1/2">
-                <h1 className="text-4xl md:text-6xl pb-5">Vision</h1>
+                <h1 className="text-3xl md:text-4xl pb-5">Vision</h1>
                 <p className="text-base md:text-lg">
                   To make a community where the timeless wisdom of the Bhagavad
                   Gita is embraced and lived through comprehensive study and

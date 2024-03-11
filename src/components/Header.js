@@ -17,11 +17,12 @@ const Header = () => {
   const [data,setData] = useState("");
   const Links = [
     { name: "Home", link: "/" },
-    { name: "About", link: "about" },
+    { name: "About Us", link: "about" },
     { name: "Courses", link: "courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
-    { name: "Donate", link: "/donate" },
+    // { name: "Donate", link: "/donate" },
+    // { name: "Solutions", link: "/solutions"},
   ];
 
   const controlNavBar = () => {
@@ -122,11 +123,11 @@ return unsubscribe; // Cleanup function
               }`}
             >
               {Links.map((link) => (
-                <li className="md:ml-8 md:my-0 my-7 font-sans" key={link.name}>
+                <li className="md:ml-8 md:my-0 my-7 font-semibold font-sans" key={link.name}>
                   {link.link.startsWith("/") ? (
                     <Link
                       to={link.link}
-                      className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
+                      className="text-gray-500 font-semibold cursor-pointer hover:text-blue-400 duration-500"
                     >
                       {link.name}
                     </Link>
@@ -148,13 +149,14 @@ return unsubscribe; // Cleanup function
           <div className=" flex gap-4">
           {!loggedin ? <Login />:<>
             <div>{data}</div>
+            {/* <a href="/profile">{data}</a> */}
             <div><Logout/></div>
             </>
             }
           </div>
         </div>
       </Wrapper>
-      <ToastContainer autoClose={2000} closeOnClick/>
+      
     </div>
   );
 };

@@ -1,15 +1,16 @@
 import { getDatabase, ref, set } from "firebase/database";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { app, auth } from "../firebase.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
   
 // import { getDatabase,ref,set } from "firebase/database";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
   // const navigate = useNavigate();
+  const modalRef = useRef(null);
   const [details, setnewUser] = useState({
     name: "",
     email: "",
@@ -120,31 +121,64 @@ export default function Register() {
         set(ref(db,`user/${user.uid}`),{
           name:details.name,
           email:details.email,
-          password:details.password,
+          // password:details.password,
           mobile:details.mobile
         });
-         toast.success("registered successfully!!");
         seterr("");
         localStorage.setItem("authToken",auth.authToken);
         // navigate('/');
         window.location.reload();
+        setTimeout(() => {
+          toast.success("Registered successfully!!!");
+        }, 5000); // Delay the toast by 5000 milliseconds (5 seconds)
     } catch (error) {
-        toast.error(error.message);
+   
         seterr(error.message);
     }
   };
+  // useEffect(() => {
+  //   const handleOutsideClick = (e) => {
+  //     console.log(e.target.closest("max-w-md"));
+  //     if (!e.target.closest("max-w-md")) {
+        
+  //       setShowModal(false);
+  //     }
+  //   };
 
+  //   if (showModal) {
+  //     document.body.style.overflow = "hidden";
+  //     document.addEventListener("mousedown", handleOutsideClick);
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   }
+
+  //   return () => {
+  //     document.body.style.overflow = "unset";
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, [showModal]);
   // eslint-disable-next-line no-undef
-  useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [showModal]);
+  // useEffect(() => {
+  //   const handleOutsideClick = (e) => {
+  //     if (!e.target.closest(".max-w-md")) {
+  //       setShowModal(false);
+  //     }
+  //   };
+
+  //   if (showModal) {
+  //     document.body.style.overflow = "hidden";
+  //     document.addEventListener("mousedown", handleOutsideClick);
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   }
+
+  //   return () => {
+  //     document.body.style.overflow = "unset";
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, [showModal]);
   return (
     <>
       <button
@@ -171,6 +205,7 @@ export default function Register() {
                   <form
                     onSubmit={handleSubmit}
                     className="w-full max-w-md bg-white  rounded px-8 pt-6 pb-8"
+                    // ref={modalRef}
                   >
                     <div className="mb-1">
                       <label
@@ -286,7 +321,7 @@ export default function Register() {
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-          <ToastContainer/>
+
         </>
       ) : null}
     </>
