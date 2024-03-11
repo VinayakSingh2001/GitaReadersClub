@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState ,useRef} from "react";
 import { useEffect } from "react";
 import Register from "./Register";
 import { app } from "../firebase.config";
@@ -11,7 +11,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
   
 // import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,31 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [err, seterr] = useState("");
 
-  
+  const modalRef = useRef(null);
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      // Check if the click target is not a descendant of the modal content
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setShowModal(false);
+      }
+    };
+
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100vh";
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.body.style.overflow = "unset";
+      document.body.style.height = "auto";
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+      document.body.style.height = "auto";
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showModal]);
 
   const signInwithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -30,7 +54,7 @@ export default function Login() {
         // console.log('Success :', result.user);
         // alert("Logged In");
         localStorage.setItem("authToken", result.authToken);
-        toast.success("login successful");
+
         setShowModal(false);
       })
       .catch((error) => {
@@ -39,38 +63,38 @@ export default function Login() {
   };
 
   const handleLogin = async (e) => {
+    
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("authToken", auth.authToken);
-      
-      toast.success("logged-in");
+
       localStorage.setItem("token", "loggedin");
       setShowModal(false);
     } catch (error) {
       seterr(error.message);
-      toast.error("Invalid Credentials");
+
     }
   };
-  useEffect(() => {
-    if (showModal) {
-      // Disable scrolling
-      document.body.style.overflow = "hidden";
-      // Set screen height to 100vh
-      document.body.style.height = "100vh";
-    } else {
-      // Enable scrolling
-      document.body.style.overflow = "unset";
-      // Reset screen height
-      document.body.style.height = "auto";
-    }
+  // useEffect(() => {
+  //   if (showModal) {
+  //     // Disable scrolling
+  //     document.body.style.overflow = "hidden";
+  //     // Set screen height to 100vh
+  //     document.body.style.height = "100vh";
+  //   } else {
+  //     // Enable scrolling
+  //     document.body.style.overflow = "unset";
+  //     // Reset screen height
+  //     document.body.style.height = "auto";
+  //   }
 
-    // Cleanup function
-    return () => {
-      document.body.style.overflow = "unset";
-      document.body.style.height = "auto";
-    };
-  }, [showModal]);
+  //   // Cleanup function
+  //   return () => {
+  //     document.body.style.overflow = "unset";
+  //     document.body.style.height = "auto";
+  //   };
+  // }, [showModal]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -91,8 +115,9 @@ export default function Login() {
       
       {showModal ? (
         <>
+        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">
-            <div className="relative p-4 w-full max-w-md max-h-full">
+            <div className="relative p-4 w-full max-w-md max-h-full" ref={modalRef}>
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
@@ -100,12 +125,6 @@ export default function Login() {
                   <h3 className="text-3xl font-semibold text-center justify-center">
                     Login
                   </h3>
-                  <button onClick={() => setShowModal(false)} type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-right items-left dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                  </button>
                 </div>
                 {/*body*/}
                 <div className="flex justify-center items-center">
@@ -176,7 +195,7 @@ export default function Login() {
                     </div>
                   </form>
                 </div>
-
+          
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6  text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -189,7 +208,7 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <ToastContainer/>
+   
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         
           

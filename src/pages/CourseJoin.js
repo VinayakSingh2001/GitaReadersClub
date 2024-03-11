@@ -56,7 +56,6 @@ const CourseJoin = () => {
 //   }
 //   }
 
-
   return (
     <div className="py-10 px-12">
       <div className="bg-[#edf6f9] border rounded-lg">
@@ -73,7 +72,7 @@ const CourseJoin = () => {
           <Courseform/>
         </div>
       </div>
-      {/* <ToastContainer/> */}
+  
     </div>
   );
 };
