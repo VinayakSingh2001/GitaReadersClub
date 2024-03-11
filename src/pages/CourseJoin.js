@@ -55,7 +55,6 @@ const CourseJoin = () => {
     
 //   }
 //   }
-//   }
 
   return (
     <div className="py-10 px-12">

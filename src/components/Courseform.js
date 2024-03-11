@@ -218,7 +218,13 @@ function Courseform() {
                                                 required
                                             />
                                         </div>
-                                        {err !== "" && <div>{err}</div>}
+                                        {/* {err !== "" && <div>{err}</div>} */}
+                                        {err !== "" && (
+    <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-2 mt-2" role="alert">
+        
+        <p className="text-s">{err}</p>
+    </div>
+)}
                                     </form>
                                     
                                 </div>

@@ -121,7 +121,7 @@ export default function Register() {
         set(ref(db,`user/${user.uid}`),{
           name:details.name,
           email:details.email,
-          password:details.password,
+          // password:details.password,
           mobile:details.mobile
         });
         seterr("");
@@ -133,28 +133,28 @@ export default function Register() {
         seterr(error.message);
     }
   };
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      console.log(e.target.closest("max-w-md"));
-      if (!e.target.closest("max-w-md")) {
+  // useEffect(() => {
+  //   const handleOutsideClick = (e) => {
+  //     console.log(e.target.closest("max-w-md"));
+  //     if (!e.target.closest("max-w-md")) {
         
-        setShowModal(false);
-      }
-    };
+  //       setShowModal(false);
+  //     }
+  //   };
 
-    if (showModal) {
-      document.body.style.overflow = "hidden";
-      document.addEventListener("mousedown", handleOutsideClick);
-    } else {
-      document.body.style.overflow = "unset";
-      document.removeEventListener("mousedown", handleOutsideClick);
-    }
+  //   if (showModal) {
+  //     document.body.style.overflow = "hidden";
+  //     document.addEventListener("mousedown", handleOutsideClick);
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   }
 
-    return () => {
-      document.body.style.overflow = "unset";
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [showModal]);
+  //   return () => {
+  //     document.body.style.overflow = "unset";
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, [showModal]);
   // eslint-disable-next-line no-undef
   // useEffect(() => {
   //   const handleOutsideClick = (e) => {
@@ -202,7 +202,7 @@ export default function Register() {
                   <form
                     onSubmit={handleSubmit}
                     className="w-full max-w-md bg-white  rounded px-8 pt-6 pb-8"
-                    ref={modalRef}
+                    // ref={modalRef}
                   >
                     <div className="mb-1">
                       <label
