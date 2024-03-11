@@ -57,9 +57,8 @@ const CourseJoin = () => {
           </button>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer autoClose={3000}/>
     </div>
   );
 };
-
 export default CourseJoin;

@@ -154,7 +154,7 @@ return unsubscribe; // Cleanup function
           </div>
         </div>
       </Wrapper>
-      <ToastContainer/>
+      <ToastContainer autoClose={2000} closeOnClick/>
     </div>
   );
 };

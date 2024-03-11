@@ -13,7 +13,9 @@ function Memberform() {
     const addMember=async(e)=>{
 
         if(answer.trim().length <30){
-            toast.error("atleast 30 characters!!");
+            toast.error("atleast 30 characters!!",{
+                autoClose:2000
+            });
             return;
         }
         e.preventDefault();
@@ -28,7 +30,7 @@ function Memberform() {
                 answer:answer,
                 status:false
             });
-        toast.success("We got your answer!!!");
+        toast.success("We got your answer!!!",{autoClose:2000});
         }
         setShowModal(false);
     }
@@ -49,7 +51,7 @@ function Memberform() {
             setShowModal(true);
         } else {
             
-            toast.error("You are not logged in !!");
+            toast.error("You are not logged in !!",{autoClose:2000});
             // nav('/login');
         }
     };
