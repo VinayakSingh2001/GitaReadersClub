@@ -93,8 +93,9 @@ function Memberform() {
             setShowModal(true);
         } else {
             
-            toast.error("You are not logged in !!");
+            // toast.error("You are not logged in !!");
             // nav('/login');
+            alert('log in first');
         }
     };
   return (
@@ -166,7 +167,7 @@ function Memberform() {
                                             
                                             {/* <hr /> */}
                                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="answer">
-                                                Why do you want to join this club<a href="/team" target="_blank"> know about courses</a>
+                                                Why do you want to join this club<a className="text-blue-500 hover:text-blue-600"href="/team" target="_blank"> know about courses</a>
                                                 
                                             </label>
                                             
@@ -224,7 +225,12 @@ function Memberform() {
                                             
                                              
                                         </div>
-                                        {err !== "" && <div>{err}</div>}
+                                        {err !== "" && (
+    <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-2 mt-2" role="alert">
+        
+        <p className="text-s">{err}</p>
+    </div>
+)}
                                     </form>
                                     
                                 </div>
@@ -245,6 +251,7 @@ function Memberform() {
                                                experience:""
                                        
                                                });
+                                               seterr('');
                                             setShowModal(false)}}
                                     >
                                         Close
