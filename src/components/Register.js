@@ -128,9 +128,9 @@ export default function Register() {
         localStorage.setItem("authToken",auth.authToken);
         // navigate('/');
         window.location.reload();
-        setTimeout(() => {
+        
           toast.success("Registered successfully!!!");
-        }, 5000); // Delay the toast by 5000 milliseconds (5 seconds)
+         // Delay the toast by 5000 milliseconds (5 seconds)
     } catch (error) {
    
         seterr(error.message);
@@ -199,6 +199,15 @@ export default function Register() {
                   <h3 className="text-3xl text-black font-semibold text-center justify-center">
                     Signup
                   </h3>
+                  <div>
+                  <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
+                  text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onClick={()=> setShowModal(false)}>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                  </div>
                 </div>
                 {/*body*/}
                 <div className="flex justify-center items-center">
