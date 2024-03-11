@@ -3,7 +3,7 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
 import {auth,app} from '../firebase.config';
-
+import { ToastContainer,toast } from 'react-toastify';
 
 const ForgotPassword = () => {
     const [email,setEmail] = useState("");
@@ -20,12 +20,12 @@ const handleChange = (e)=>{
 
         sendPasswordResetEmail(auth, email)
             .then(() => {
-                alert("Password reset email sent successfully");
+                toast.success("Password reset email sent successfully");
                 history("/");
             })
             .catch((err) => {
                 console.error(err);
-                alert(err.code);
+                toast.error(err.code);
             });
     };
 
@@ -59,6 +59,7 @@ const handleChange = (e)=>{
                     </button>
                 </form>
             </div>
+            <ToastContainer autoClose={1000} closeOnClick margin={{marginTop: "60px"}}/>
         </div>
     );
 };

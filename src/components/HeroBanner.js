@@ -1,34 +1,35 @@
 import React from "react";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from "react-responsive-carousel";
-import { BiArrowBack } from "react-icons/bi";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const HeroBanner = () => {
+  const settings = {
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: false,
+  };
+
   return (
-    <div className="">
-      <div className="relative text-white text-[20px] w-full  mx-auto">
-        <Carousel
-          autoPlay={true}
-          infiniteLoop={true}
-          showThumbs={false}
-          showIndicators={false}
-          showStatus={false}
-        >
-          <div className="">
-            <img
-              src="https://miro.medium.com/v2/resize:fit:1024/1*IkfzSJbxGhHsim8ZbDWFXg.jpeg"
-              className="aspect-[16/10] md:aspect-auto object-cover"
-            />
-          </div>
-          <div>
-            <img
-              src="https://learngitalivegita.com/blog/wp-content/uploads/2020/07/bg.jpg"
-              className="aspect-[16/10] md:aspect-auto object-cover"
-            />
-          </div>
-        </Carousel>
+    <Slider {...settings}>
+      <div>
+        <img
+          src="https://miro.medium.com/v2/resize:fit:1024/1*IkfzSJbxGhHsim8ZbDWFXg.jpeg"
+          alt="First Slide"
+          className="w-full md:aspect-auto object-cover"
+        />
       </div>
-    </div>
+      <div>
+        <img
+          src="https://learngitalivegita.com/blog/wp-content/uploads/2020/07/bg.jpg"
+          alt="Second Slide"
+          className="w-full md:aspect-auto object-cover"
+        />
+      </div>
+    </Slider>
   );
 };
 

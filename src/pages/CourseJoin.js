@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getDatabase,set,ref,get} from "firebase/database";
 import { app,auth } from "../firebase.config";
 import Courseform from "../components/Courseform";
-
+import { ToastContainer } from "react-toastify";
 
 
 const CourseJoin = () => {
@@ -57,8 +57,8 @@ const CourseJoin = () => {
 //   }
 
   return (
-    <div className="py-10 px-12">
-      <div className="bg-[#edf6f9] border rounded-lg">
+    <div className="py-20 px-12">
+      <div className="bg-[#edf6f9] border rounded-lg flex justify-center items-center gap-5">
         <div className="py-5 flex justify-center ">
           {/* <button className="border bg-[#fefae0] rounded-lg py-5 px-10 transition-transform shadow-sm hover:scale-105 cursor-pointer">
             Join as a member
@@ -72,9 +72,8 @@ const CourseJoin = () => {
           <Courseform/>
         </div>
       </div>
-  
+      
     </div>
   );
 };
-
 export default CourseJoin;

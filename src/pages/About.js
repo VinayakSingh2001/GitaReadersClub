@@ -11,13 +11,13 @@ const About = () => {
             Why should we read Gita ?
           </h1>
           <div className="w-full md:w-3/4  mx-auto py-8">
-            <p className="text-lg md:text-xl text-center py-4">
+            <p className="text-lg md:text-xl text-left py-4">
               The Bhagavad-gita is an ancient philosophical classic that offers
               insights about life and love, about yoga and spirituality, soul
               and mind, God and eternity, hope and happiness.
             </p>
-            <p className="text-lg md:text-xl text-center py-4">
-              {" "}
+            <p className="text-lg md:text-xl text-left py-4">
+              
               Bhagvad Gita teaches that true wisdom lies in understanding the
               temporary nature of the material world and recognizing the eternal
               nature of the soul.

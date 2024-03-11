@@ -54,11 +54,11 @@ const Speakers = () => {
       img: img7,
       about1: "B.Tech., IIT BHU",
       about2: "Software Engineer at Shipsy",
-      about3: "Associate Software Engineer at MathWorks",
+      about3: "",
     },
   ];
   return (
-    <div className="pb-10 F9FAFA" id="speakers">
+    <div className="py-3 pb-10 F9FAFA" id="speakers">
       <Wrapper>
         <div className="text-center max-w-full mx-auto my-[50px]  md:my-[80px]">
           <div className="text-[28px] md:text-[40px] font-bold leading-tight ">
@@ -67,10 +67,9 @@ const Speakers = () => {
         </div>
         <div className="mb-[100px] md:mb-0">
           <div className="flex justify-center items-center">
-            <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-10 px-5 md:px-0 justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-5 md:px-0 justify-center">
               {speakers.map((item, index) => (
                 <div key={index}>
-                {/*  */}
                   <Service
                     name={item.name}
                     img={item.img}

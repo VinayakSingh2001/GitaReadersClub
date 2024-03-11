@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { app, auth } from '../firebase.config';
 import { getDatabase,ref,set,get } from 'firebase/database';
+import { ToastContainer,toast } from 'react-toastify';
 
 function Memberform() {
-    const [answer, setAnswer] = useState('');
+    //const [answer, setAnswer] = useState('');
     const [showModal,setShowModal]=useState(false);
     const [err,seterr]=useState("");
 
@@ -40,7 +41,7 @@ function Memberform() {
         const mobileRegex = /^\d{10}$/;
         if (!details.contact.match(mobileRegex)) {
             seterr("Please enter a valid 10-digit mobile number");
-
+            
             return;
         }
         const user = auth.currentUser;
@@ -48,7 +49,7 @@ function Memberform() {
         const memberRef = ref(db,`member/${user.uid}`);
         console.log(user.uid.name);
         const snapshot = await get(memberRef);
-        if(snapshot.exists()) alert("You have already filled out the form. Please wait for feedback.");
+        if(snapshot.exists()) toast.error("You have already filled out the form. Please wait for feedback.");
         else{
             set(ref(db,`member/${user.uid}`),{
                 name:details.name,
@@ -60,7 +61,7 @@ function Memberform() {
                 hostel:details.hostel,
                 hobbies:details.hobbies
             });
-        alert("Answer Stored");
+        toast.success("Thank you, for filling form you will be contacted soon from our side!!!",{autoClose:3000});
         
 
         }
@@ -93,16 +94,20 @@ function Memberform() {
             setShowModal(true);
         } else {
             
-            // toast.error("You are not logged in !!");
+            toast.error("You are not logged in !!!");
             // nav('/login');
-            alert('log in first');
+            
         }
     };
   return (
     <>
-   <button className="border bg-[#F9F0ED] rounded-lg py-5 px-10 transition-transform shadow-sm hover:scale-105 cursor-pointer" onClick={handleJoinButtonClick}>
-            Join as a member
-          </button>
+   
+          
+<button type="button" class="text-white bg-gradient-to-r px-40 py-6 text-[30px] from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br 
+focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 
+dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 " 
+onClick={handleJoinButtonClick}>Join as a member</button>
+
             {showModal && (
                 <>
                     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">

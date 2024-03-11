@@ -4,6 +4,7 @@ import Wrapper from "../components/Wrapper";
 import { useState } from "react";
 import { getDatabase, ref, set } from "firebase/database";
 import {app} from "../firebase.config";
+import { toast } from "react-toastify";
 
 const Feedback = () => {
 
@@ -91,6 +92,7 @@ const Feedback = () => {
       mobile: "",
       message: "",
     })
+    toast.success("Thank you we recieved your feedback!!!");
   } catch (error) {
     seterr(error.message);
   }
@@ -180,7 +182,7 @@ const Feedback = () => {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
               onClick={handleSubmit}
             >

@@ -4,6 +4,7 @@ import { useState,useEffect } from 'react';
 
 import { app, auth } from '../firebase.config';
 import { getDatabase,ref,set,get } from 'firebase/database';
+import { toast } from 'react-toastify';
 
 function Courseform() {
     const [answer, setAnswer] = useState({
@@ -47,7 +48,7 @@ function Courseform() {
         const memberRef = ref(db,`course/${user.uid}`);
         console.log(user.uid.name);
         const snapshot = await get(memberRef);
-        if(snapshot.exists()) alert("You are already enrolled in the course");
+        if(snapshot.exists()) toast.error("You are already enrolled in the course");
         else{
             set(ref(db,`course/${user.uid}`),{
                 name:answer.name,
@@ -57,7 +58,7 @@ function Courseform() {
                 hostel:answer.hostel,
                 previousexp:answer.previousexp
             });
-        alert("Enrolled");
+        toast.success("You have been enrolled in course!!!");
         }
         setAnswer({
             name: "",
@@ -85,7 +86,7 @@ function Courseform() {
         if (localStorage.getItem('authToken')) {
             setShowModal(true);
         } else {
-            alert('You need to login to become a member');
+            toast.error('You need to login to become a member');
             // nav('/login');
         }
     };
@@ -93,9 +94,11 @@ function Courseform() {
 
   return (
     <>
-   <button className="border bg-[#F9F0ED] rounded-lg py-5 px-10 transition-transform shadow-sm hover:scale-105 cursor-pointer" onClick={handleJoinButtonClick}>
-   Join for Gita Weekly Courses
-          </button>
+   
+          <button type="button" class="text-white bg-gradient-to-r px-40 py-6 text-[30px] from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br 
+          focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg 
+          dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 " onClick={handleJoinButtonClick} >Join for Gita Weekly Courses</button>
+
             {showModal && (
                 <>
                     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">
