@@ -8,14 +8,6 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  // apiKey: "AIzaSyDAyhds8_Gjh9DVK0ZKFHhbVoLgp1OJtvY",
-  // authDomain: "gita-readers-club.firebaseapp.com",
-  // databaseURL: "https://gita-readers-club-default-rtdb.firebaseio.com",
-  // projectId: "gita-readers-club",
-  // storageBucket: "gita-readers-club.appspot.com",
-  // messagingSenderId: "258128079988",
-  // appId: "1:258128079988:web:6ec502b6886c6e7926f521",
-  // measurementId: "G-40J11VSBBR"
         apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
         authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
         databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
