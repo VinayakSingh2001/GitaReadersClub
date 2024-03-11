@@ -31,7 +31,9 @@ function Memberform() {
       !details.name ||
       !details.regNo ||
       !details.hostel ||
-      !details.contact
+      !details.contact ||
+      !details.hobbies ||
+      !details.reason
     ) {
       seterr("All fields are required");
       return;
@@ -143,7 +145,7 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="answer"
                         type="text"
-                        placeholder="Name"
+                        placeholder="Enter your Name"
                         name="name"
                         value={details.name}
                         onChange={handleChange}
@@ -159,7 +161,7 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="answer"
                         type="text"
-                        placeholder="Reg. No"
+                        placeholder="Enter your Reg. No"
                         name="regNo"
                         value={details.regNo}
                         onChange={handleChange}
@@ -175,7 +177,7 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="answer"
                         type="text"
-                        placeholder="Email"
+                        placeholder="Enter your Email"
                         name="email"
                         value={details.email}
                         onChange={handleChange}
@@ -191,7 +193,7 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="answer"
                         type="text"
-                        placeholder="Contact"
+                        placeholder="Enter your Contact"
                         name="contact"
                         value={details.contact}
                         onChange={handleChange}
@@ -205,11 +207,9 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                       >
                         Why do you want to join this club
                         <a
-                          className="text-blue-500 hover:text-blue-600"
-                          href="/team"
+                          className="text-blue-500 hover:text-blue-600 pl-2"
                           target="_blank"
                         >
-                          {" "}
                           know about courses
                         </a>
                       </label>
@@ -228,14 +228,17 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="answer"
                       >
-                        mention you special talents dropdown
+                        Mention your special talents/qualities
                       </label>
                       <select
-                        onChange={handleChange}
-                        name="hobbies"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
+                        id="hostel"
+                        name="hostel"
                         value={details.hobbies}
+                        onChange={handleChange}
+                        required
                       >
-                        <option value="selet any....">select any.....</option>
+                        <option value="selet any....">Select Any.....</option>
                         <option value="Music/Instrumental">
                           Music/Instumental
                         </option>
@@ -271,24 +274,27 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                       />
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="answer"
+                        htmlFor="hostel"
                       >
-                        Hostel Name
+                        Hostel
                       </label>
                       <select
-                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
+                        id="hostel"
                         name="hostel"
                         value={details.hostel}
+                        onChange={handleChange}
+                        required
                       >
-                        <option>select any.....</option>
-                        <option>Tondon</option>
-                        <option>Malivya</option>
-                        <option>Patel</option>
-                        <option>Tilak</option>
-                        <option>Svbh</option>
-                        <option>Raman</option>
-                        <option>New Boys Hostel</option>
-                        <option>others</option>
+                        <option value="">Select Hostel</option>
+                        <option value="Tandon">Tandon</option>
+                        <option value="Malviya">Malviya</option>
+                        <option value="Patel">Patel</option>
+                        <option value="Tilak">Tilak</option>
+                        <option value="SVBH">SVBH</option>
+                        <option value="Raman">Raman</option>
+                        <option value="New Boys Hostel">New Boys Hostel</option>
+                        <option value="Other">Other</option>
                       </select>
                     </div>
                     {err !== "" && (
