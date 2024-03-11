@@ -27,7 +27,7 @@ function Memberform() {
     
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        if (!details.name || !details.regNo || !details.hostel || !details.contact ) {
+        if (!details.name || !details.regNo || !details.hostel || !details.contact || !details.hobbies || !details.reason ) {
             seterr("All fields are required");
             return;
         }
@@ -41,7 +41,7 @@ function Memberform() {
         const mobileRegex = /^\d{10}$/;
         if (!details.contact.match(mobileRegex)) {
             seterr("Please enter a valid 10-digit mobile number");
-            
+
             return;
         }
         const user = auth.currentUser;
@@ -126,7 +126,7 @@ onClick={handleJoinButtonClick}>Join as a member</button>
                                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                                                 id="answer"
                                                 type="text"
-                                                placeholder="Name"
+                                                placeholder="Enter your Name"
                                                 name="name"
                                                 value = {details.name}
                                                 onChange={handleChange}                                                required
@@ -138,7 +138,7 @@ onClick={handleJoinButtonClick}>Join as a member</button>
                                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                                                 id="answer"
                                                 type="text"
-                                                placeholder="Reg. No"
+                                                placeholder="Enter your Reg. No"
                                                 name = "regNo"
                                                 value = {details.regNo}
                                                 onChange={handleChange}                                                required
@@ -150,7 +150,7 @@ onClick={handleJoinButtonClick}>Join as a member</button>
                                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                                                 id="answer"
                                                 type="text"
-                                                placeholder="Email"
+                                                placeholder="Enter your Email"
                                                 name = "email"
                                                 value = {details.email}
                                                 onChange={handleChange}
@@ -163,7 +163,7 @@ onClick={handleJoinButtonClick}>Join as a member</button>
                                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                                                 id="answer"
                                                 type="text"
-                                                placeholder="Contact"
+                                                placeholder="Enter mobile no."
                                                 name="contact"
                                                 value = {details.contact}
                                                 onChange={handleChange}
@@ -186,10 +186,12 @@ onClick={handleJoinButtonClick}>Join as a member</button>
                                                 onChange={handleChange}                                                required
                                             />
                                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="answer">
-                                                mention you special talents dropdown
+                                                Mention your special talents/qualities
                                             </label>
-                                            <select onChange={handleChange} name = "hobbies" value = {details.hobbies}>
-                                                <option value="selet any....">select any.....</option>
+                                            <select 
+                                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
+                                            onChange={handleChange} name = "hobbies" value = {details.hobbies}>
+                                                <option value="selet any....">Select Any.....</option>
                                                 <option value ="Music/Instrumental">Music/Instumental</option>
                                                 <option value = "Dramatics">Dramatics</option>
                                                 <option value = "Literary skills">Literary skills</option>
@@ -213,19 +215,26 @@ onClick={handleJoinButtonClick}>Join as a member</button>
                                                 onChange={handleChange}
                                                 required
                                             />
-                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="answer">
+                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hostel">
                                                 Hostel Name
                                             </label>
-                                            <select onChange={handleChange} name = "hostel" value={details.hostel}>
-                                                <option >select any.....</option>
-                                                <option>Tondon</option>
-                                                <option>Malivya</option>
-                                                <option>Patel</option>
-                                                <option>Tilak</option>
-                                                <option >Svbh</option>
-                                                <option>Raman</option>
-                                                <option>New Boys Hostel</option>
-                                                <option >others</option>
+                                            <select
+                                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
+                                                id="hostel"
+                                                name="hostel"
+                                                value={details.hostel}
+                                                onChange={handleChange}
+                                                required
+                                            >
+                                                <option value="">Select Hostel</option>
+                                                <option value="Tandon">Tandon</option>
+                                                <option value="Malviya">Malviya</option>
+                                                <option value="Patel">Patel</option>
+                                                <option value="Tilak">Tilak</option>
+                                                <option value="SVBH">SVBH</option>
+                                                <option value="Raman">Raman</option>
+                                                <option value="New Boys Hostel">New Boys Hostel</option>
+                                                <option value="Other">Other</option>
                                             </select>
                                             
                                              

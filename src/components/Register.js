@@ -305,6 +305,11 @@ export default function Register() {
                         onChange={handleChange}
                         required
                       />
+                       {err !== "" && (
+    <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-2 mt-2" role="alert">
+        <p className="text-s">{err}</p>
+    </div>
+)}
                     </div>
                     <button
                       className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
@@ -313,7 +318,7 @@ export default function Register() {
                     >
                       Signup
                     </button>
-                    {err !== "" && <div>{err}</div>}
+                    {/* {err !== "" && <div>{err}</div>} */}
                   </form>
                 </div>
                 {/*footer*/}
@@ -321,7 +326,7 @@ export default function Register() {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6  text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={() =>{seterr(''); setShowModal(false)}}
                   >
                     Close
                   </button>
