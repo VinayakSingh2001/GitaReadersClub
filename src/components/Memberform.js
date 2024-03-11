@@ -93,7 +93,7 @@ function Memberform() {
             setShowModal(true);
         } else {
             
-            toast.error("You are not logged in !!");
+           
             // nav('/login');
         }
     };
