@@ -19,10 +19,10 @@ const Header = () => {
   const Links = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "about" },
-    { name: "Courses", link: "/courses" },
+    { name: "Courses", link: "courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
-    { name: "Donate", link: "/donate" },
+    // { name: "Donate", link: "/donate" },
     // { name: "Solutions", link: "/solutions"},
   ];
 
@@ -55,9 +55,10 @@ const Header = () => {
     };
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(auth);
+        // console.log(auth);
         setLoggedin(true);
-        console.log(user.displayName);
+        // console.log(user.displayName);
+        // console.log(user.displayName);
         setData(user.displayName); // User is authenticated
         fetchData();
       } else {
