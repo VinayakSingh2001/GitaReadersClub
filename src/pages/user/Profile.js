@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import profileImg from "../../assets/avatarr.png";
 import PageMenu from "../../components/PageMenu";
 import Wrapper from "../../components/Wrapper";
-
+import { useEffect } from "react";
+import { auth,app } from "../../firebase.config";
+import { getDatabase,ref,get } from "firebase/database";
 const initialState = {
   name: "",
   email: "",
@@ -35,6 +37,35 @@ const Profile = () => {
   //   setProfileImage(URL.createObjectURL(event.target.files[0]));
   // };
   // const handleChange = () => {};
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [data,setData]=useState([]);
+  useEffect(() => {
+    // Authentication state listener
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true); // User is logged in
+        fetchData(user.uid); // Fetch user data
+      } else {
+        setIsLoggedIn(false); // User is not logged in
+      }
+    });
+
+    // Cleanup function
+    return () => {setData('');unsubscribe();};
+  }, []);
+
+  const fetchData = async (userId) => {
+    const db = getDatabase(app);
+    const dbRef = ref(db, `user/${userId}`);
+    try {
+      const snapshot = await get(dbRef);
+      const val = snapshot.val();
+      setData(val);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <div className="pb-12">
       <PageMenu />
@@ -54,10 +85,10 @@ const Profile = () => {
                     <div className="flex flex-col gap-4 md:flex-row md:gap-5">
                       <div className="mb-4">
                         <label
-                          className="block text-white text-sm font-bold mb-2"
+                          className="block text-blue text-sm font-bold mb-2"
                           htmlFor="name"
                         >
-                          Name
+                          Name: {data.name}
                         </label>
                         <input
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -70,10 +101,10 @@ const Profile = () => {
                       </div>
                       <div className="mb-4">
                         <label
-                          className="block text-white text-sm font-bold mb-2"
+                          className="block text-blue text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Email
+                          Email: {data.email}
                         </label>
                         <input
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -86,10 +117,10 @@ const Profile = () => {
                       </div>
                       <div className="mb-4">
                         <label
-                          className="block text-white text-sm font-bold mb-2"
+                          className="block text-blue text-sm font-bold mb-2"
                           htmlFor="phone"
                         >
-                          Phone Number
+                          Phone Number : {data.mobile}
                         </label>
                         <input
                           className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -104,7 +135,7 @@ const Profile = () => {
 
                     <div className="mb-6">
                       <label
-                        className="block text-white text-sm font-bold mb-2"
+                        className="block text-blue text-sm font-bold mb-2"
                         htmlFor="message"
                       >
                         Bio
