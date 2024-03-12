@@ -17,6 +17,7 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import Solutions from "./pages/Solutions";
 import ForgotPassword from "./pages/ForgotPassword";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -41,14 +42,14 @@ function App() {
               </Layout>
             }
           />
-          {/* <Route
+          <Route
             path="/donate"
             element={
               <Layout>
                 <Donate />
               </Layout>
             }
-          /> */}
+          /> 
           <Route
             path="/community"
             element={
@@ -83,6 +84,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      <ToastContainer autoClose={1000} closeOnClick toastStyle={{ marginTop: "60px" }}/>
     </>
   );
 }
