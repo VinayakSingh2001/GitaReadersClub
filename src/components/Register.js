@@ -171,6 +171,8 @@ export default function Register() {
           email: details.email,
           // It's good practice not to store passwords in the database.
           mobile: details.mobile,
+          Date:new Date().toLocaleDateString(),
+          Time:new Date().toLocaleTimeString(),
         });
       } catch (dbError) {
         console.error("Database operation failed", dbError);
@@ -196,7 +198,7 @@ export default function Register() {
       // Consider doing this after a slight delay to ensure all operations have completed.
       setTimeout(() => {
         window.location.reload(); // or use navigate('/') for a smoother experience with routing libraries like React Router.
-      }, 1000); // Adjust delay as necessary.
+      }, 10); // Adjust delay as necessary.
   
     } catch (error) {
       // Handle any error that occurred during the registration process.
