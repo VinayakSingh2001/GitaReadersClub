@@ -10,7 +10,17 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
   // const navigate = useNavigate();
-  const modalRef = useRef(null);
+  // const modalRef = useRef(null);
+  // useEffect(() => {
+  //   const handleOutsideClick = (e) => {
+  //     // Check if the click target is not a descendant of the modal content
+  //     if (modalRef.current && !modalRef.current.contains(e.target)) {
+  //       setEmail('');
+  //       setPassword('');
+  //       setShowModal(false);
+  //     }
+  //   };
+  // }) 
   const [details, setnewUser] = useState({
     name: "",
     email: "",
@@ -196,6 +206,28 @@ export default function Register() {
       seterr(error.message);
     }
   }
+  const modalRef = useRef(null);
+
+  const handleOutsideClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      seterr("");
+      setShowModal(false);
+    }
+  };
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        seterr("");
+        setShowModal(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleOutsideClick);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
   
   // Call the function with userDetails object
   // registerUser(userDetails);
@@ -211,8 +243,14 @@ export default function Register() {
       </button>
       {showModal ? (
         <>
+          
+
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">
-            <div className="relative p-4 w-full max-w-md max-h-full">
+            <div className="relative p-4 w-full max-w-md max-h-full" ref={modalRef}>
+            <div
+    className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none modal"
+    ref={modalRef}
+  />
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
