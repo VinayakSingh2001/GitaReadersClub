@@ -25,7 +25,7 @@ function Memberform() {
     setDetails({ ...details, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (
       !details.name ||
@@ -53,14 +53,14 @@ function Memberform() {
     }
     const user = auth.currentUser;
     const db = getDatabase(app);
-    const memberRef = ref(db, `member/${user.uid}`);
-    console.log(user.uid.name);
-    const snapshot = await get(memberRef);
-    if (snapshot.exists())
-      toast.error(
-        "You have already filled out the form. Please wait for feedback."
-      );
-    else {
+    // const memberRef = ref(db, `member/${user.uid}`);
+    // console.log(user.uid.name);
+    // const snapshot = await get(memberRef);
+    // if (snapshot.exists())
+    //   toast.error(
+    //     "You have already filled out the form. Please wait for feedback."
+      // );
+    // else {
       set(ref(db, `member/${user.uid}`), {
         name: details.name,
         regNo: details.regNo,
@@ -75,7 +75,7 @@ function Memberform() {
         "Thank you, for filling form you will be contacted soon from our side!!!",
         { autoClose: 3000 }
       );
-    }
+    // }
     setDetails({
       name: "",
       regNo: "",
@@ -100,9 +100,18 @@ function Memberform() {
     };
   }, [showModal]);
 
-  const handleJoinButtonClick = () => {
+  const handleJoinButtonClick = async() => {
     if (localStorage.getItem("authToken")) {
-      setShowModal(true);
+      const user = auth.currentUser;
+      const db = getDatabase(app);
+      const memberRef = ref(db, `member/${user.uid}`);
+      console.log(user.uid.name);
+      const snapshot = await get(memberRef);
+      if (snapshot.exists())
+        toast.error(
+          "You have already filled out the form. Please wait for feedback."
+        );
+      else setShowModal(true);
     } else {
       toast.error("You are not logged in !!!");
       // nav('/login');
@@ -348,5 +357,6 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
     </>
   );
 }
+
 
 export default Memberform;

@@ -48,12 +48,12 @@ function Courseform() {
 
     const user = auth.currentUser;
     const db = getDatabase(app);
-    const memberRef = ref(db, `course/${user.uid}`);
-    console.log(user.uid.name);
-    const snapshot = await get(memberRef);
-    if (snapshot.exists())
-      toast.error("You are already enrolled in the course");
-    else {
+    // const memberRef = ref(db, `course/${user.uid}`);
+    // console.log(user.uid.name);
+    // const snapshot = await get(memberRef);
+    // if (snapshot.exists())
+    //   toast.error("You are already enrolled in the course");
+    // else {
       set(ref(db, `course/${user.uid}`), {
         name: answer.name,
         email: answer.email,
@@ -63,7 +63,7 @@ function Courseform() {
         previousexp: answer.previousexp,
       });
       toast.success("You have been enrolled in course!!!");
-    }
+    
     setAnswer({
       name: "",
       email: "",
@@ -86,9 +86,16 @@ function Courseform() {
     };
   }, [showModal]);
 
-  const handleJoinButtonClick = () => {
+  const handleJoinButtonClick = async() => {
     if (localStorage.getItem("authToken")) {
-      setShowModal(true);
+      const user = auth.currentUser;
+      const db = getDatabase(app);
+      const memberRef = ref(db, `course/${user.uid}`);
+      console.log(user.uid.name);
+      const snapshot = await get(memberRef);
+      if (snapshot.exists())
+        toast.error("You are already enrolled in the course");
+      else  setShowModal(true);
     } else {
       toast.error("You need to login to become a member");
       // nav('/login');
