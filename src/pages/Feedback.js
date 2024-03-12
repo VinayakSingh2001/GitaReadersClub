@@ -103,6 +103,8 @@ const Feedback = () => {
           email: feed.email,
           mobile: feed.mobile,
           message: feed.message,
+          Date:new Date().toLocaleDateString(),
+          Time:new Date().toLocaleTimeString(),
         });
         setnewFeed({
           name: "",

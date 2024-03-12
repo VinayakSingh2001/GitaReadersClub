@@ -70,6 +70,8 @@ function Memberform() {
         reason: details.reason,
         hostel: details.hostel,
         hobbies: details.hobbies,
+        Date:new Date().toLocaleDateString(),
+        Time:new Date().toLocaleTimeString(),
       });
       toast.success(
         "Thank you, for filling form you will be contacted soon from our side!!!",
@@ -113,7 +115,7 @@ function Memberform() {
         );
       else setShowModal(true);
     } else {
-      toast.error("You are not logged in !!!");
+      toast.error("You need to Login first.");
       // nav('/login');
     }
   };

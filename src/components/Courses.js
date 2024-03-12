@@ -30,32 +30,32 @@ const Courses = () => {
   const course = [
     {
       title: "Gita in Action",
-      img: img2,
+      img: img5,
       text: "After traveling the whole world, Bhagavad Gita comes at your doorstep! Let's deep dive upon how this science uncover profound insights that resonate deeply with our day-to-day struggles and triumphs.",
     },
     {
       title: "Gita Sutras for life",
-      img: img1,
+      img: img4,
       text: "Dive into the timeless wisdom of the Gita with 'Gita Sutras for Life' – a transformative journey unlocking ancient secrets for modern living.",
     },
     {
       title: "Art of Smart Work",
-      img: img3,
+      img: img1,
       text: "Discover the Art of Smart Work – an empowering exploration of ancient strategies for mastering productivity and achieving success effortlessly",
     },
     {
       title: "Converting stress to smile",
-      img: img4,
+      img: img3,
       text: "Embark on a journey to transform stress into smiles with our course, offering practical tools and timeless wisdom to cultivate resilience, inner peace, and radiant joy.",
     },
     {
       title: "Happiness Mantra",
-      img: img5,
+      img: img6,
       text: ' Delve into the secrets of eternal joy with "Happiness Mantra," a transformative course revealing ancient wisdom and practical strategies to cultivate lasting happiness and inner fulfillment',
     },
     {
       title: "Art of Harnessing Mind Power",
-      img: img6,
+      img: img2,
       text: 'Unlock the limitless potential of your mind with "Art of Harnessing Mind Power," a transformative course guiding you to unleash inner strength, achieve clarity, and manifest your dreams with the power of your mind.',
     },
   ];

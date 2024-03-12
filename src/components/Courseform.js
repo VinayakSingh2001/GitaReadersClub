@@ -61,6 +61,8 @@ function Courseform() {
         mobile: answer.mobile,
         hostel: answer.hostel,
         previousexp: answer.previousexp,
+        Date:new Date().toLocaleDateString(),
+        Time:new Date().toLocaleTimeString(),
       });
       toast.success("You have been enrolled in course!!!");
     
@@ -97,7 +99,7 @@ function Courseform() {
         toast.error("You are already enrolled in the course");
       else  setShowModal(true);
     } else {
-      toast.error("You need to login to become a member");
+      toast.error("You need to Login first.");
       // nav('/login');
     }
   };
