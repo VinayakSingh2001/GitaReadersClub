@@ -24,12 +24,13 @@ export default function Register() {
     setnewUser({ ...details, [e.target.name]: e.target.value });
   };
 
-  const encodeEmail = (email) => {
-    return email.replace(/\./g, ",").replace(/#/g, "%23");
-  };
+  // const encodeEmail = (email) => {
+  //   return email.replace(/\./g, ",").replace(/#/g, "%23");
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const enco = encodeEmail(details.email);
     e.preventDefault();
     let newErr = "";
 
@@ -114,74 +115,89 @@ export default function Register() {
 
     //updated data setting
 
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       details.email,
+  //       details.password
+  //     );
+  //     const user = userCredential.user;
+  //     const db = getDatabase(app);
+  //     set(ref(db, `user/${user.uid}`), {
+  //       name: details.name,
+  //       email: details.email,
+  //       // password:details.password,
+  //       mobile: details.mobile,
+  //     });
+  //     seterr("");
+  //     localStorage.setItem("authToken", auth.authToken);
+  //     // navigate('/');
+  //     window.location.reload();
+
+  //     toast.success("Registered successfully!!!");
+  //     // Delay the toast by 5000 milliseconds (5 seconds)
+  //   } catch (error) {
+  //     seterr(error.message);
+  //   }
+  // };
+  // async function registerUser(details) {
     try {
+      // Step 1: Create user with email and password for authentication.
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         details.email,
         details.password
       );
       const user = userCredential.user;
+  
+      // Step 2: Access the database.
       const db = getDatabase(app);
-      set(ref(db, `user/${user.uid}`), {
-        name: details.name,
-        email: details.email,
-        // password:details.password,
-        mobile: details.mobile,
-      });
+  
+      // Step 3: Store user details in the Realtime Database.
+      // Note: Now wrapped in a try-catch to handle potential errors specifically here.
+      try {
+        await set(ref(db, `user/${user.uid}`), {
+          name: details.name,
+          email: details.email,
+          // It's good practice not to store passwords in the database.
+          mobile: details.mobile,
+        });
+      } catch (dbError) {
+        console.error("Database operation failed", dbError);
+        // Handle database error (e.g., showing a message to the user)
+        seterr("Failed to store user data. Please try again.");
+        return; // Exit the function early as we don't want to proceed further.
+      }
+  
+      // Clear previous errors if any.
       seterr("");
-      localStorage.setItem("authToken", auth.authToken);
-      // navigate('/');
-      window.location.reload();
-
+  
+      // Step 4: Optionally store authToken in localStorage.
+      // Ensure authToken exists in your auth object before setting it.
+      if(!auth.authToken) {
+        localStorage.setItem("authToken", auth.authToken);
+      }
+  
+      // Display success message.
+      // Consider waiting for the toast to complete if the library supports promises or callbacks.
       toast.success("Registered successfully!!!");
-      // Delay the toast by 5000 milliseconds (5 seconds)
+  
+      // Step 5: Reload the page or navigate to a new page.
+      // Consider doing this after a slight delay to ensure all operations have completed.
+      setTimeout(() => {
+        window.location.reload(); // or use navigate('/') for a smoother experience with routing libraries like React Router.
+      }, 1000); // Adjust delay as necessary.
+  
     } catch (error) {
+      // Handle any error that occurred during the registration process.
+      console.error("Registration failed", error);
       seterr(error.message);
     }
-  };
-  // useEffect(() => {
-  //   const handleOutsideClick = (e) => {
-  //     console.log(e.target.closest("max-w-md"));
-  //     if (!e.target.closest("max-w-md")) {
+  }
+  
+  // Call the function with userDetails object
+  // registerUser(userDetails);
 
-  //       setShowModal(false);
-  //     }
-  //   };
-
-  //   if (showModal) {
-  //     document.body.style.overflow = "hidden";
-  //     document.addEventListener("mousedown", handleOutsideClick);
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   }
-
-  //   return () => {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, [showModal]);
-  // eslint-disable-next-line no-undef
-  // useEffect(() => {
-  //   const handleOutsideClick = (e) => {
-  //     if (!e.target.closest(".max-w-md")) {
-  //       setShowModal(false);
-  //     }
-  //   };
-
-  //   if (showModal) {
-  //     document.body.style.overflow = "hidden";
-  //     document.addEventListener("mousedown", handleOutsideClick);
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   }
-
-  //   return () => {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, [showModal]);
   return (
     <>
       <button
