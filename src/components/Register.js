@@ -1,11 +1,11 @@
 import { getDatabase, ref, set } from "firebase/database";
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { app, auth } from "../firebase.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-  
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // import { getDatabase,ref,set } from "firebase/database";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
@@ -24,12 +24,13 @@ export default function Register() {
     setnewUser({ ...details, [e.target.name]: e.target.value });
   };
 
-  const encodeEmail = (email) => {
-    return email.replace(/\./g, ",").replace(/#/g, "%23");
-  };
+  // const encodeEmail = (email) => {
+  //   return email.replace(/\./g, ",").replace(/#/g, "%23");
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const enco = encodeEmail(details.email);
     e.preventDefault();
     let newErr = "";
 
@@ -51,11 +52,11 @@ export default function Register() {
       return;
     }
 
-    if (details.mobile.length !== 10) {
-      newErr += "\nInvalid mobile no.";
-      seterr(newErr);
-      return;
-    }
+    const mobileRegex = /^\d{10}$/;
+        if (!details.mobile.match(mobileRegex)) {
+            seterr("Please enter a valid 10-digit mobile number");
+            return;
+        }
 
     if (details.password !== details.confirmPassword) {
       newErr += "\nPassword should match with confirm password";
@@ -114,75 +115,93 @@ export default function Register() {
 
     //updated data setting
 
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       details.email,
+  //       details.password
+  //     );
+  //     const user = userCredential.user;
+  //     const db = getDatabase(app);
+  //     set(ref(db, `user/${user.uid}`), {
+  //       name: details.name,
+  //       email: details.email,
+  //       // password:details.password,
+  //       mobile: details.mobile,
+  //     });
+  //     seterr("");
+  //     localStorage.setItem("authToken", auth.authToken);
+  //     // navigate('/');
+  //     window.location.reload();
+
+  //     toast.success("Registered successfully!!!");
+  //     // Delay the toast by 5000 milliseconds (5 seconds)
+  //   } catch (error) {
+  //     seterr(error.message);
+  //   }
+  // };
+  // async function registerUser(details) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth,details.email,details.password);
-        const user = userCredential.user;
-        const db =getDatabase(app);
-        set(ref(db,`user/${user.uid}`),{
-          name:details.name,
-          email:details.email,
-          // password:details.password,
-          mobile:details.mobile
+      // Step 1: Create user with email and password for authentication.
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        details.email,
+        details.password
+      );
+      const user = userCredential.user;
+  
+      // Step 2: Access the database.
+      const db = getDatabase(app);
+  
+      // Step 3: Store user details in the Realtime Database.
+      // Note: Now wrapped in a try-catch to handle potential errors specifically here.
+      try {
+        await set(ref(db, `user/${user.uid}`), {
+          name: details.name,
+          email: details.email,
+          // It's good practice not to store passwords in the database.
+          mobile: details.mobile,
         });
-        seterr("");
-        localStorage.setItem("authToken",auth.authToken);
-        // navigate('/');
-        window.location.reload();
-        
-          toast.success("Registered successfully!!!");
-         // Delay the toast by 5000 milliseconds (5 seconds)
+      } catch (dbError) {
+        console.error("Database operation failed", dbError);
+        // Handle database error (e.g., showing a message to the user)
+        seterr("Failed to store user data. Please try again.");
+        return; // Exit the function early as we don't want to proceed further.
+      }
+  
+      // Clear previous errors if any.
+      seterr("");
+  
+      // Step 4: Optionally store authToken in localStorage.
+      // Ensure authToken exists in your auth object before setting it.
+      if(!auth.authToken) {
+        localStorage.setItem("authToken", auth.authToken);
+      }
+  
+      // Display success message.
+      // Consider waiting for the toast to complete if the library supports promises or callbacks.
+      toast.success("Registered successfully!!!");
+  
+      // Step 5: Reload the page or navigate to a new page.
+      // Consider doing this after a slight delay to ensure all operations have completed.
+      setTimeout(() => {
+        window.location.reload(); // or use navigate('/') for a smoother experience with routing libraries like React Router.
+      }, 1000); // Adjust delay as necessary.
+  
     } catch (error) {
-   
-        seterr(error.message);
+      // Handle any error that occurred during the registration process.
+      console.error("Registration failed", error);
+      seterr(error.message);
     }
-  };
-  // useEffect(() => {
-  //   const handleOutsideClick = (e) => {
-  //     console.log(e.target.closest("max-w-md"));
-  //     if (!e.target.closest("max-w-md")) {
-        
-  //       setShowModal(false);
-  //     }
-  //   };
+  }
+  
+  // Call the function with userDetails object
+  // registerUser(userDetails);
 
-  //   if (showModal) {
-  //     document.body.style.overflow = "hidden";
-  //     document.addEventListener("mousedown", handleOutsideClick);
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   }
-
-  //   return () => {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, [showModal]);
-  // eslint-disable-next-line no-undef
-  // useEffect(() => {
-  //   const handleOutsideClick = (e) => {
-  //     if (!e.target.closest(".max-w-md")) {
-  //       setShowModal(false);
-  //     }
-  //   };
-
-  //   if (showModal) {
-  //     document.body.style.overflow = "hidden";
-  //     document.addEventListener("mousedown", handleOutsideClick);
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   }
-
-  //   return () => {
-  //     document.body.style.overflow = "unset";
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, [showModal]);
   return (
     <>
       <button
-        className=" text-blue-500 px-1 font-semibold  text-sm rounded  mr-1 mb-1 ease-linear transition-all duration-150 mb-4"
+        className=" text-blue-500 px-1 font-semibold  text-sm rounded  mr-1  ease-linear transition-all duration-150 mb-4"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -196,17 +215,34 @@ export default function Register() {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-center text-center justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl text-black font-semibold text-center justify-center">
+                  <h3 className="text-3xl pl-6 text-black font-semibold text-center flex justify-center ml-auto mr-auto">
                     Signup
                   </h3>
                   <div>
-                  <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
-                  text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onClick={()=> setShowModal(false)}>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
+                    <button
+                      type="button"
+                      class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
+                  text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                      data-modal-hide="authentication-modal"
+                      onClick={() => setShowModal(false)}
+                    >
+                      <svg
+                        class="w-3 h-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                        />
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                    </button>
                   </div>
                 </div>
                 {/*body*/}
@@ -305,6 +341,11 @@ export default function Register() {
                         onChange={handleChange}
                         required
                       />
+                       {err !== "" && (
+    <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-2 mt-2" role="alert">
+        <p className="text-s">{err}</p>
+    </div>
+)}
                     </div>
                     <button
                       className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
@@ -313,7 +354,7 @@ export default function Register() {
                     >
                       Signup
                     </button>
-                    {err !== "" && <div>{err}</div>}
+                    {/* {err !== "" && <div>{err}</div>} */}
                   </form>
                 </div>
                 {/*footer*/}
@@ -321,7 +362,7 @@ export default function Register() {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6  text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={() =>{seterr(''); setShowModal(false)}}
                   >
                     Close
                   </button>
@@ -330,7 +371,6 @@ export default function Register() {
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-
         </>
       ) : null}
     </>

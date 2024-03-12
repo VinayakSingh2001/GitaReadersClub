@@ -12,6 +12,7 @@ import CourseJoin from "./CourseJoin";
 import { ToastContainer } from "react-toastify";
 import CarouselComponent from "./CarouselComponent";
 import Activities from "./Activities";
+import Header2 from "../components/Header2";
 // import Footer from "../components/Footer";
 // import Header from "../components/Header";
 // import Test from "./Test";
@@ -22,10 +23,10 @@ const HomePage = () => {
       <HeroBanner />
       <CourseJoin />
       <MissionVision />
-      <Activities/>
+      <Activities />
       {/* <SocialMediaPages /> */}
       <About />
-      <CarouselComponent/>
+      <CarouselComponent />
       <Courses />
       <Speakers />
       {/* <Test /> */}

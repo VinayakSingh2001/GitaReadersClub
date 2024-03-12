@@ -1,5 +1,5 @@
 import React from "react";
-import { useState ,useRef} from "react";
+import { useState, useRef } from "react";
 import { useEffect } from "react";
 import Register from "./Register";
 import { app } from "../firebase.config";
@@ -10,20 +10,23 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
-  
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
   const [showModal, setShowModal] = React.useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, seterr] = useState("");
-
+const Navigate = useNavigate();
   const modalRef = useRef(null);
   useEffect(() => {
     const handleOutsideClick = (e) => {
       // Check if the click target is not a descendant of the modal content
       if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setEmail('');
+        setPassword('');
         setShowModal(false);
       }
     };
@@ -59,7 +62,6 @@ export default function Login() {
   };
 
   const handleLogin = async (e) => {
-    
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -68,8 +70,8 @@ export default function Login() {
       localStorage.setItem("token", "loggedin");
       setShowModal(false);
     } catch (error) {
+      toast.error("Invalid credentials");
       seterr(error.message);
-
     }
   };
 
@@ -90,7 +92,6 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
   };
 
   return (
@@ -102,27 +103,46 @@ export default function Login() {
       >
         Login
       </button>
-      
+
       {showModal ? (
         <>
-        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none max-h-full">
-            <div className="relative p-4 w-full max-w-md max-h-full" ref={modalRef}>
+            <div
+              className="relative p-4 w-full max-w-md max-h-full"
+              ref={modalRef}
+            >
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-center text-center justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold text-center flex justify-center ml-auto mr-auto">
+                  <h3 className="text-3xl pl-6 font-semibold text-center flex justify-center ml-auto mr-auto">
                     Login
                   </h3>
                   <div>
-                  <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
-                  text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal" onClick={()=> setShowModal(false)}>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
+                    <button
+                      type="button"
+                      class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
+                  text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                      data-modal-hide="authentication-modal"
+                      onClick={()=> {setEmail(''); setPassword(''); setShowModal(false)}}
+                    >
+                      <svg
+                        class="w-3 h-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                        />
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                    </button>
                   </div>
-                  
                 </div>
                 <div className="flex justify-center items-center">
                   <form
@@ -163,7 +183,17 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                       />
-                      <a href="/forgotpassword">forgot password?</a>
+                      <div className="flex justify-end  cursor-pointer">
+                        <a 
+                          onClick={()=>{setShowModal(false);
+                          Navigate("/forgotpassword");
+                          }}
+                          className="text-right text-blue-500 font-semibold text-sm"
+                        >
+                          Forgot password?
+                        </a>
+                      </div>
+
                       <button
                         className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
                         type="submit"
@@ -191,12 +221,12 @@ export default function Login() {
                     </div>
                   </form>
                 </div>
-          
+
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={()=> {setEmail(''); setPassword(''); setShowModal(false)}}
                   >
                     Close
                   </button>
@@ -204,7 +234,7 @@ export default function Login() {
               </div>
             </div>
           </div>
-         
+
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}

@@ -58,7 +58,7 @@ const Speakers = () => {
     },
   ];
   return (
-    <div className="py-3 pb-10 F9FAFA" id="speakers">
+    <div className="pb-10 F9FAFA" id="speakers">
       <Wrapper>
         <div className="text-center max-w-full mx-auto my-[50px]  md:my-[80px]">
           <div className="text-[28px] md:text-[40px] font-bold leading-tight ">

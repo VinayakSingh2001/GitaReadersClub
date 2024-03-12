@@ -4,27 +4,36 @@ import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import Login from "./Login";
 import Logout from "./Logout";
+import { HiMenu, HiX } from "react-icons/hi"; // Importing hamburger and close icons
 import logo from "../assets/logo22@3x-8.png";
+import { Dialog } from "@headlessui/react";
+import { ToastContainer } from "react-toastify";
+import {
+  BookOpenIcon,
+  Bars3BottomRightIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
 const Header2 = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
+  const [data, setData] = useState("");
+  let [open, setOpen] = useState(false);
 
   const Links = [
-    { name: "Home", link: "/" },
-    { name: "About", link: "about" },
+    { name: "Home", link: "hero" },
+    { name: "About Us", link: "about" },
     { name: "Courses", link: "courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
-    { name: "Donate", link: "/donate" },
   ];
 
   const controlNavBar = () => {
     if (window.scrollY > 200) {
       if (window.scrollY > lastScrolly) {
-        setShow("-translate-y-[80px]");
+        setShow("-translate-y-full");
       } else {
         setShow("shadow-sm");
       }
@@ -45,73 +54,49 @@ const Header2 = () => {
     setShowMenu(!showMenu);
   };
 
+  const closeMenu = () => {
+    if (window.innerWidth > 768) {
+      setShowMenu(false);
+    }
+  };
+
+  const handleCloseMenu = () => {
+    setShowMenu(false);
+  };
+
   return (
-    <div
-      className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 sticky top-0 transition-transform duration-300 ${show}`}
-    >
-      <Wrapper>
-        <div className="flex items-center justify-between">
-          <div className="font-semibold text-white text-xl cursor-pointer flex items-center gap-1">
-            <img src={logo} alt="" className="h-[40px] md:h-[50px] " />
-          </div>
-          <div className="md:hidden">
-            <button
-              className="block text-gray-500 hover:text-blue-400 focus:outline-none"
-              onClick={toggleMenu}
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {showMenu ? (
-                  <path d="M6 18L18 6M6 6l12 12"></path>
-                ) : (
-                  <path d="M4 6h16M4 12h16m-7 6h7"></path>
-                )}
-              </svg>
-            </button>
-          </div>
-          <div className="hidden md:block">
-            <ul
-              className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static  md:z-auto left-0 w-full md:w-auto md:pl-0 pl-7 transition-all duration-500 ease-in ${
-                showMenu ? "" : "hidden"
-              }`}
-            >
-              <ul></ul>
-              {Links.map((link) => (
-                <li className="md:ml-8 md:my-0 my-7 font-sans" key={link.name}>
-                  {link.link.startsWith("/") ? (
-                    <Link
-                      to={link.link}
-                      className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
-                    >
-                      {link.name}
-                    </Link>
-                  ) : (
-                    <ScrollLink
-                      to={link.link}
-                      spy={true}
-                      smooth={true}
-                      duration={1000}
-                      className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
-                    >
-                      {link.name}
-                    </ScrollLink>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className=" flex gap-4">
-            {!loggedin ? <Login /> : <Logout />}
-          </div>
+    <div className="shadow-md w-full fixed top-0 left-0">
+      <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
+        {/* logo section */}
+        <div className="font-bold text-2xl cursor-pointer flex items-center gap-1">
+          <img src={logo} alt="" className="h-[40px] md:h-[50px] " />
         </div>
-      </Wrapper>
+        {/* Menu icon */}
+        <div
+          onClick={() => setOpen(!open)}
+          className="absolute right-8 top-6 cursor-pointer md:hidden w-7 h-7"
+        >
+          {open ? <XMarkIcon /> : <Bars3BottomRightIcon />}
+        </div>
+        {/* linke items */}
+        <ul
+          className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
+            open ? "top-12" : "top-[-490px]"
+          }`}
+        >
+          {Links.map((link) => (
+            <li className="md:ml-8 md:my-0 my-7 font-semibold">
+              <a
+                href={link.link}
+                className="text-gray-800 hover:text-blue-400 duration-500"
+              >
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {/* button */}
+      </div>
     </div>
   );
 };
