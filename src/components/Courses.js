@@ -1,5 +1,5 @@
 import React from "react";
-import Wrapper from "../components/Wrapper";
+import Wrapper from "./Wrapper";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 

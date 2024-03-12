@@ -5,7 +5,7 @@ import About from "./About";
 import MissionVision from "./MissionVision";
 import SocialMediaPages from "./SocialMediaPages";
 import Quotes from "./Quotes";
-import Courses from "./Courses";
+import Courses from "../components/Courses";
 import Speakers from "./Speakers";
 import Feedback from "./Feedback";
 import CourseJoin from "./CourseJoin";
