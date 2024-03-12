@@ -31,11 +31,7 @@ const HomePage = () => {
       <Speakers />
       {/* <Test /> */}
       <Feedback />
-      <ToastContainer
-        autoClose={1000}
-        closeOnClick
-        toastStyle={{ marginTop: "60px" }}
-      />
+      
     </div>
   );
 };

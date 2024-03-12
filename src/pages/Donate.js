@@ -1,5 +1,6 @@
 import React from "react";
 import optimizedImage from "../assets/qrCode.png";
+import Payment from '../components/Payment';
 
 const DonationPage = () => {
   return (
@@ -27,6 +28,12 @@ const DonationPage = () => {
               src={optimizedImage}
               alt="QR Code"
             />
+          </div>
+          <div className='flex justify-center items-center'>
+            <Payment/>
+          </div>
+          <div className='flex justify-center items-center'>
+            <Payment/>
           </div>
           <div className="flex justify-center space-x-4">
             <button className="btn-primary">Thank you!</button>

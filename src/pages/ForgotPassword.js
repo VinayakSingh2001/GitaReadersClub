@@ -59,7 +59,7 @@ const handleChange = (e)=>{
                     </button>
                 </form>
             </div>
-            <ToastContainer autoClose={1000} closeOnClick margin={{marginTop: "60px"}}/>
+            
         </div>
     );
 };

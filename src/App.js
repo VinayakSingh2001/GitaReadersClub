@@ -20,7 +20,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CoursePage from "./pages/CoursePage";
 import UserProfile from "./pages/UserProfile";
 import Profile from "./pages/user/Profile";
-import UserCourse from "./pages/user/UserCourse";
+import UserCourse from "./pages/user/UserCourse";import { ToastContainer } from "react-toastify";
+
 
 function App() {
   return (
@@ -102,6 +103,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      <ToastContainer autoClose={1000} closeOnClick toastStyle={{ marginTop: "60px" }}/>
     </>
   );
 }
