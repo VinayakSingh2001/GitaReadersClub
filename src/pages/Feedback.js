@@ -2,13 +2,10 @@ import React from "react";
 import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 import Wrapper from "../components/Wrapper";
 import { useState } from "react";
-import { getDatabase, ref, set } from "firebase/database";
-import {app} from "../firebase.config";
+import { getDatabase, ref, set, get } from "firebase/database";
+import { app, auth } from "../firebase.config";
 import { toast } from "react-toastify";
-
 const Feedback = () => {
-
-
   const [feed, setnewFeed] = useState({
     name: "",
     email: "",
@@ -19,26 +16,26 @@ const Feedback = () => {
   const [err, seterr] = useState("");
 
   const handleChange = (e) => {
-    setnewFeed({ ...feed, [e.target.name]: e.target.value});
+    setnewFeed({ ...feed, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!feed.name || !feed.email || !feed.message || !feed.mobile) {
-        seterr("All fields are required");
-        return;
+      seterr("All fields are required");
+      return;
     }
     const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
     if (!feed.email.match(emailRegex)) {
-        seterr("Please enter a valid email address");
-        return;
+      seterr("Please enter a valid email address");
+      return;
     }
 
     // Validation for mobile number format
     const mobileRegex = /^\d{10}$/;
     if (!feed.mobile.match(mobileRegex)) {
-        seterr("Please enter a valid 10-digit mobile number");
-        return;
+      seterr("Please enter a valid 10-digit mobile number");
+      return;
     }
     let newErr = "";
 
@@ -78,26 +75,52 @@ const Feedback = () => {
     //   return;
     // }
 
-  try{
-    const db = getDatabase(app);
-    set(ref(db, `feedback`),{
-      name: feed.name,
-      email: feed.email,
-      mobile: feed.mobile,
-      message: feed.message
-    });
-    setnewFeed({
-      name: "",
-      email: "",
-      mobile: "",
-      message: "",
-    })
-    toast.success("Thank you we recieved your feedback!!!");
-  } catch (error) {
-    seterr(error.message);
-  }
-};
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        toast.error("Please log in first");
+        seterr("");
+        return;
+      }
+      seterr("");
+      const db = getDatabase(app);
+      const feedRef = ref(db, `feedback/${user.uid}`);
+      const snapshot = await get(feedRef);
+      if (snapshot.exists()) {
+        seterr(
+          "You have already filled out the form. Please wait for feedback."
+        );
+        setnewFeed({
+          name: "",
+          email: "",
+          mobile: "",
+          message: "",
+        });
+        return;
+      } else {
+        set(ref(db, `feedback/${user.uid}`), {
+          name: feed.name,
+          email: feed.email,
+          mobile: feed.mobile,
+          message: feed.message,
+        });
+        setnewFeed({
+          name: "",
+          email: "",
+          mobile: "",
+          message: "",
+        });
+        toast.success("Thank you we recieved your feedback!!!");
+      }
+      // const user = auth.currentUser;
 
+      // Your code for handling feedback submission after login
+      seterr("");
+      // Reset the error message after successful submission
+    } catch (error) {
+      seterr(error.message);
+    }
+  };
 
   return (
     <footer className="bg-black-darker text-white pt-10 pb-6" id="contact">
@@ -180,9 +203,17 @@ const Feedback = () => {
               required
             ></textarea>
           </div>
+          {err && (
+            <div
+              className="bg-red-50 border-l-4 border-red-400 text-red-700 p-2 mt-2 my-2"
+              role="alert"
+            >
+              <p className="text-s">{err}</p>
+            </div>
+          )}
           <div className="flex items-center justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
               onClick={handleSubmit}
             >
@@ -197,22 +228,29 @@ const Feedback = () => {
       </Wrapper>
       <div className="flex gap-4 justify-center ">
         <div
-          onClick={() => window.open("https://facebook.com", "_blank")}
+          onClick={() =>
+            window.open(
+              "https://www.facebook.com/profile.php?id=61557231751695",
+              "_blank"
+            )
+          }
           className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
         >
           <FaFacebookF size={20} />
         </div>
-        <div
+        {/* <div
           onClick={() => {
             window.open("https://twitter.com");
           }}
           className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
         >
           <FaTwitter size={20} />
-        </div>
+        </div> */}
         <div
           onClick={() => {
-            window.open("https://youtube.com");
+            window.open(
+              "https://youtube.com/@GitaReadersClub?si=mV-7u-8VNSCZ9vxT"
+            );
           }}
           className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
         >
@@ -220,13 +258,12 @@ const Feedback = () => {
         </div>
         <div
           onClick={() => {
-            window.open("https://instagram.com");
+            window.open("https://www.instagram.com/officialgitareadersclub/");
           }}
           className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
         >
           <FaInstagram size={20} />
         </div>
-
       </div>
       {/* RIGHT END */}
     </footer>

@@ -84,6 +84,7 @@ function Memberform() {
       hostel: "",
       reason: "",
       experience: "",
+      hobbies:""
     });
     setShowModal(false);
   };
@@ -206,12 +207,12 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         htmlFor="answer"
                       >
                         Why do you want to join this club
-                        <a
+                        {/* <a
                           className="text-blue-500 hover:text-blue-600 pl-2"
                           target="_blank"
                         >
                           know about courses
-                        </a>
+                        </a> */}
                       </label>
 
                       <input
@@ -228,12 +229,12 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="answer"
                       >
-                        Mention your special talents/qualities
+                        Mention your special talents/interests
                       </label>
                       <select
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="hostel"
-                        name="hostel"
+                        name="hobbies"
                         value={details.hobbies}
                         onChange={handleChange}
                         required
@@ -246,7 +247,7 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         <option value="Literary skills">Literary skills</option>
                         <option value="Orations">Oration</option>
                         <option value="Dance">Dance</option>
-                        <option value="Designing">Designing </option>
+                        <option value="Designing">Designing(UI/UX/Poster/Video) </option>
                         <option value="Technical Team(Development)">
                           Technical Team(Development)
                         </option>
@@ -259,8 +260,8 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="answer"
                       >
-                        Any previous/current experience in any club or in
-                        organisation(if any mention role/give details)
+                        Mention any previous or current experience in any club or any
+                        organisation(mention role/give details)
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
@@ -322,6 +323,7 @@ dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-[15px] md:tex
                         hostel: "",
                         reason: "",
                         experience: "",
+                        hobbies:""
                       });
                       seterr("");
                       setShowModal(false);

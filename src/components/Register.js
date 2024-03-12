@@ -51,11 +51,11 @@ export default function Register() {
       return;
     }
 
-    if (details.mobile.length !== 10) {
-      newErr += "\nInvalid mobile no.";
-      seterr(newErr);
-      return;
-    }
+    const mobileRegex = /^\d{10}$/;
+        if (!details.mobile.match(mobileRegex)) {
+            seterr("Please enter a valid 10-digit mobile number");
+            return;
+        }
 
     if (details.password !== details.confirmPassword) {
       newErr += "\nPassword should match with confirm password";

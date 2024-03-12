@@ -12,6 +12,7 @@ import CourseJoin from "./CourseJoin";
 import { ToastContainer } from "react-toastify";
 import CarouselComponent from "./CarouselComponent";
 import Activities from "./Activities";
+import Header2 from "../components/Header2";
 // import Footer from "../components/Footer";
 // import Header from "../components/Header";
 // import Test from "./Test";
@@ -22,15 +23,19 @@ const HomePage = () => {
       <HeroBanner />
       <CourseJoin />
       <MissionVision />
-      <Activities/>
+      <Activities />
       {/* <SocialMediaPages /> */}
       <About />
-      <CarouselComponent/>
+      <CarouselComponent />
       <Courses />
       <Speakers />
       {/* <Test /> */}
       <Feedback />
-      <ToastContainer autoClose={1000} closeOnClick toastStyle={{ marginTop: "60px" }}/>
+      <ToastContainer
+        autoClose={1000}
+        closeOnClick
+        toastStyle={{ marginTop: "60px" }}
+      />
     </div>
   );
 };

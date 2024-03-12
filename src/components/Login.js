@@ -12,18 +12,21 @@ import {
 } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [showModal, setShowModal] = React.useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, seterr] = useState("");
-
+const Navigate = useNavigate();
   const modalRef = useRef(null);
   useEffect(() => {
     const handleOutsideClick = (e) => {
       // Check if the click target is not a descendant of the modal content
       if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setEmail('');
+        setPassword('');
         setShowModal(false);
       }
     };
@@ -67,6 +70,7 @@ export default function Login() {
       localStorage.setItem("token", "loggedin");
       setShowModal(false);
     } catch (error) {
+      toast.error("Invalid credentials");
       seterr(error.message);
     }
   };
@@ -119,7 +123,7 @@ export default function Login() {
                       class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
                   text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                       data-modal-hide="authentication-modal"
-                      onClick={() => setShowModal(false)}
+                      onClick={()=> {setEmail(''); setPassword(''); setShowModal(false)}}
                     >
                       <svg
                         class="w-3 h-3"
@@ -179,12 +183,14 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                       />
-                      <div className="flex justify-end">
+                      <div className="flex justify-end  cursor-pointer">
                         <a 
-                          href="/forgotpassword"
+                          onClick={()=>{setShowModal(false);
+                          Navigate("/forgotpassword");
+                          }}
                           className="text-right text-blue-500 font-semibold text-sm"
                         >
-                          forgot password?
+                          Forgot password?
                         </a>
                       </div>
 
@@ -220,7 +226,7 @@ export default function Login() {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={()=> {setEmail(''); setPassword(''); setShowModal(false)}}
                   >
                     Close
                   </button>
