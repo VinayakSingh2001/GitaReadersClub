@@ -17,7 +17,10 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import Solutions from "./pages/Solutions";
 import ForgotPassword from "./pages/ForgotPassword";
-
+import CoursePage from "./pages/CoursePage";
+import UserProfile from "./pages/UserProfile";
+import Profile from "./pages/user/Profile";
+import UserCourse from "./pages/user/UserCourse";
 
 function App() {
   return (
@@ -41,14 +44,14 @@ function App() {
               </Layout>
             }
           />
-          {/* <Route
+          <Route
             path="/donate"
             element={
               <Layout>
                 <Donate />
               </Layout>
             }
-          /> */}
+          />
           <Route
             path="/community"
             element={
@@ -57,29 +60,45 @@ function App() {
               </Layout>
             }
           />
-          {/* <Route
+          <Route
             path="/profile"
             element={
               <Layout>
-                <ProfilePage />
+                <Profile />
               </Layout>
             }
-          /> */}
-          {/* <Route
-            path="/solutions"
+          />
+          <Route
+            path="/usercourse"
             element={
               <Layout>
-                <Solutions />
+                <UserCourse />
               </Layout>
             }
-          /> */}
+          />
           <Route
-          path = "/forgotpassword"
-          element = {
-            <Layout>
-               <ForgotPassword/>
+            path="/user"
+            element={
+              <Layout>
+                <UserProfile />
               </Layout>
-          }
+            }
+          />
+          <Route
+            path="/courses"
+            element={
+              <Layout>
+                <CoursePage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/forgotpassword"
+            element={
+              <Layout>
+                <ForgotPassword />
+              </Layout>
+            }
           />
         </Routes>
       </BrowserRouter>
