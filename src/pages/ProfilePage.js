@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import profileImg from "../../assets/avatarr.png";
-import PageMenu from "../../components/PageMenu";
-import Wrapper from "../../components/Wrapper";
+import profileImg from "../assets/avatarr.png";
+import PageMenu from "../components/PageMenu";
+import Wrapper from "../components/Wrapper";
 import { useEffect } from "react";
-import { auth,app } from "../../firebase.config";
+import { auth,app } from "../firebase.config";
 import { getDatabase,ref,get } from "firebase/database";
 const initialState = {
   name: "",
