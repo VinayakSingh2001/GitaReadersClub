@@ -23,7 +23,7 @@ const CoursePage = ({course}) => {
           {course.map((item, index) => (
            
             <div
-              // href={`/check/${index}`}
+              // href={/check/${index}}
               className="transform overflow-hidden bg-white duration-200 border hover:scale-105 cursor-pointer"
               id={index}
               onClick={()=>{localStorage.setItem('CourseId',index)
@@ -36,7 +36,7 @@ const CoursePage = ({course}) => {
                   {item.title}
                 </h2>
                 <div className="flex item-center text-black/[0.5]">
-                  <p className="mr-2 text-lg  font-medium">{item.desc}</p>
+                  <p className="mr-2 text-lg  font-medium">{item.shortdesc}</p>
                 </div>
                 <div className="absolute right-0 bottom-0 mt-2 ">
                   {item.status ? <div className="rounded bg-blue-500 text-white px-3 py-1  hover:bg-blue-600" >
