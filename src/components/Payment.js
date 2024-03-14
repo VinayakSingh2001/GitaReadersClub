@@ -63,8 +63,8 @@ function Payment() {
         
         toast.success("Success");
             var options = {
-      key: "",
-      key_secret: "",
+      key: "rzp_test_F93o7BvEaB2Rp5",
+      key_secret: "ogwOhP9aMjkpbHDqhZnopiqP",
       amount: parseInt(answer.amount * 100),
       currency: "INR",
       order_receipt: 'order_rcptid_' +answer.name,
@@ -178,6 +178,21 @@ function Payment() {
                                                 name='mobile'
                                                 placeholder="Enter you mobile number"
                                                 value={answer.mobile}
+                                                onChange={handleChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="mb-1">
+                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="answer">
+                                                Amount
+                                            </label>
+                                            <input
+                                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
+                                                id="answer"
+                                                type="text"
+                                                name='amount'
+                                                placeholder="Enter you mobile number"
+                                                value={answer.amount}
                                                 onChange={handleChange}
                                                 required
                                             />

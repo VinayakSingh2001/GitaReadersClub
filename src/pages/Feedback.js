@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getDatabase, ref, set, get } from "firebase/database";
 import { app, auth } from "../firebase.config";
 import { toast } from "react-toastify";
+
 const Feedback = () => {
   const [feed, setnewFeed] = useState({
     name: "",
@@ -78,7 +79,7 @@ const Feedback = () => {
     try {
       const user = auth.currentUser;
       if (!user) {
-        toast.error("Please log in first");
+        toast.error("Please log in first",{position:"bottom-right"});
         seterr("");
         return;
       }
