@@ -37,7 +37,7 @@ function App() {
 
 
   const fetchData=async()=>{
-    const db =getDatabase(app);
+    const db = getDatabase(app);
     const dbRef = ref(db,'Courses');
       try {
         const snapshot =await get(dbRef);
@@ -132,9 +132,9 @@ useEffect(()=>{
             }
           />
 
-          <Route path="/course" element={
+          <Route path="/courseDetails" element={
             <Layout>
-              <Course/>
+              <Course />
             </Layout>
           }/>
 
