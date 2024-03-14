@@ -21,6 +21,7 @@ import CoursePage from "./pages/CoursePage";
 import UserProfile from "./pages/UserProfile";
 import Profile from "./pages/user/Profile";
 import UserCourse from "./pages/user/UserCourse";import { ToastContainer } from "react-toastify";
+import Course from "./pages/Course";
 
 
 function App() {
@@ -101,6 +102,11 @@ function App() {
               </Layout>
             }
           />
+          <Route path="/course" element={
+            <Layout>
+              <Course/>
+            </Layout>
+          }/>
         </Routes>
       </BrowserRouter>
       <ToastContainer autoClose={1000} closeOnClick toastStyle={{ marginTop: "60px" }}/>
