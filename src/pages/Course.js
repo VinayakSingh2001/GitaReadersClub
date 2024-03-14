@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Wrapper from '../components/Wrapper'
+import { useParams } from 'react-router-dom';
+import { getDatabase,get,ref } from 'firebase/database';
+import { app,auth } from '../firebase.config';
 
 const CourseDetails = () => {
   // Mock data for demonstration purposes
@@ -18,7 +21,27 @@ const CourseDetails = () => {
     status: 'ongoing', // or 'upcoming'
     image: 'https://images.squarespace-cdn.com/content/v1/656b5dff54775d2229594396/241ba205-fa4d-44a4-80b6-fb214347d946/Thinkgita+Post+A.jpgour_image_url.jpg',
   };
+  const [course,setCourse] = useState([]);
+  console.log(course,localStorage.getItem('CourseId'));
 
+  const fetchData=async()=>{
+    const db = getDatabase(app);
+    const dbRef = ref(db,'Courses');
+      try {
+        const snapshot =await get(dbRef);
+        const val = snapshot.val();
+        setCourse(val[localStorage.getItem('CourseId')]);
+        console.log(course);
+      } catch (error) {
+        console.log(error.message);
+      }
+}
+
+useEffect(()=>{
+  fetchData();
+  // setCourse()
+  console.log(course);
+},[]);
 
   // Generic blob image URL
   const blobImage = 'blob_placeholder.jpg';
@@ -30,7 +53,7 @@ const CourseDetails = () => {
 <div className='flex gap-20 '>
 <div className="w-[60%] py-10">
           <img
-            src={courseData.image}
+            src={course.img}
             alt="Course"
             className=" rounded-lg "
           />
@@ -38,9 +61,9 @@ const CourseDetails = () => {
          
           {/* Course Details */}
           <div className='w-[60%]'> 
-            <h1 className="text-4xl font-extrabold mb-4 text-yellow-300 transition duration-300">{courseData.title}</h1>
+            <h1 className="text-4xl font-extrabold mb-4 text-yellow-300 transition duration-300">{course.title}</h1>
 
-            <p className="text-base mb-4">{courseData.description}</p>
+            <p className="text-base mb-4">{course.desc}</p>
 
             {/* Topics */}
             <div className="mb-4">
@@ -72,23 +95,21 @@ const CourseDetails = () => {
             <div className="mb-4">
               <p className="font-bold mb-2 text-lg">Speaker:</p>
               <div className="flex items-center">
-                <img
-                  src={courseData.speaker.photo || blobImage}
-                  alt={courseData.speaker.name}
-                  className="w-12 h-12 rounded-full mr-2"
-                />
+                
                 <p>{courseData.speaker.name}</p>
               </div>
             </div>
 
             {/* Enroll Button */}
             <div>
-              {courseData.status === 'ongoing' ? (
+              {course.status ? (
                 <button className="bg-green-500 text-white px-4 py-2 rounded-md">
                   Enroll Now
                 </button>
               ) : (
-                <p className="text-gray-500">Coming Soon</p>
+                <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                  Coming Soon...
+                </button>
               )}
             </div>
           </div>
