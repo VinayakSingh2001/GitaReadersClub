@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { app } from '../firebase.config';
 import { getDatabase, ref, set, push } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-export default function postToCommunity() {
+export default function PostToCommunity() {
   // const navigate = useNavigate();
 
   let [inputValue1, setInputValue1] = useState('');
@@ -17,10 +18,12 @@ export default function postToCommunity() {
       time: currentTime // Store current time in database
     })
       .then(() => {
-        alert('Data saved');
+        // alert('Data saved');
+        toast.success("Data Saved");
       })
       .catch((error) => {
-        alert('Error:', error.message);
+        // alert('Error:', error.message);
+        toast.error(error.message);
       });
   };
   
