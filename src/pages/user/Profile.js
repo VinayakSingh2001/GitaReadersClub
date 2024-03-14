@@ -569,7 +569,8 @@ const Profile = () => {
       mobile: "",
       message: "",
       dob: "",
-      gender: "",
+      gender: "",,
+    email:""
     });
     setIsEditing(false);
   };
@@ -577,9 +578,13 @@ const Profile = () => {
     // Authentication state listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log(user);
+        setProfile({...profile,["email"]:user.email});
+        // setProfile({...profile,["name"]:user.displayName});
         setIsLoggedIn(true); // User is logged in
         setProfile({ ...profile, ["email"]: user.email });
         fetchData(user.uid); // Fetch user data
+        
       } else {
         setIsLoggedIn(false); // User is not logged in
       }
@@ -687,7 +692,7 @@ const Profile = () => {
                             className="block text-blue text-md font-semibold mb-2"
                             htmlFor="name"
                           >
-                            Name:- {data.name}
+                            Name:- {profile.name}
                           </label>
                         ) : (
                           <label

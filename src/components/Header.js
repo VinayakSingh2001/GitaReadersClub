@@ -15,19 +15,20 @@ const Header = () => {
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
-  const [data, setData] = useState("");
+  const [data, setData] = useState([]);
   const Links = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "about" },
-    { name: "Courses", link: "courses" },
+    { name: "Courses", link: "/courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
-    { name: "Donate", link: "/donate" },
+    // { name: "Donate", link: "donate" },
+    { name: "Community", link: "/community" },
     // { name: "Solutions", link: "/solutions"},
   ];
 const nav=useNavigate();
   const controlNavBar = () => {
-    if (window.scrollY > 200) {
+    if (window.scrollY > 0) {
       if (window.scrollY > lastScrolly) {
         setShow("-translate-y-full");
       } else {
@@ -64,7 +65,8 @@ const nav=useNavigate();
         setLoggedin(true);
         // console.log(user.displayName);
         // console.log(user.displayName);
-        setData(user.displayName); // User is authenticated
+        console.log(user.email);
+        setData(user.email); // User is authenticated
         fetchData();
       } else {
         setData([]);
@@ -94,7 +96,7 @@ const nav=useNavigate();
 
   return (
     <div
-      className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 sticky top-0 transition-transform duration-300 ${show}`}
+      className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 top-0 transition-transform duration-300 ${show}`}
     >
       <Wrapper>
         <div className="flex items-center justify-between">

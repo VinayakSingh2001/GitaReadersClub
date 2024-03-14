@@ -20,10 +20,20 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CoursePage from "./pages/CoursePage";
 import UserProfile from "./pages/UserProfile";
 import Profile from "./pages/user/Profile";
-import UserCourse from "./pages/user/UserCourse";import { ToastContainer } from "react-toastify";
-import Payment from "./components/Payment"
+import PostToCommunity from "./pages/PostToCommunity";
 
+import UserCourse from "./pages/user/UserCourse";
+import Course from "./pages/Course";
+import Payment from "./components/Payment"
+import DonationPage from "./pages/DonationPage";
+
+import { ToastContainer } from "react-toastify";
+import { useEffect,useState } from "react";
+import CourseDetails from "./pages/CourseDetails";
+import { getDatabase,ref,get } from "firebase/database";
+import {app,auth} from"./firebase.config"
 function App() {
+ 
   return (
     <>
       <BrowserRouter>
@@ -49,7 +59,7 @@ function App() {
             path="/donate"
             element={
               <Layout>
-                <Donate />
+                <DonationPage />
               </Layout>
             }
           />
@@ -89,7 +99,7 @@ function App() {
             path="/courses"
             element={
               <Layout>
-                <CoursePage />
+                <CoursePage/>
               </Layout>
             }
           />
@@ -107,6 +117,19 @@ function App() {
               <Payment/>
             </Layout>
           }/>
+
+          <Route path="/courseDetails" element={
+            <Layout>
+              <Course />
+            </Layout>
+          }/>
+
+          <Route path="/postToCommunity" element={
+            <Layout>
+              <PostToCommunity/>
+            </Layout>
+          }/>
+
         </Routes>
       </BrowserRouter>
       <ToastContainer autoClose={1000} closeOnClick toastStyle={{ marginTop: "60px" }}/>

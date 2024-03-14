@@ -26,7 +26,7 @@ function Payment() {
         seterr("All fields are required");
         return;
     }
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
     if (!answer.email.match(emailRegex)) {
         seterr("Please enter a valid email address");
         return;
@@ -61,15 +61,15 @@ function Payment() {
                   )
             });
         
-        toast.success("Success");
+        
             var options = {
       key: "rzp_test_F93o7BvEaB2Rp5",
       key_secret: "ogwOhP9aMjkpbHDqhZnopiqP",
       amount: parseInt(answer.amount * 100),
       currency: "INR",
       order_receipt: 'order_rcptid_' +answer.name,
-      name: "E-Bharat",
-      description: "for testing purpose",
+      name: "Gita Readers Club",
+      description: "for donation purpose",
       handler: function (response) {
         // console.log(response)
         toast.success('Payment Successful')
