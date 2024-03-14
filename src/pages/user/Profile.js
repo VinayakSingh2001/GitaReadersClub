@@ -387,6 +387,7 @@ const Profile = () => {
     name: "",
     mobile: "",
     message: "",
+    email:"",
   });
   const [err,seterr] = useState("");
   
@@ -551,7 +552,8 @@ const Profile = () => {
   setProfile({
     name: "",
     mobile: "",
-    message: ""
+    message: "",
+    email:""
   });
   setIsEditing(false);
   }
@@ -559,8 +561,12 @@ const Profile = () => {
     // Authentication state listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log(user);
+        setProfile({...profile,["email"]:user.email});
+        // setProfile({...profile,["name"]:user.displayName});
         setIsLoggedIn(true); // User is logged in
         fetchData(user.uid); // Fetch user data
+        
       } else {
         setIsLoggedIn(false); // User is not logged in
       }
@@ -578,7 +584,7 @@ const Profile = () => {
       const val = snapshot.val();
       
       
-     
+     console.log(val);
       if(val && val.image){
         setProfileImage(val.image);
         
@@ -645,7 +651,7 @@ const Profile = () => {
                           className="block text-blue text-sm font-bold mb-2"
                           htmlFor="name"
                         >
-                          Name:- {data.name}
+                          Name:- {profile.name}
                         </label>:<label
                           className="block text-blue text-sm font-bold mb-2"
                           htmlFor="name"
@@ -669,7 +675,7 @@ const Profile = () => {
                           className="block text-blue text-sm font-bold mb-2"
                           htmlFor="email"
                         >
-                          Email:- {data.email}
+                          Email:- {profile.email}
                         </label>: null}
                         
                       </div> 
