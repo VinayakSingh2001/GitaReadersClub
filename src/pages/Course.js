@@ -6,7 +6,7 @@ import { app,auth } from '../firebase.config';
 import { toast } from 'react-toastify';
 
 const CourseDetails = () => {
-
+  const [loading,setLoading] = useState(true);
   const [course,setCourse] = useState([]);
   console.log(course,localStorage.getItem('CourseId'));
 
@@ -20,6 +20,8 @@ const CourseDetails = () => {
         console.log(course);
       } catch (error) {
         console.log(error.message);
+      } finally{
+        setLoading(false);
       }
 }
 
@@ -53,11 +55,19 @@ const handleClick = async(index)=>{
   }
 }
   return (
-    <div className="bg-gradient-to-br from-purple-700 to-indigo-800 text-white">
+    <>
+    {loading?(
+      
+      <div className="flex flex-col items-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+    <p className="text-gray-700">Loading...</p>
+  </div>
+    ):
+    (<div className="bg-gradient-to-br from-purple-700 to-indigo-800 text-white">
      
           <Wrapper className=' py-20'>
-<div className='flex gap-20 '>
-<div className="w-[60%] py-10">
+            <div className='flex gap-20 '>
+            <div className="w-[60%] py-10">
           <img
             src={course.img}
             alt="Course"
@@ -128,6 +138,8 @@ const handleClick = async(index)=>{
         
       
     </div>
+   ) }
+   </>
   );
 };
 

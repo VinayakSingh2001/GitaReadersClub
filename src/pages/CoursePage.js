@@ -6,11 +6,39 @@ import { app } from "../firebase.config";
 import { Link, useNavigate } from "react-router-dom";
 
 
-const CoursePage = ({course}) => {
+const CoursePage = () => {
   const Navigate = useNavigate();
-   
+   const [loading,setLoading]=useState(true);
+   const [course,setCourse] = useState([]);
+
+   const fetchData=async()=>{
+     const db = getDatabase(app);
+     const dbRef = ref(db,'Courses');
+       try {
+         const snapshot =await get(dbRef);
+         const val = snapshot.val();
+         setCourse(val);
+         console.log(course);
+       } catch (error) {
+         console.log(error.message);
+       }finally{
+        setLoading(false);
+       }
+ }
+ 
+ useEffect(()=>{
+   fetchData();
+   // setCourse()
+   console.log(course);
+ },[])
 
   return (
+    <>
+    {loading?(<div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+          <p className="text-gray-700">Loading...</p>
+        </div>):
+    
     <div className="w-full md:py-20 relative" id="courses">
       <Wrapper>
         <div className="text-center max-w-[800px] mx-auto mt-8 md:mt-0">
@@ -51,6 +79,8 @@ const CoursePage = ({course}) => {
         </div>
       </Wrapper>
     </div>
+}
+    </>
   );
 };
 
