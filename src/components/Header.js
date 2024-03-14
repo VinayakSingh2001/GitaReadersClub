@@ -27,7 +27,7 @@ const Header = () => {
   ];
 
   const controlNavBar = () => {
-    if (window.scrollY > 200) {
+    if (window.scrollY > 0) {
       if (window.scrollY > lastScrolly) {
         setShow("-translate-y-full");
       } else {
@@ -89,7 +89,7 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 sticky top-0 transition-transform duration-300 ${show}`}
+      className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 top-0 transition-transform duration-300 ${show}`}
     >
       <Wrapper>
         <div className="flex items-center justify-between">
