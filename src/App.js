@@ -23,6 +23,9 @@ import Profile from "./pages/user/Profile";
 
 import UserCourse from "./pages/user/UserCourse";
 import Course from "./pages/Course";
+
+import DonationPage from "./pages/DonationPage";
+
 import { ToastContainer } from "react-toastify";
 import { useEffect,useState } from "react";
 import CourseDetails from "./pages/CourseDetails";
@@ -30,6 +33,7 @@ import { getDatabase,ref,get } from "firebase/database";
 import {app,auth} from"./firebase.config"
 function App() {
   const [course,setCourse] = useState([]);
+
 
 
   const fetchData=async()=>{
@@ -75,7 +79,7 @@ useEffect(()=>{
             path="/donate"
             element={
               <Layout>
-                <Donate />
+                <DonationPage />
               </Layout>
             }
           />

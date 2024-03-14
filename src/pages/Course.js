@@ -13,7 +13,7 @@ const CourseDetails = () => {
     'Balancing Work and Life: Learn strategies for finding balance in the midst of the modern "rat race," prioritizing self-care and fulfillment.',
     'Creating Lasting Change: Develop strategies for integrating these practices into your daily life for sustained happiness and resilience.',
    "Whether you're feeling overwhelmed by the demands of daily life or simply seeking to enhance your overall well-being, this course offers practical tools and insights to help you thrive in the midst of lifes challenges.", 'Join us on a journey of transformation as we convert stress into smiles and embrace holistic wellness in the modern age.'],
-    outcomes: ['Outcome 1', 'Outcome 2', 'Outcome 3'],
+    outcomes: ['Cultivate Satisfaction: Discover how to find contentment and peace within yourself, regardless of external circumstances.', 'Empathy and Sensitivity: Learn the importance of being attuned to the needs and feelings of others, fostering deeper connections and understanding.', 'Daily Wellness Practices: Explore simple techniques to integrate into your daily routine that promote mental, emotional, and physical well-being.','Rediscover Joy: Reconnect with the joy and excitement that often gets buried beneath the stresses of adult life.','Navigate the Rat Race: Gain insights and strategies for thriving in a fast-paced world without sacrificing your happiness and health.',"This course is designed for anyone seeking to enhance their overall wellness and resilience in the face of life's challenges. Whether you're a busy professional, a parent juggling multiple responsibilities, or simply someone looking to prioritize self-care,"],
     speaker: { name: 'Speaker 1', photo: 'speaker1.jpg' },
     status: 'ongoing', // or 'upcoming'
     image: 'https://images.squarespace-cdn.com/content/v1/656b5dff54775d2229594396/241ba205-fa4d-44a4-80b6-fb214347d946/Thinkgita+Post+A.jpgour_image_url.jpg',
@@ -56,14 +56,16 @@ const CourseDetails = () => {
 </div>
           
 
-
           <div>
              {/* Outcomes */}
              <div className="mb-4">
-              <p className="font-bold mb-2 text-lg">Outcomes:</p>
+              <p className="text-2xl font-extrabold mb-4 text-yellow-300 transition duration-300">Outcomes:</p>
               <ul className="list-disc ml-4">
                 {courseData.outcomes.map((outcome, index) => (
-                  <li key={index}>{outcome}</li>
+                  <div className='w-[50%] flex'>
+<h1 key={index}>{outcome}</h1>
+                  </div>
+                  
                 ))}
               </ul>
             </div>
