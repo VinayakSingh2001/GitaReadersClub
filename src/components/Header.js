@@ -49,7 +49,12 @@ const nav=useNavigate();
       try {
         const snapshot = await get(dbRef);
         const val = snapshot.val();
-        setData(val.name);
+        if(val && val.image){
+          setData(val.image);
+        } else {
+          setData("https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png");
+        }
+        
       } catch (error) {
         // alert(error.message);
       }
@@ -161,10 +166,20 @@ const nav=useNavigate();
               <>
                 
                 {/* <a href="/profile">{data}</a> */}
-                <div className="">
-                  <button className="bg-pink-500 text-white mx-3 font-bold uppercase text-sm px-2 py-1 rounded shadow 
-                hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" onClick={()=> nav('/profile')}>profile</button>
+                <div className="flex gap-4 items-center">
+                <button
+      onClick={()=>nav("/profile")}
+      className="w-10 h-10 rounded-full overflow-hidden focus:outline-none"
+    >
+      <img
+        src={data}
+        alt="Profile"
+        className="w-full h-full object-cover"
+      />
+    </button>
+    <Logout/>
                 </div>
+                
               </>
             )}
           </div>

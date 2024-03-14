@@ -24,7 +24,7 @@ import PostToCommunity from "./pages/PostToCommunity";
 
 import UserCourse from "./pages/user/UserCourse";
 import Course from "./pages/Course";
-
+import Payment from "./components/Payment"
 import DonationPage from "./pages/DonationPage";
 
 import { ToastContainer } from "react-toastify";
@@ -111,6 +111,12 @@ function App() {
               </Layout>
             }
           />
+          <Route path="/payment"
+          element={
+            <Layout>
+              <Payment/>
+            </Layout>
+          }/>
 
           <Route path="/courseDetails" element={
             <Layout>

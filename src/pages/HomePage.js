@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import CarouselComponent from "./CarouselComponent";
 import Activities from "./Activities";
 import Header2 from "../components/Header2";
+import YouTubePlaylist from "../components/YouTubePlaylist";
 // import Footer from "../components/Footer";
 // import Header from "../components/Header";
 // import Test from "./Test";
@@ -27,6 +28,7 @@ const HomePage = () => {
       {/* <SocialMediaPages /> */}
       <About />
       <CarouselComponent />
+      <YouTubePlaylist/>
       <Courses />
       <Speakers />
       {/* <Test /> */}
