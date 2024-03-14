@@ -33,28 +33,7 @@ import CourseDetails from "./pages/CourseDetails";
 import { getDatabase,ref,get } from "firebase/database";
 import {app,auth} from"./firebase.config"
 function App() {
-  const [course,setCourse] = useState([]);
-
-
-
-  const fetchData=async()=>{
-    const db = getDatabase(app);
-    const dbRef = ref(db,'Courses');
-      try {
-        const snapshot =await get(dbRef);
-        const val = snapshot.val();
-        setCourse(val);
-        console.log(course);
-      } catch (error) {
-        console.log(error.message);
-      }
-}
-
-useEffect(()=>{
-  fetchData();
-  // setCourse()
-  console.log(course);
-},[])
+ 
   return (
     <>
       <BrowserRouter>
@@ -120,7 +99,7 @@ useEffect(()=>{
             path="/courses"
             element={
               <Layout>
-                <CoursePage course={course} />
+                <CoursePage/>
               </Layout>
             }
           />

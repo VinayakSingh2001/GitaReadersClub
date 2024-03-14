@@ -22,7 +22,7 @@ const Header = () => {
     { name: "Courses", link: "/courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
-    { name: "Donate", link: "/donate" },
+    // { name: "Donate", link: "donate" },
     { name: "Community", link: "/community" },
     // { name: "Solutions", link: "/solutions"},
   ];

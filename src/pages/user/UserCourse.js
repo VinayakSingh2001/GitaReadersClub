@@ -10,6 +10,7 @@ const UserCourse = () => {
 const [encourse, setEnCourse] = useState([]);
   const [course, setCourse] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isloading,setisloading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +27,8 @@ const [encourse, setEnCourse] = useState([]);
           }
         } catch (error) {
           console.log(error.message);
+        } finally{
+          setisloading(false);
         }
       } else {
         alert('Login first');
@@ -61,7 +64,12 @@ const [encourse, setEnCourse] = useState([]);
 
   return (
     <div>
+      
       <PageMenu />
+      {isloading?(<div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+          <p className="text-gray-700">Loading...</p>
+        </div>):
       <Wrapper>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-14 px-5 md:px-0">
           {encourse.map((item, index) => (
@@ -83,8 +91,10 @@ const [encourse, setEnCourse] = useState([]);
           ))}
         </div>
       </Wrapper>
+}
     </div>
   );
+          
 };
 
 export default UserCourse;
