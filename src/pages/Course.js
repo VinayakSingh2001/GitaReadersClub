@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Wrapper from '../components/Wrapper'
 import { useParams } from 'react-router-dom';
-import { getDatabase,get,ref } from 'firebase/database';
+import { getDatabase,get,set,ref } from 'firebase/database';
 import { app,auth } from '../firebase.config';
+import { toast } from 'react-toastify';
 
 const CourseDetails = () => {
-  // Mock data for demonstration purposes
 
-  const courseData = {
-    title: 'Converting Stress to Smile',
-    description: 'Embark on a journey to transform stress into smiles with our course, offering practical tools and timeless wisdom to cultivate resilience, inner peace, and radiant joy',
-    topics: ['Understanding Stress: Explore the root causes and effects of stress in our daily lives, and how it impacts our physical, mental, and emotional well-being.', 'Mindful Awareness: Learn the practice of mindfulness to cultivate present-moment awareness and reduce the grip of stress on your mind', 'Gratitude and Satisfaction: Discover the power of gratitude and contentment in fostering resilience and a positive outlook on life ','Empathy and Connection: Explore the importance of empathy and connection in nurturing relationships and building a supportive community.',
-   'Self-Care and Wellness Practices: Develop a personalized self-care routine that nourishes your body, mind, and spirit, promoting overall well-being.',
-   'Cultivating Joy and Excitement: Unlock the secrets to embracing life with childlike wonder and enthusiasm, even amidst challenges.',
-    'Balancing Work and Life: Learn strategies for finding balance in the midst of the modern "rat race," prioritizing self-care and fulfillment.',
-    'Creating Lasting Change: Develop strategies for integrating these practices into your daily life for sustained happiness and resilience.',
-   "Whether you're feeling overwhelmed by the demands of daily life or simply seeking to enhance your overall well-being, this course offers practical tools and insights to help you thrive in the midst of lifes challenges.", 'Join us on a journey of transformation as we convert stress into smiles and embrace holistic wellness in the modern age.'],
-    outcomes: ['Cultivate Satisfaction: Discover how to find contentment and peace within yourself, regardless of external circumstances.', 'Empathy and Sensitivity: Learn the importance of being attuned to the needs and feelings of others, fostering deeper connections and understanding.', 'Daily Wellness Practices: Explore simple techniques to integrate into your daily routine that promote mental, emotional, and physical well-being.','Rediscover Joy: Reconnect with the joy and excitement that often gets buried beneath the stresses of adult life.','Navigate the Rat Race: Gain insights and strategies for thriving in a fast-paced world without sacrificing your happiness and health.',"This course is designed for anyone seeking to enhance their overall wellness and resilience in the face of life's challenges. Whether you're a busy professional, a parent juggling multiple responsibilities, or simply someone looking to prioritize self-care,"],
-    speaker: { name: 'Speaker 1', photo: 'speaker1.jpg' },
-    status: 'ongoing', // or 'upcoming'
-    image: 'https://images.squarespace-cdn.com/content/v1/656b5dff54775d2229594396/241ba205-fa4d-44a4-80b6-fb214347d946/Thinkgita+Post+A.jpgour_image_url.jpg',
-  };
   const [course,setCourse] = useState([]);
   console.log(course,localStorage.getItem('CourseId'));
 
@@ -45,7 +31,27 @@ useEffect(()=>{
 
   // Generic blob image URL
   const blobImage = 'blob_placeholder.jpg';
-
+const handleClick = async(index)=>{
+  const user = auth.currentUser;
+  if(user){
+    const db = getDatabase(app);
+    const dbRef = ref(db,`EnrolledCourse/${user.uid}`);
+      try {
+        const snapshot = await get(dbRef);
+         const EnrolledCourses = snapshot.val() || {};
+        if(EnrolledCourses[localStorage.getItem('CourseId')]) toast.error('Already Enrolled');
+        else{ EnrolledCourses[localStorage.getItem('CourseId')] = true;
+        await set(dbRef,EnrolledCourses);
+        toast.success('Enrolled successfully')
+      }
+      } catch (error) {
+        console.log(error.message);
+      }
+  }
+  else{
+    toast.error("Login first to enroll course");
+  }
+}
   return (
     <div className="bg-gradient-to-br from-purple-700 to-indigo-800 text-white">
      
@@ -63,19 +69,20 @@ useEffect(()=>{
           <div className='w-[60%]'> 
             <h1 className="text-4xl font-extrabold mb-4 text-yellow-300 transition duration-300">{course.title}</h1>
 
-            <p className="text-base mb-4">{course.desc}</p>
+            <p className="text-base mb-4"><div dangerouslySetInnerHTML={{ __html: course.desc }} /></p>
 
             {/* Topics */}
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <p className="text-2xl font-extrabold mb-4 text-yellow-300 transition duration-300">Topics:</p>
-              <ul className="list-disc  ">
-                {courseData.topics.map((topic, index) => (
+              <ul className="list-disc  "> */}
+                {/* {courseData.topics.map((topic, index) => (
                   <li key={index}>{topic}</li>
-                ))}
-              </ul>
-            </div>
+                ))} */}
+                
+                {/* <div dangerouslySetInnerHTML={{ __html: course.topics }} /> */}
+              {/* </ul>
+            </div> */}
           </div>
-
 </div>
           
 
@@ -84,12 +91,12 @@ useEffect(()=>{
              <div className="mb-4">
               <p className="text-2xl font-extrabold mb-4 text-yellow-300 transition duration-300">Outcomes:</p>
               <ul className="list-disc ml-4">
-                {courseData.outcomes.map((outcome, index) => (
+                {/* {courseData.outcomes.map((outcome, index) => (
                   <div className='w-[50%] flex'>
-<h1 key={index}>{outcome}</h1>
+                      <h1 key={index}>{outcome}</h1>
                   </div>
-                  
-                ))}
+                ))} */}
+                <div dangerouslySetInnerHTML={{ __html: course.outcome }} />
               </ul>
             </div>
 
@@ -98,14 +105,14 @@ useEffect(()=>{
               <p className="font-bold mb-2 text-lg">Speaker:</p>
               <div className="flex items-center">
                 
-                <p>{courseData.speaker.name}</p>
+              <div dangerouslySetInnerHTML={{ __html: course.speakers }} />
               </div>
             </div>
 
             {/* Enroll Button */}
             <div>
               {course.status ? (
-                <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleClick}>
                   Enroll Now
                 </button>
               ) : (
