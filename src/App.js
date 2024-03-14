@@ -24,6 +24,9 @@ import PostToCommunity from "./pages/postToCommunity";
 
 import UserCourse from "./pages/user/UserCourse";
 import Course from "./pages/Course";
+
+import DonationPage from "./pages/DonationPage";
+
 import { ToastContainer } from "react-toastify";
 import { useEffect,useState } from "react";
 import CourseDetails from "./pages/CourseDetails";
@@ -33,8 +36,9 @@ function App() {
   const [course,setCourse] = useState([]);
 
 
+
   const fetchData=async()=>{
-    const db =getDatabase(app);
+    const db = getDatabase(app);
     const dbRef = ref(db,'Courses');
       try {
         const snapshot =await get(dbRef);
@@ -76,7 +80,7 @@ useEffect(()=>{
             path="/donate"
             element={
               <Layout>
-                <Donate />
+                <DonationPage />
               </Layout>
             }
           />
@@ -129,9 +133,9 @@ useEffect(()=>{
             }
           />
 
-          <Route path="/course" element={
+          <Route path="/courseDetails" element={
             <Layout>
-              <Course/>
+              <Course />
             </Layout>
           }/>
 
