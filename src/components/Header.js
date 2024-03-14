@@ -15,11 +15,11 @@ const Header = () => {
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
-  const [data, setData] = useState("");
+  const [data, setData] = useState([]);
   const Links = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "about" },
-    { name: "Courses", link: "courses" },
+    { name: "Courses", link: "/courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
     { name: "Donate", link: "/donate" },
@@ -59,7 +59,8 @@ const nav=useNavigate();
         setLoggedin(true);
         // console.log(user.displayName);
         // console.log(user.displayName);
-        setData(user.displayName); // User is authenticated
+        console.log(user.email);
+        setData(user.email); // User is authenticated
         fetchData();
       } else {
         setData([]);
