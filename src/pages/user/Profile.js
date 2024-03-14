@@ -422,7 +422,7 @@ const Profile = () => {
   const [data, setData] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(
-    "https://via.placeholder.com/150"
+    "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
   );
 
   const handleEditToggle = () => {
@@ -447,6 +447,7 @@ const Profile = () => {
       console.error("Error deleting profile image:", error);
       toast.error("Failed to delete profile image. Please try again.");
     }
+    window.location.reload();
   };
 
   // const handleImageChange = async (event) => {
@@ -538,6 +539,7 @@ const Profile = () => {
     if (file) {
       reader.readAsDataURL(file); // Read the file as a data URL (base64 string)
     }
+    
   };
 
   const handleChange = async (e) => {
@@ -569,19 +571,21 @@ const Profile = () => {
       mobile: "",
       message: "",
       dob: "",
-      gender: "",,
+      gender: "",
     email:""
     });
     setIsEditing(false);
+    window.location.reload();
   };
   useEffect(() => {
     // Authentication state listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
-        setProfile({...profile,["email"]:user.email});
+        // console.log(user);
+        // setProfile({...profile,["email"]:user.email});
         // setProfile({...profile,["name"]:user.displayName});
         setIsLoggedIn(true); // User is logged in
+        console.log(user.email);
         setProfile({ ...profile, ["email"]: user.email });
         fetchData(user.uid); // Fetch user data
         
@@ -607,7 +611,7 @@ const Profile = () => {
       if (val && val.image) {
         setProfileImage(val.image);
       } else {
-        setProfile("https://via.placeholder.com/150");
+        setProfileImage("https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png");
       }
 
       Object.keys(val).forEach((key) => {
@@ -773,7 +777,7 @@ const Profile = () => {
                           className="block text-blue text-md font-bold mb-2"
                           htmlFor="dob"
                         >
-                          Phone Number
+                          DOB 
                         </label>
                       )}
                       {isEditing ? (
@@ -828,12 +832,17 @@ const Profile = () => {
                     </div>
 
                     <div className="mb-6">
-                      <label
+                      {isEditing?<label
                         className="block text-blue text-md font-semibold mb-2"
                         htmlFor="message"
                       >
-                        Bio:- {data.message}
-                      </label>
+                        Bio
+                      </label>:<label
+                        className="block text-blue text-md font-semibold mb-2"
+                        htmlFor="message"
+                      >
+                        Bio
+                      </label>}
                       {isEditing ? (
                         <textarea
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

@@ -23,7 +23,8 @@ export default function Community() {
         // alert('No data available');
         toast.success("No data available")
       }
-    } catch (error) {
+    }
+     catch (error) {
       // console.error('Error fetching data:', error);
       // alert('Error fetching data');
       toast.error("Error fetching data");

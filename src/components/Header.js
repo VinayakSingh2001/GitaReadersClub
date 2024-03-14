@@ -52,7 +52,7 @@ const nav=useNavigate();
         if(val && val.image){
           setData(val.image);
         } else {
-          setData("https://via.placeholder.com/150");
+          setData("https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png");
         }
         
       } catch (error) {
