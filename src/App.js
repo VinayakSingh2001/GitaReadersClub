@@ -20,6 +20,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CoursePage from "./pages/CoursePage";
 import UserProfile from "./pages/UserProfile";
 import Profile from "./pages/user/Profile";
+import PostToCommunity from "./pages/postToCommunity";
 
 import UserCourse from "./pages/user/UserCourse";
 import Course from "./pages/Course";
@@ -131,6 +132,12 @@ useEffect(()=>{
           <Route path="/course" element={
             <Layout>
               <Course/>
+            </Layout>
+          }/>
+
+          <Route path="/postToCommunity" element={
+            <Layout>
+              <PostToCommunity/>
             </Layout>
           }/>
 
