@@ -3,6 +3,7 @@ import { app } from '../firebase.config';
 import { getDatabase, ref, get } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo22@3x-8.png';
+import { toast } from 'react-toastify';
 
 export default function Community() {
   const navigate = useNavigate();
@@ -19,11 +20,13 @@ export default function Community() {
       if (snapshot.exists()) {
         setPosts(Object.values(snapshot.val()).reverse()); // Reverse the order of posts
       } else {
-        alert('No data available');
+        // alert('No data available');
+        toast.success("No data available")
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
-      alert('Error fetching data');
+      // console.error('Error fetching data:', error);
+      // alert('Error fetching data');
+      toast.error("Error fetching data");
     } finally {
       setLoading(false);
     }
