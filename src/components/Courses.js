@@ -1,14 +1,16 @@
-import React from "react";
+import React, {useState,useEffect } from "react";
 import Wrapper from "./Wrapper";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-
+// import { getDatabase,get,ref } from "firebase/database";
+// import { app } from "../firebase.config";
 import img1 from "../assets/course/Art of Smart Work.jpg";
 import img2 from "../assets/course/Art of Harnessing Mind Power.jpg";
 import img3 from "../assets/course/Converting Stress to Smile (1).jpg";
 import img4 from "../assets/course/Gita Sutras of Life.jpg";
 import img5 from "../assets/course/Gita in Action.jpg";
 import img6 from "../assets/course/Happiness Mantra.jpg";
+
 
 
 const Courses = () => {
@@ -27,6 +29,29 @@ const Courses = () => {
     },
   };
 
+  
+//   const [course,setCourse]=useState([]);
+
+//   const fetchData=async()=>{
+//     const db =getDatabase(app);
+//     const dbRef = ref(db,'Courses');
+//       try {
+//         const snapshot =await get(dbRef);
+//         const val = snapshot.val();
+//         setCourse(val);
+//         console.log(course);
+//       } catch (error) {
+//         console.log(error.message);
+//       }
+// }
+
+// useEffect(()=>{
+//   fetchData();
+//   // setCourse()
+//   console.log(course)
+// },[])
+  
+  
   const course = [
     {
       title: "Gita in Action",

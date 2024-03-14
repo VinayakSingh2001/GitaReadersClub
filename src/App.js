@@ -20,12 +20,40 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CoursePage from "./pages/CoursePage";
 import UserProfile from "./pages/UserProfile";
 import Profile from "./pages/user/Profile";
-import UserCourse from "./pages/user/UserCourse";import { ToastContainer } from "react-toastify";
+
+import UserCourse from "./pages/user/UserCourse";
 import Course from "./pages/Course";
+
 import DonationPage from "./pages/DonationPage";
 
-
+import { ToastContainer } from "react-toastify";
+import { useEffect,useState } from "react";
+import CourseDetails from "./pages/CourseDetails";
+import { getDatabase,ref,get } from "firebase/database";
+import {app,auth} from"./firebase.config"
 function App() {
+  const [course,setCourse] = useState([]);
+
+
+
+  const fetchData=async()=>{
+    const db =getDatabase(app);
+    const dbRef = ref(db,'Courses');
+      try {
+        const snapshot =await get(dbRef);
+        const val = snapshot.val();
+        setCourse(val);
+        console.log(course);
+      } catch (error) {
+        console.log(error.message);
+      }
+}
+
+useEffect(()=>{
+  fetchData();
+  // setCourse()
+  console.log(course);
+},[])
   return (
     <>
       <BrowserRouter>
@@ -91,7 +119,7 @@ function App() {
             path="/courses"
             element={
               <Layout>
-                <CoursePage />
+                <CoursePage course={course} />
               </Layout>
             }
           />
@@ -103,11 +131,13 @@ function App() {
               </Layout>
             }
           />
+
           <Route path="/course" element={
             <Layout>
               <Course/>
             </Layout>
           }/>
+
         </Routes>
       </BrowserRouter>
       <ToastContainer autoClose={1000} closeOnClick toastStyle={{ marginTop: "60px" }}/>

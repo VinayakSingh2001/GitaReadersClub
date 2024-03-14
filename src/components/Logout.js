@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase.config';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
-
+  const nav = useNavigate();
   const handleLogout = async () => {
     setShowConfirmation(false); // Close the confirmation modal
     try {
       await signOut(auth);
       localStorage.removeItem('authToken');
+      nav("/");
       toast.success('Successfully logged out!!');
     } catch (error) {
       console.error('Logout error:', error);

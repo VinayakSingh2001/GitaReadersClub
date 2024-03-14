@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "./Wrapper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import Login from "./Login";
 import Logout from "./Logout";
@@ -15,17 +15,17 @@ const Header = () => {
   const [show, setShow] = useState("translate-y-200");
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
-  const [data, setData] = useState("");
+  const [data, setData] = useState([]);
   const Links = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "about" },
-    { name: "Courses", link: "courses" },
+    { name: "Courses", link: "/courses" },
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
     { name: "Donate", link: "/donate" },
     // { name: "Solutions", link: "/solutions"},
   ];
-
+const nav=useNavigate();
   const controlNavBar = () => {
     if (window.scrollY > 0) {
       if (window.scrollY > lastScrolly) {
@@ -59,7 +59,8 @@ const Header = () => {
         setLoggedin(true);
         // console.log(user.displayName);
         // console.log(user.displayName);
-        setData(user.displayName); // User is authenticated
+        console.log(user.email);
+        setData(user.email); // User is authenticated
         fetchData();
       } else {
         setData([]);
@@ -157,10 +158,11 @@ const Header = () => {
               <Login />
             ) : (
               <>
-                <div>{data}</div>
+                
                 {/* <a href="/profile">{data}</a> */}
-                <div>
-                  <Logout />
+                <div className="">
+                  <button className="bg-pink-500 text-white mx-3 font-bold uppercase text-sm px-2 py-1 rounded shadow 
+                hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" onClick={()=> nav('/profile')}>profile</button>
                 </div>
               </>
             )}

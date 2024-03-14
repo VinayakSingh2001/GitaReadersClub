@@ -75,7 +75,7 @@ function Memberform() {
       });
       toast.success(
         "Thank you, for filling form you will be contacted soon from our side!!!",
-        { autoClose: 3000 }
+        { autoClose: 2000 }
       );
     // }
     setDetails({
