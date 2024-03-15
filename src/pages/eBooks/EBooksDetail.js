@@ -4,8 +4,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeView } from "@mui/x-tree-view/TreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { get, getDatabase, ref } from 'firebase/database';
+import { get, getDatabase, ref,set } from 'firebase/database';
 import { app } from '../../firebase.config';
+import { FormControlLabel,Radio,RadioGroup } from '@mui/material';
+import { toast } from 'react-toastify';
+// import {  } from '@headlessui/react';
+
 
 function EbookDetail() {
   const [books, setBooks] = useState([]);
@@ -15,7 +19,7 @@ function EbookDetail() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [selectedQuestionDetails, setSelectedQuestionDetails] = useState(null);
   const [openArticles, setOpenArticles] = useState({});
-
+  const [selectedAnswer,setSelectedAnswer] = useState(null);
   useEffect(() => {
     const fetchBooks = async () => {
       const db = getDatabase(app);
@@ -133,7 +137,26 @@ function EbookDetail() {
       </TreeItem>
     );
   };
-
+  const handleChange = (optionId) => {
+    
+    if(selectedAnswer === optionId){
+      setSelectedAnswer(null);
+    }
+    else{
+      setSelectedAnswer(optionId)
+    }
+  };
+  
+const handleAnswerSubmit = async(e)=>{
+  e.preventDefault();
+  if(selectedQuestion.Answer === selectedAnswer){
+    toast.success("Right Answer")
+  }
+  else{
+    toast.error("wrong Answer")
+  }
+  setSelectedAnswer(null);
+}
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-2 gap-4">
@@ -162,18 +185,30 @@ function EbookDetail() {
             <div style={{ marginTop: '16px', backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px' }}>
               <h4>Selected Question</h4>
               <p>{selectedQuestionDetails.Question}</p>
-              <ul>
+              
+              <ul >
                 {Object.entries(selectedQuestionDetails.Options).map(([optionId, optionText]) => (
-                  <li key={optionId}>
-                    <span style={{ fontWeight: 'bold' }}>{optionId}: </span>
+                  <li key={optionId} className="pl-2 pt-2">
+                  <label htmlFor={optionId}>
+                    <input
+                      type="radio"
+                      id={optionId}
+                      checked={selectedAnswer === optionId}
+                      onClick={()=>handleChange(optionId)}
+                    />
                     {optionText}
-                  </li>
+                  </label>
+                </li>
                 ))}
               </ul>
+             
+              <div className='flex  pt-4 pb-4'>
+              <button className='bg-blue-500  p-2 rounded-lg ml-6' onClick={handleAnswerSubmit}>submit</button>
+              </div>
             </div>
           ) : selectedArticle && selectedArticle.Data ? (
             <div style={{ marginTop: '16px', backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px' }}>
-              <h4>Article Data</h4>
+              {/* <h4>Article Data</h4> */}
               <p>{selectedArticle.Data}</p>
             </div>
           ) : null}

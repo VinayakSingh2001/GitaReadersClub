@@ -79,7 +79,7 @@ const Navigate = useNavigate();
               key={index}
               className="transform overflow-hidden bg-white duration-200 border hover:scale-105 cursor-pointer"
               onClick={()=>{
-                alert(item);
+                // alert(item);
                 localStorage.setItem("CourseId",item)
                 Navigate("/courseDetails");
               }}

@@ -13,10 +13,12 @@ import img6 from "../assets/course/Happiness Mantra.jpg";
 import { get, getDatabase,ref } from "firebase/database";
 import { app } from "../firebase.config";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Courses = () => {
+  const Navigate = useNavigate();
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -79,7 +81,10 @@ const Courses = () => {
             infinite={true} // Enable infinite scroll
           >
             {courses.map((item, index) => (
-              <div key={index} className="carousel-item border h-[430px]">
+              <div key={index} className="carousel-item border h-[430px] hover:cursor-pointer" onClick={()=>{
+                localStorage.setItem("CourseId",index)
+                Navigate("/courseDetails")
+              }}>
                 <img src={item.img} alt={item.title} />
                 <div className="carousel-content">
                   <h3 className="text-[22px] font-medium text-center py-3">
