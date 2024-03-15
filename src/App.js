@@ -21,6 +21,7 @@ import CoursePage from "./pages/CoursePage";
 import UserProfile from "./pages/UserProfile";
 import Profile from "./pages/user/Profile";
 import PostToCommunity from "./pages/PostToCommunity";
+import EditCommunity from "./pages/EditCommunity";
 import EBooks from "./pages/eBooks/EBooks";
 
 import UserCourse from "./pages/user/UserCourse";
@@ -151,6 +152,14 @@ function App() {
             element={
               <Layout>
                 <PostToCommunity />
+              </Layout>
+            }
+          />
+          <Route
+            path="/EditCommunity"
+            element={
+              <Layout>
+                <EditCommunity />
               </Layout>
             }
           />
