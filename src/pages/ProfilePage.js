@@ -43,8 +43,10 @@ const Profile = () => {
     // Authentication state listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log(user);
         setIsLoggedIn(true); // User is logged in
         fetchData(user.uid); // Fetch user data
+        
       } else {
         setIsLoggedIn(false); // User is not logged in
       }

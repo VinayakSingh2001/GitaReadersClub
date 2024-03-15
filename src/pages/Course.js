@@ -72,6 +72,7 @@ const CourseDetails = () => {
           EnrolledCourses[localStorage.getItem("CourseId")] = true;
           await set(dbRef, EnrolledCourses);
           toast.success("Enrolled successfully");
+          setEnrolledCourses((prevCourses)=> [...prevCourses,localStorage.getItem("CourseId")])
         }
       } catch (error) {
         console.log(error.message);
