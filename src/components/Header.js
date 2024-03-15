@@ -16,6 +16,7 @@ const Header = () => {
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
   const [data, setData] = useState([]);
+  const [loading,setloading] = useState(true);
   const Links = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "about" },
@@ -58,6 +59,9 @@ const nav=useNavigate();
       } catch (error) {
         // alert(error.message);
       }
+      finally{
+        setloading(false);
+            }
     };
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -95,7 +99,8 @@ const nav=useNavigate();
   };
 
   return (
-    <div
+    
+      <div
       className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 top-0 transition-transform duration-300 ${show}`}
     >
       <Wrapper>
@@ -225,6 +230,8 @@ const nav=useNavigate();
         </Dialog>
       )}
     </div>
+    
+    
   );
 };
 

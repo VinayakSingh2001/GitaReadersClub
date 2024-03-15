@@ -10,6 +10,9 @@ import img3 from "../assets/course/Converting Stress to Smile (1).jpg";
 import img4 from "../assets/course/Gita Sutras of Life.jpg";
 import img5 from "../assets/course/Gita in Action.jpg";
 import img6 from "../assets/course/Happiness Mantra.jpg";
+import { get, getDatabase,ref } from "firebase/database";
+import { app } from "../firebase.config";
+import { toast } from "react-toastify";
 
 
 
@@ -30,63 +33,40 @@ const Courses = () => {
   };
 
   
-//   const [course,setCourse]=useState([]);
 
-//   const fetchData=async()=>{
-//     const db =getDatabase(app);
-//     const dbRef = ref(db,'Courses');
-//       try {
-//         const snapshot =await get(dbRef);
-//         const val = snapshot.val();
-//         setCourse(val);
-//         console.log(course);
-//       } catch (error) {
-//         console.log(error.message);
-//       }
-// }
-
-// useEffect(()=>{
-//   fetchData();
-//   // setCourse()
-//   console.log(course)
-// },[])
+  const [courses,setCourses] = useState([]);
+  const [loading,setloading] = useState(true);
+  useEffect(()=>{
+  const fetchData = async()=>{
+  const db = getDatabase(app);
+  const dbRef = ref(db,"Courses");
+  try {
+    const snapshot = await get(dbRef);
+  if(snapshot.exists()){
+    setCourses(snapshot.val());
+  }
+  } catch (error) {
+    toast.error("Unable to fetch Courses");
+  }
+  finally{
+    setloading(false);
+  }
   
   
-  const course = [
-    {
-      title: "Gita in Action",
-      img: img5,
-      text: "After traveling the whole world, Bhagavad Gita comes at your doorstep! Let's deep dive upon how this science uncover profound insights that resonate deeply with our day-to-day struggles and triumphs.",
-    },
-    {
-      title: "Gita Sutras for life",
-      img: img4,
-      text: "Dive into the timeless wisdom of the Gita with 'Gita Sutras for Life' – a transformative journey unlocking ancient secrets for modern living.",
-    },
-    {
-      title: "Art of Smart Work",
-      img: img1,
-      text: "Discover the Art of Smart Work – an empowering exploration of ancient strategies for mastering productivity and achieving success effortlessly",
-    },
-    {
-      title: "Converting stress to smile",
-      img: img3,
-      text: "Embark on a journey to transform stress into smiles with our course, offering practical tools and timeless wisdom to cultivate resilience, inner peace, and radiant joy.",
-    },
-    {
-      title: "Happiness Mantra",
-      img: img6,
-      text: ' Delve into the secrets of eternal joy with "Happiness Mantra," a transformative course revealing ancient wisdom and practical strategies to cultivate lasting happiness and inner fulfillment',
-    },
-    {
-      title: "Art of Harnessing Mind Power",
-      img: img2,
-      text: 'Unlock the limitless potential of your mind with "Art of Harnessing Mind Power," a transformative course guiding you to unleash inner strength, achieve clarity, and manifest your dreams with the power of your mind.',
-    },
-  ];
+  
+  
+  }
+  return ()=> fetchData();
+  },[]);
 
   return (
-    <div id="courses" className=" md:pb-40 z-0">
+    <>
+    {loading?(
+      <div className="flex flex-col items-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+    <p className="text-gray-700">Loading...</p>
+  </div>):
+      (<div id="courses" className=" md:pb-40 z-0">
       <Wrapper>
         <div className="mt-[50px] md:mt-[100px] mb-[100px] md:mb-0">
           <div className="text-[50px] font-semibold font-sans mb-5 text-center">
@@ -98,21 +78,23 @@ const Courses = () => {
             itemClass="px-[10px]"
             infinite={true} // Enable infinite scroll
           >
-            {course.map((item, index) => (
+            {courses.map((item, index) => (
               <div key={index} className="carousel-item border h-[430px]">
                 <img src={item.img} alt={item.title} />
                 <div className="carousel-content">
                   <h3 className="text-[22px] font-medium text-center py-3">
                     {item.title}
                   </h3>
-                  <p className="text-center px-2 text-lg">{item.text}</p>
+                  <p className="text-center px-2 text-lg">{item.shortdesc}</p>
                 </div>
               </div>
             ))}
           </Carousel>
         </div>
       </Wrapper>
-    </div>
+    </div>)
+  }
+   </> 
   );
 };
 
