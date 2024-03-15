@@ -1,5 +1,3 @@
-
-// export default Temp;
 import React, { useState, useEffect } from 'react';
 import Box from "@mui/material/Box";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -109,8 +107,8 @@ function EbookDetail() {
           e.preventDefault(); // Prevents the default action of expanding/collapsing the node
           handleArticleSelect(chapterId, articleId);
         }}
-        // Set the `onLabelClick` prop to prevent the default action of expanding/collapsing the node
-        selected={openArticles[chapterId] === articleId} // Set the `selected` prop to control the expanded state of the node
+        // Set the onLabelClick prop to prevent the default action of expanding/collapsing the node
+        selected={openArticles[chapterId] === articleId} // Set the selected prop to control the expanded state of the node
       >
         {selectedArticle && selectedArticle.QuestionId && renderQuestionDropdown(chapterId, articleId, selectedArticle.QuestionId)}
       </TreeItem>
@@ -186,7 +184,3 @@ function EbookDetail() {
 }
 
 export default EbookDetail;
-
-
-
-
