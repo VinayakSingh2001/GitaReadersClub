@@ -8,26 +8,51 @@ import { toast } from "react-toastify";
 const CourseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState([]);
+  const [EnrolledCourses,setEnrolledCourses] = useState([]);
   console.log(course, localStorage.getItem("CourseId"));
 
-  const fetchData = async () => {
-    const db = getDatabase(app);
-    const dbRef = ref(db, "Courses");
-    try {
-      const snapshot = await get(dbRef);
-      const val = snapshot.val();
-      setCourse(val[localStorage.getItem("CourseId")]);
-      console.log(course);
-    } catch (error) {
-      console.log(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
+  
 
   useEffect(() => {
-    fetchData();
-    // setCourse()
+    const fetchData = async () => {
+      const db = getDatabase(app);
+      const dbRef = ref(db, "Courses");
+      try {
+        const snapshot = await get(dbRef);
+        const val = snapshot.val();
+        setCourse(val[localStorage.getItem("CourseId")]);
+        console.log(course);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchEnrolledCourses = async()=>{
+      const user = auth.currentUser;
+      if(user){
+        try {
+          const db = getDatabase(app);
+          const dbRef = ref(db,`EnrolledCourse/${user.uid}`);
+        
+          const data = await get(dbRef);
+          if(data.exists()){
+          setEnrolledCourses(Object.keys(data.val()));
+          }
+        } catch (error) {
+          toast.error(error.message)
+        }
+       
+      }
+      
+    };
+    const fetchDataAndEnrolledCourses = async () => {
+      await fetchData();
+      await fetchEnrolledCourses();
+    };
+    fetchDataAndEnrolledCourses(); 
     console.log(course);
   }, []);
 
@@ -113,26 +138,36 @@ const CourseDetails = () => {
               {/* Speaker Section */}
               <div className="mb-4">
                 <p className="text-2xl font-extrabold mb-4 text-yellow-300 transition duration-300">Speaker:</p>
-                <div className="flex items-center">
+                <div className="flex  items-center">
                   <div dangerouslySetInnerHTML={{ __html: course.speakers }} />
                 </div>
               </div>
 
               {/* Enroll Button */}
-              <div>
-                {course.status ? (
-                  <button
-                    className="bg-green-500 text-white px-4 py-2 rounded-md"
-                    onClick={handleClick}
-                  >
-                    Enroll Now
-                  </button>
-                ) : (
-                  <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-                    Coming Soon...
-                  </button>
-                )}
-              </div>
+              <div className="flex items-center justify-center">
+     {course.status ? (
+       EnrolledCourses ?(
+       EnrolledCourses.includes(localStorage.getItem("CourseId"))?(
+      <></>
+     ):(
+      <button
+      className="bg-green-500 text-white px-4 py-2 rounded-md"
+      onClick={handleClick}
+    >
+      Enroll Now
+    </button>
+     )
+     ):(
+      <>notEnrolled</>
+     )
+     
+  ) : (
+    <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+      Coming Soon...
+    </button>
+  )}
+</div>
+
             </div>
           </Wrapper>
           {/* Course Image */}

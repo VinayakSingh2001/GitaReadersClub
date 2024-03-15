@@ -6,35 +6,43 @@ import logo from '../assets/logo22@3x-8.png';
 import { toast } from 'react-toastify';
 
 export default function Community() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+    
   // const [currentTime, setCurrentTime] = useState("");
 
-  const fetchData = async () => {
-    try {
-      const db = getDatabase(app);
-      const dbRef = ref(db, 'community/message');
-      const snapshot = await get(dbRef);
-      if (snapshot.exists()) {
-        setPosts(Object.values(snapshot.val()).reverse()); // Reverse the order of posts
-      } else {
-        // alert('No data available');
-        toast.success("No data available")
-      }
-    }
-     catch (error) {
-      // console.error('Error fetching data:', error);
-      // alert('Error fetching data');
-      toast.error("Error fetching data");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    const fetchData = async () => {
+        try {
+          const db = getDatabase(app);
+          const dbRef = ref(db, 'community');
+          const snapshot = await get(dbRef);
+          let vec = [];
+        //  console.log(snapshot.val())
+           if(snapshot.exists()){
+            // console.log(snapshot.val());
+            for(let key in snapshot.val()){
+              // console.log(snapshot.val()[key]);
+              vec.push({
+                id:key,
+                message:snapshot.val()[key].message,
+                time:snapshot.val()[key].time
+              })
+            }
+            setPosts(vec.reverse());
+           }
+        }
+         catch (error) {
+          // console.error('Error fetching data:', error);
+          // alert('Error fetching data');
+          toast.error(error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      return ()=>fetchData();
   }, []); // empty dependency array to run the effect only once when the component mounts
 
   return (
