@@ -43,10 +43,14 @@ export default function Community() {
       <h1 className="text-gray-1000 text-3xl font-bold mb-6">Notifications</h1>
 
       {loading ? (
-        <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
-          <p className="text-gray-700">Loading...</p>
+        <div className="flex justify-center items-center h-screen">
+        <div className="flex flex-col items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+            <div className="">
+                <p className="text-gray-700">Loading...</p>
+            </div>
         </div>
+    </div>
       ) : (
         <div className=" w-full py-4">
         <ul className="space-y-4">

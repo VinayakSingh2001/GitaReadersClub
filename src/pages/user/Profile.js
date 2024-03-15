@@ -129,16 +129,22 @@ const Profile = () => {
   // };
   const handleImageChange = async (event) => {
     console.log("Image selected:", event.target.files[0]); // Check if function is triggered
-
+  
     const file = event.target.files[0];
+    if (file.size / 1024 > 400) {
+      // File size is larger than 400KB, show toast message and stop the process
+      toast.warn("Selected image size exceeds 400KB limit.")
+      event.target.value="";
+      return;
+    }
+  
     const reader = new FileReader();
-
     reader.onload = async (event) => {
       const imageData = event.target.result; // Base64 string of the image data
-
+  
       const db = getDatabase();
       const uid = auth.currentUser.uid;
-
+  
       // Check if user has an existing profile photo
       const dbRef = ref(db, `user/${uid}/image`);
       try {
@@ -163,6 +169,7 @@ const Profile = () => {
           // Store the new image data in the Realtime Database under the user's node
           await set(ref(db, `user/${uid}/image`), imageData);
           console.log("Image data stored successfully");
+          setProfileImage(URL.createObjectURL(file)); // Update profile image on the front end
         } catch (storeError) {
           console.error("Error storing image data:", storeError);
         }
@@ -171,15 +178,14 @@ const Profile = () => {
       }
       setTimeout(() => {
         window.location.reload();
-      },1000);
-      
+      }, 100);
     };
-
+  
     if (file) {
       reader.readAsDataURL(file); // Read the file as a data URL (base64 string)
     }
-    
   };
+  
 
   const handleChange = async (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -270,10 +276,14 @@ const Profile = () => {
 
   if(isloading){
     return(
-      <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
-          <p className="text-gray-700">Loading...</p>
+      <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+        <div className="">
+            <p className="text-gray-700">Loading...</p>
         </div>
+    </div>
+</div>
     );
   }else{
   return (
