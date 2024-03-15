@@ -4,6 +4,7 @@ import Wrapper from "../../components/Wrapper";
 import { getDatabase,ref,get } from "firebase/database";
 import { app,auth } from "../../firebase.config";
 import { onAuthStateChanged } from "firebase/auth";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const UserCourse = () => {
 
@@ -11,7 +12,7 @@ const [encourse, setEnCourse] = useState([]);
   const [course, setCourse] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isloading,setisloading] = useState(true);
-
+const Navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       const user = auth.currentUser;
@@ -74,9 +75,14 @@ const [encourse, setEnCourse] = useState([]);
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-14 px-5 md:px-0">
           {encourse.map((item, index) => (
             <div
-              href="/product/1"
+              
               key={index}
               className="transform overflow-hidden bg-white duration-200 border hover:scale-105 cursor-pointer"
+              onClick={()=>{
+                alert(item);
+                localStorage.setItem("CourseId",item)
+                Navigate("/courseDetails");
+              }}
             >
               <img className="w-full" src={course[item].img} alt="Product Image" />
               <div className="p-4 text-black/[0.9]">

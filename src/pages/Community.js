@@ -12,29 +12,38 @@ export default function Community() {
   const [posts, setPosts] = useState([]);
   // const [currentTime, setCurrentTime] = useState("");
 
-  const fetchData = async () => {
-    try {
-      const db = getDatabase(app);
-      const dbRef = ref(db, 'community/message');
-      const snapshot = await get(dbRef);
-      if (snapshot.exists()) {
-        setPosts(Object.values(snapshot.val()).reverse()); // Reverse the order of posts
-      } else {
-        // alert('No data available');
-        toast.success("No data available")
-      }
-    }
-     catch (error) {
-      // console.error('Error fetching data:', error);
-      // alert('Error fetching data');
-      toast.error("Error fetching data");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
+  
   useEffect(() => {
-    fetchData();
+    const fetchData = async () => {
+      try {
+        const db = getDatabase(app);
+        const dbRef = ref(db, 'community/message');
+        const snapshot = await get(dbRef);
+        // alert("try")
+        console.log(snapshot.exists())
+        if (snapshot.exists()) {
+          // alert("snapshot exist")
+          setPosts(Object.values(snapshot.val()).reverse()); // Reverse the order of posts
+          console.log("snapshot existed")
+        } else {
+          toast.success("No data available")
+          console.log("no data");
+        }
+      }
+       catch (error) {
+        toast.error("Error fetching data");
+      } 
+      finally {
+        // alert("finally");
+        console.log("done")
+        setLoading(false);
+       
+      }
+    };
+
+    return () => fetchData();
+    
   }, []); // empty dependency array to run the effect only once when the component mounts
 
   return (
