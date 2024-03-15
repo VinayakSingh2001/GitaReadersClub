@@ -27,7 +27,7 @@ export default function Community() {
           setPosts(Object.values(snapshot.val()).reverse()); // Reverse the order of posts
           console.log("snapshot existed")
         } else {
-          toast.success("No data available")
+          // toast.success("No data available")
           console.log("no data");
         }
       }
