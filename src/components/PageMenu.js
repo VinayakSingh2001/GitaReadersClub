@@ -11,9 +11,9 @@ const PageMenu = () => {
             <li>
               <NavLink to="/profile">Profile</NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to="/usercourse">Courses</NavLink>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </Wrapper>
