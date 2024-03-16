@@ -4,9 +4,9 @@ import { GoDotFill } from "react-icons/go";
 
 const About = () => {
   return (
-    <div  className=" font-sans ">
+    <div className=" font-sans ">
       <Wrapper>
-        <div className="py-20  rounded-md  ">
+        <div className="py-20  rounded-md bg-slate-200 ">
           <h1 className="text-3xl md:text-4xl font-semibold lg:text-5xl text-center">
             Why should we read Gita ?
           </h1>

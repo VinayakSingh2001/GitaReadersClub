@@ -120,7 +120,7 @@ const Header = () => {
                 // Check if current route is "/"
                 const isHome = location.pathname === "/";
                 // If current route is "/" or link is "Home", render the link
-                if (isHome || link.name === "Home") {
+                if (isHome || link.name === "Home" || link.name === "Notification" || link.name === "Courses") {
                   return (
                     <li
                       className="md:ml-8 md:my-0 my-7 font-semibold font-sans"

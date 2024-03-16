@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { app,auth } from '../firebase.config';
 import { getDatabase, ref, get,remove } from 'firebase/database';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo22@3x-8.png';
+import logo from '../assets/Asset 2@3x-8 copy.png';
 import { toast } from 'react-toastify';
 
 export default function Community() {

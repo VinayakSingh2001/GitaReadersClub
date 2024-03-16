@@ -48,7 +48,7 @@ export default function Community() {
     <div className="bg-slate-100 h-screen">
       <div className="max-w-5xl mx-auto py-8   flex flex-col items-center justify-center">
         <h1 className="text-gray-1000 text-3xl font-bold mb-6">
-        Announcement
+          Notifications
         </h1>
 
         {loading ? (
