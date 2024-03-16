@@ -24,7 +24,7 @@ const Header = () => {
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
     // { name: "Donate", link: "donate" },
-    { name: "Community", link: "/community" },
+    { name: "Announcement", link: "/community" },
     // { name: "Solutions", link: "/solutions"},
   ];
   const nav = useNavigate();
