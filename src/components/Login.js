@@ -19,14 +19,14 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, seterr] = useState("");
-const Navigate = useNavigate();
+  const Navigate = useNavigate();
   const modalRef = useRef(null);
   useEffect(() => {
     const handleOutsideClick = (e) => {
       // Check if the click target is not a descendant of the modal content
       if (modalRef.current && !modalRef.current.contains(e.target)) {
-        setEmail('');
-        setPassword('');
+        setEmail("");
+        setPassword("");
         setShowModal(false);
       }
     };
@@ -97,7 +97,7 @@ const Navigate = useNavigate();
   return (
     <>
       <button
-        className="bg-pink-500 text-white mx-3 font-bold uppercase text-sm px-2 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-blue-500 text-white mx-3 font-bold uppercase text-sm  px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -112,7 +112,7 @@ const Navigate = useNavigate();
               className="relative p-4 w-full max-w-md max-h-full"
               ref={modalRef}
             >
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 rounded-[25px]  shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-center text-center justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-3xl pl-6 font-semibold text-center flex justify-center ml-auto mr-auto">
                     Login
@@ -123,7 +123,11 @@ const Navigate = useNavigate();
                       class="end-2.5 text-gray-400 bg-transparent hover:bg-red-500 hover:text-white rounded-lg 
                   text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                       data-modal-hide="authentication-modal"
-                      onClick={()=> {setEmail(''); setPassword(''); setShowModal(false)}}
+                      onClick={() => {
+                        setEmail("");
+                        setPassword("");
+                        setShowModal(false);
+                      }}
                     >
                       <svg
                         class="w-3 h-3"
@@ -184,9 +188,10 @@ const Navigate = useNavigate();
                         required
                       />
                       <div className="flex justify-end  cursor-pointer">
-                        <a 
-                          onClick={()=>{setShowModal(false);
-                          Navigate("/forgotpassword");
+                        <a
+                          onClick={() => {
+                            setShowModal(false);
+                            Navigate("/forgotpassword");
                           }}
                           className="text-right text-blue-500 font-semibold text-sm"
                         >
@@ -195,7 +200,7 @@ const Navigate = useNavigate();
                       </div>
 
                       <button
-                        className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
+                        className="bg-emerald-500 my-5 text-white active:bg-emerald-600 font-medium  text-lg px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
                         type="submit"
                         onClick={handleLogin}
                       >
@@ -213,7 +218,7 @@ const Navigate = useNavigate();
                     <div className="flex items-center justify-center mb-4">
                       <button
                         type="button"
-                        className="bg-blue-700 hover:bg-blue-800 my-5 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
+                        className="bg-[#0099FE] hover:bg-blue-800 my-5  text-white font-medium  text-lg px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 block w-full"
                         onClick={signInwithGoogle}
                       >
                         Login with Google
@@ -226,7 +231,11 @@ const Navigate = useNavigate();
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={()=> {setEmail(''); setPassword(''); setShowModal(false)}}
+                    onClick={() => {
+                      setEmail("");
+                      setPassword("");
+                      setShowModal(false);
+                    }}
                   >
                     Close
                   </button>

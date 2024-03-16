@@ -66,7 +66,7 @@ function App() {
             }
           />
           <Route
-            path="/community"
+            path="/notification"
             element={
               <Layout>
                 <Community />

@@ -3,7 +3,7 @@ import React from "react";
 const Service = ({ name, about1, about2, about3, desc, img }) => {
   return (
     <div>
-      <div className="transform overflow-hidden duration-200 border p-4 hover:scale-105 cursor-pointer">
+      <div className="transform overflow-hidden duration-200 border  p-4 hover:scale-105 rounded-md  shadow-sm cursor-pointer">
         <div className="flex justify-center ">
           <img
             className="w-60 h-60 object-cover "

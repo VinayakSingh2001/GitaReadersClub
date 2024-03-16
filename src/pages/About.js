@@ -4,10 +4,10 @@ import { GoDotFill } from "react-icons/go";
 
 const About = () => {
   return (
-    <div id="about" className=" font-sans">
+    <div  className=" font-sans ">
       <Wrapper>
-        <div className="py-20 ">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl text-center">
+        <div className="py-20  rounded-md  ">
+          <h1 className="text-3xl md:text-4xl font-semibold lg:text-5xl text-center">
             Why should we read Gita ?
           </h1>
           <div className="w-full md:w-3/4  mx-auto py-8">
@@ -17,7 +17,6 @@ const About = () => {
               and mind, God and eternity, hope and happiness.
             </p>
             <p className="text-lg md:text-xl text-left py-4">
-              
               Bhagvad Gita teaches that true wisdom lies in understanding the
               temporary nature of the material world and recognizing the eternal
               nature of the soul.

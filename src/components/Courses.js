@@ -75,7 +75,7 @@ const Courses = () => {
                 {courses.map((item, index) => (
                   <div
                     key={index}
-                    className="carousel-item border h-[500px] hover:cursor-pointer"
+                    className="carousel-item border shadow-md h-[500px]  hover:cursor-pointer"
                     onClick={() => {
                       localStorage.setItem("CourseId", index);
                       Navigate("/courseDetails");

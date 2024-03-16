@@ -94,7 +94,7 @@ const CourseDetails = () => {
                 <img
                   src={course.img}
                   alt="Course"
-                  className=" rounded-lg h-[300px] md:h-[600px] w-full object-cover"
+                  className=" rounded-lg h-[] md:h-[600px] w-full object-cover"
                 />
               </div>
 
