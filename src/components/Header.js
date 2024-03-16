@@ -16,7 +16,7 @@ const Header = () => {
   const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
   const [data, setData] = useState([]);
-  const [loading,setloading] = useState(true);
+  const [loading, setloading] = useState(true);
   const Links = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "about" },
@@ -27,7 +27,7 @@ const Header = () => {
     { name: "Community", link: "/community" },
     // { name: "Solutions", link: "/solutions"},
   ];
-const nav=useNavigate();
+  const nav = useNavigate();
   const controlNavBar = () => {
     if (window.scrollY > 0) {
       if (window.scrollY > lastScrolly) {
@@ -50,18 +50,18 @@ const nav=useNavigate();
       try {
         const snapshot = await get(dbRef);
         const val = snapshot.val();
-        if(val && val.image){
+        if (val && val.image) {
           setData(val.image);
         } else {
-          setData("https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png");
+          setData(
+            "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+          );
         }
-        
       } catch (error) {
         // alert(error.message);
-      }
-      finally{
+      } finally {
         setloading(false);
-            }
+      }
     };
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -99,8 +99,7 @@ const nav=useNavigate();
   };
 
   return (
-    
-      <div
+    <div
       className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 top-0 transition-transform duration-300 ${show}`}
     >
       <Wrapper>
@@ -169,22 +168,20 @@ const nav=useNavigate();
               <Login />
             ) : (
               <>
-                
                 {/* <a href="/profile">{data}</a> */}
                 <div className="flex gap-4 items-center">
-                <button
-      onClick={()=>nav("/profile")}
-      className="w-10 h-10 rounded-full overflow-hidden focus:outline-none"
-    >
-      <img
-        src={data}
-        alt="Profile"
-        className="w-full h-full object-cover"
-      />
-    </button>
-    <Logout/>
+                  <button
+                    onClick={() => nav("/profile")}
+                    className="w-10 h-10 rounded-full overflow-hidden focus:outline-none"
+                  >
+                    <img
+                      src={data}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                  <Logout />
                 </div>
-                
               </>
             )}
           </div>
@@ -230,8 +227,6 @@ const nav=useNavigate();
         </Dialog>
       )}
     </div>
-    
-    
   );
 };
 
