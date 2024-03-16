@@ -54,12 +54,12 @@ const Courses = () => {
 
   return (
     <>
-      {loading ? (
+      {/* {loading ? (
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
           <p className="text-gray-700">Loading...</p>
         </div>
-      ) : (
+      ) : ( */}
         <div id="courses" className=" md:pb-40 z-0">
           <Wrapper>
             <div className="mt-[50px] md:mt-[100px] mb-[100px] md:mb-0">
@@ -100,7 +100,7 @@ const Courses = () => {
             </div>
           </Wrapper>
         </div>
-      )}
+      {/* )} */}
     </>
   );
 };
