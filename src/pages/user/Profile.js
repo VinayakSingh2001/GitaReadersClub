@@ -42,7 +42,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(
     "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
   );
-  const [profileimg,setProfileimg] = useState();
+  
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -68,7 +68,7 @@ const Profile = () => {
 
     try {
       await remove(imageRef);
-      toast.success("Profile image deleted successfully!");
+      //toast.success("Profile image deleted successfully!");
       setProfileImage("https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"); // Clear the profile image from the UI
     } catch (error) {
       console.error("Error deleting profile image:", error);
@@ -77,48 +77,7 @@ const Profile = () => {
     window.location.reload();
   };
 
-  // const handleImageChange = async (event) => {
-  //   console.log("Image selected:", event.target.files[0]); // Check if function is triggered
-
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onload = async (event) => {
-  //     const imageData = event.target.result; // Base64 string of the image data
-
-  //     const db = getDatabase();
-  //     const uid = auth.currentUser.uid;
-
-  //     // Check if user has an existing profile photo
-  //     const dbRef = ref(db, `user/${uid}/image`);
-  //     try {
-  //       const snapshot = await get(dbRef);
-  //       if (snapshot.exists()) {
-  //         console.log("Existing profile photo found. Deleting...");
-  //         // Delete existing profile photo from database
-  //         await set(ref(db, `user/${uid}/image`), null);
-  //         console.log("Existing profile photo deleted successfully.");
-  //         try {
-  //           console.log("Storing new image data...");
-  //           // Store the new image data in the Realtime Database under the user's node
-  //           await set(ref(db, `user/${uid}/image`), imageData);
-  //           console.log('Image data stored successfully');
-  //         } catch (error) {
-  //           console.error('Error storing image data:', error);
-  //         }
-  //       } else {
-  //         console.log("No existing profile photo found.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking for existing profile photo:", error);
-  //     }
-
-  //   };
-
-  //   if (file) {
-  //     reader.readAsDataURL(file); // Read the file as a data URL (base64 string)
-  //   }
-  // };
+ 
   const handleImageChange = async (event) => {
     console.log("Image selected:", event.target.files[0]); // Check if function is triggered
   
@@ -377,7 +336,7 @@ const Profile = () => {
                         <div className="mb-4">
                           {!isEditing ? (
                             <p className="block text-blue text-md font-semibold mb-2">
-                              Phone Number: {data.mobile}
+                              Phone Number: {profile.mobile}
                             </p>
                           ) : (
                             <label
@@ -407,7 +366,7 @@ const Profile = () => {
                       <div className="mb-4">
                         {!isEditing ? (
                           <p className="block text-blue text-md font-semibold mb-2">
-                            DOB: {data.dob}
+                            DOB: {profile.dob}
                           </p>
                         ) : (
                           <label
@@ -436,7 +395,7 @@ const Profile = () => {
                       <div className="mb-4">
                         {!isEditing ? (
                           <p className="block text-blue text-md font-semibold mb-2">
-                            Gender: {data.gender}
+                            Gender: {profile.gender}
                           </p>
                         ) : (
                           <label
@@ -468,7 +427,7 @@ const Profile = () => {
                       <div className="mb-6">
                         {!isEditing ? (
                           <p className="block text-blue text-md font-semibold mb-2">
-                            Bio: {data.message}
+                            Bio: {profile.message}
                           </p>
                         ) : (
                           <label
