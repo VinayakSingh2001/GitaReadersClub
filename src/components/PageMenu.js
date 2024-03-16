@@ -14,9 +14,6 @@ const PageMenu = () => {
             <li>
               <NavLink to="/usercourse">Courses</NavLink>
             </li>
-            <li>
-              <NavLink to="/users">Activity</NavLink>
-            </li>
           </ul>
         </nav>
       </Wrapper>

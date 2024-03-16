@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { app } from "../firebase.config";
 import { getDatabase, ref, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo22@3x-8.png";
+import logo from "../assets/Asset 2@3x-8 copy.png";
 import { toast } from "react-toastify";
 
 export default function Community() {
@@ -45,10 +45,10 @@ export default function Community() {
   }, []); // empty dependency array to run the effect only once when the component mounts
 
   return (
-    <div className="bg-blue-200 h-screen">
+    <div className="bg-slate-100 h-screen">
       <div className="max-w-5xl mx-auto py-8   flex flex-col items-center justify-center">
         <h1 className="text-gray-1000 text-3xl font-bold mb-6">
-        Announcement
+          Notifications
         </h1>
 
         {loading ? (
@@ -72,10 +72,10 @@ export default function Community() {
                     <img
                       src={logo}
                       alt="Logo"
-                      className="h-[40px] md:h-[50px] mr-4 rounded-full"
+                      className="h-[40px] md:h-[50px] mr-4 p-2 rounded-full"
                     />
 
-                    <span className="text-lg font-semibold max-w-full break-all">
+                    <span className="text-lg font-medium  max-w-full break-all">
                       {item.message}
                     </span>
                   </div>

@@ -77,13 +77,13 @@ const CoursePage = () => {
                         {item.shortdesc}
                       </p>
                     </div>
-                    <div className="absolute right-0 bottom-0 mt-2">
+                    <div className="absolute right-0 bottom-0 mt-2 w-full">
                       {item.status ? (
-                        <div className="rounded bg-blue-500 text-white px-3 py-1 hover:bg-blue-600">
+                        <div className=" bg-blue-500  text-white px-3 py-1 hover:bg-blue-600">
                           Enroll Now
                         </div>
                       ) : (
-                        <div className="rounded bg-blue-500 text-white px-3 py-1 hover:bg-blue-600">
+                        <div className=" bg-blue-500 w-full text-white px-3 py-1 hover:bg-blue-600">
                           Coming Soon ...
                         </div>
                       )}

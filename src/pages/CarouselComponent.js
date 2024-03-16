@@ -64,9 +64,9 @@ const CarouselComponent = () => {
     nextArrow: <NextArrow />,
   };
   return (
-    <div className="py-5 md:pt-10 ">
+    <div className="py-5 md:pt-10  ">
       <Wrapper>
-        <div className="relative bg-black text-white text-[20px] py-5  max-w-[1360px]">
+        <div className="relative bg-black text-white rounded-lg text-[20px] py-5  max-w-[1360px]">
           <div className="text-[40px] font-bold text-center mb-20 text-cyan">
             What do Eminent Personality say about Gita?
           </div>

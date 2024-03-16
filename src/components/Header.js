@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "./Wrapper";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import Login from "./Login";
 import Logout from "./Logout";
-import logo from "../assets/logo22@3x-8.png";
+import logo from "../assets/Asset 2@3x-8.png";
 import { auth, app } from "../firebase.config";
 import { getDatabase, ref, set, get } from "firebase/database";
 import { ToastContainer } from "react-toastify";
@@ -14,7 +14,6 @@ const Header = () => {
   
   const [showMenu, setShowMenu] = useState(false);
   const [show, setShow] = useState("translate-y-200");
-  const [lastScrolly, setLastScrolly] = useState(0);
   const [loggedin, setLoggedin] = useState("");
   const [data, setData] = useState([]);
   const [loading, setloading] = useState(true);
@@ -25,22 +24,12 @@ const Header = () => {
     { name: "Contact", link: "contact" },
     { name: "Speakers", link: "speakers" },
     // { name: "Donate", link: "donate" },
-    { name: "Announcement", link: "/community" },
+    { name: "Notification", link: "/notification" },
     // { name: "Solutions", link: "/solutions"},
   ];
+
+  const location = useLocation();
   const nav = useNavigate();
-  const controlNavBar = () => {
-    if (window.scrollY > 0) {
-      if (window.scrollY > lastScrolly) {
-        setShow("-translate-y-full");
-      } else {
-        setShow("shadow-sm");
-      }
-    } else {
-      setShow("translate-y-200");
-    }
-    setLastScrolly(window.scrollY);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,12 +71,6 @@ const Header = () => {
   }, []);
 
   //
-  useEffect(() => {
-    window.addEventListener("scroll", controlNavBar);
-    return () => {
-      window.removeEventListener("scroll", controlNavBar);
-    };
-  }, [lastScrolly]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -100,9 +83,7 @@ const Header = () => {
   };
 
   return (
-    <div
-      className={`w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 top-0 transition-transform duration-300 ${show}`}
-    >
+    <div className="w-full h-[50px] md:h-[70px] bg-white flex items-center justify-between z-20 top-0 transition-transform duration-300">
       <Wrapper>
         <div className="flex items-center justify-between">
           <div className="font-semibold text-white text-xl cursor-pointer flex items-center gap-1">
@@ -136,32 +117,40 @@ const Header = () => {
                 showMenu ? "" : "hidden"
               }`}
             >
-              {Links.map((link) => (
-                <li
-                  className="md:ml-8 md:my-0 my-7 font-semibold font-sans"
-                  key={link.name}
-                >
-                  {link.link.startsWith("/") ? (
-                    <Link
-                      to={link.link}
-                      className="text-gray-500 font-semibold cursor-pointer hover:text-blue-400 duration-500"
+              {Links.map((link) => {
+                // Check if current route is "/"
+                const isHome = location.pathname === "/";
+                // If current route is "/" or link is "Home", render the link
+                if (isHome || link.name === "Home" || link.name === "Notification" || link.name === "Courses") {
+                  return (
+                    <li
+                      className="md:ml-8 md:my-0 my-7 font-semibold font-sans"
+                      key={link.name}
                     >
-                      {link.name}
-                    </Link>
-                  ) : (
-                    <ScrollLink
-                      to={link.link}
-                      spy={true}
-                      smooth={true}
-                      duration={1000}
-                      className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
-                      onClick={closeMenu}
-                    >
-                      {link.name}
-                    </ScrollLink>
-                  )}
-                </li>
-              ))}
+                      {link.link.startsWith("/") ? (
+                        <Link
+                          to={link.link}
+                          className="text-gray-500 font-semibold cursor-pointer hover:text-blue-400 duration-500"
+                        >
+                          {link.name}
+                        </Link>
+                      ) : (
+                        <ScrollLink
+                          to={link.link}
+                          spy={true}
+                          smooth={true}
+                          duration={1000}
+                          className="text-gray-500 cursor-pointer hover:text-blue-400 duration-500"
+                          onClick={closeMenu}
+                        >
+                          {link.name}
+                        </ScrollLink>
+                      )}
+                    </li>
+                  );
+                }
+                return null;
+              })}
             </ul>
           </div>
           <div className=" flex gap-4">

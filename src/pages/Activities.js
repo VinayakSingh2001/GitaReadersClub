@@ -11,7 +11,7 @@ const Activities = () => {
             <div className="transform overflow-hidden duration-200 p-4 hover:scale-105 cursor-pointer">
               <div className="flex justify-center ">
                 <img
-                  className="w-60 h-60 object-cover rounded-full "
+                  className="w-60 h-60 object-cover rounded-full shadow-2xl"
                   src="https://www.vedantausa.org/wp-content/uploads/2022/11/retreat_class.jpg"
                   alt="Product Image"
                 />
@@ -31,7 +31,7 @@ const Activities = () => {
             <div className="transform overflow-hidden duration-200 p-4 hover:scale-105 cursor-pointer">
               <div className="flex justify-center ">
                 <img
-                  className="w-60 h-60 object-cover rounded-full"
+                  className="w-60 h-60 object-cover rounded-full shadow-2xl"
                   src="https://img.freepik.com/premium-photo/serene-meditation-session-rishikesh-ashrams_1057859-472.jpg"
                   alt="Product Image"
                 />
@@ -51,7 +51,7 @@ const Activities = () => {
             <div className="transform overflow-hidden duration-200 p-4 hover:scale-105 cursor-pointer">
               <div className="flex justify-center ">
                 <img
-                  className="w-60 h-60 object-cover rounded-full"
+                  className="w-60 h-60 object-cover rounded-full shadow-2xl"
                   src="https://niranjanaswami.com/wp-content/uploads/2018/08/analogies-for-preaching-ebook-2-web.jpg"
                   alt="Product Image"
                 />
