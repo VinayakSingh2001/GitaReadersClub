@@ -77,8 +77,10 @@ function App() {
             path="/profile"
             element={
               <Layout>
-                <Profile />
+<Profile />
               </Layout>
+                
+              
             }
           />
           <Route

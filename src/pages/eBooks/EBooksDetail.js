@@ -19,6 +19,7 @@ function EbookDetail() {
   const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [openArticles, setOpenArticles] = useState({});
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isloading,setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -33,6 +34,9 @@ function EbookDetail() {
         }
       } catch (error) {
         console.error(error);
+      }
+      finally{
+        setIsLoading(false);
       }
     };
 
@@ -188,86 +192,96 @@ function EbookDetail() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row">
-        <div className="lg:w-1/4 h-screen mb-4 lg:mb-0">
-          <Box sx={{ width: 300, flexGrow: 1 }}>
-            <TreeView
-              aria-label="book navigator"
-              defaultCollapseIcon={<ExpandMoreIcon />}
-              defaultExpandIcon={<ChevronRightIcon />}
-            >
-              {books &&
-                Object.keys(books).map((bookId) => (
-                  <TreeItem
-                    key={bookId}
-                    nodeId={bookId}
-                    label={
-                      <div className="tree-node">
-                        <span className="node-icon">📖</span>
-                        <span className="node-label">{books[bookId].Title}</span>
-                      </div>
-                    }
-                    onClick={() => handleBookSelect(bookId)}
-                    selected={selectedBook && selectedBook.id === bookId}
-                  >
-                    {selectedBook && renderChapterTree()}
-                  </TreeItem>
-                ))}
-            </TreeView>
-          </Box>
+      {isloading ? (
+        <div className="flex justify-center items-center h-screen">
+          <div className="flex flex-col items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+            <p className="text-gray-700">Loading...</p>
+          </div>
         </div>
-        <div className="lg:w-3/4 pl-0 lg:pl-4">
-          {selectedArticle && selectedArticle.Data && !selectedQuestions && (
-            <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
-              <p className="text-lg">{selectedArticle.Data}</p>
-            </div>
-          )}
-          {selectedQuestions &&
-            Object.keys(selectedQuestions).map((selectedQuestionId, index) => {
-              const selectedQuestionDetails =
-                selectedQuestions[selectedQuestionId];
-              return (
-                <div
-                  key={index}
-                  className="bg-gray-100 p-6 rounded-lg shadow-md mb-4"
-                >
-                  <p className="text-lg">{selectedQuestionDetails.Question}</p>
-                  <ul className="list-disc pl-6">
-                    {Object.entries(selectedQuestionDetails.Options).map(
-                      ([optionId, optionText]) => (
-                        <ol key={optionId} className="mb-2">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={selectedAnswer === optionId +selectedArticleId+ selectedChapterId+index}
-                                onChange={() => handleChange(optionId +selectedArticleId+selectedChapterId+index )}
-                              />
-                            }
-                            label={optionText}
-                          />
-                        </ol>
-                      )
-                    )}
-                  </ul>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() =>
-                      handleAnswerSubmit(
-                        selectedQuestionId,
-                        selectedQuestionDetails.Answer
-                      )
-                    }
+      ) : (
+        <div className="flex flex-col lg:flex-row">
+          <div className="lg:w-1/4 h-screen mb-4 lg:mb-0">
+            <Box sx={{ width: 300, flexGrow: 1 }}>
+              <TreeView
+                aria-label="book navigator"
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+              >
+                {books &&
+                  Object.keys(books).map((bookId) => (
+                    <TreeItem
+                      key={bookId}
+                      nodeId={bookId}
+                      label={
+                        <div className="tree-node">
+                          <span className="node-icon">📖</span>
+                          <span className="node-label">{books[bookId].Title}</span>
+                        </div>
+                      }
+                      onClick={() => handleBookSelect(bookId)}
+                      selected={selectedBook && selectedBook.id === bookId}
+                    >
+                      {selectedBook && renderChapterTree()}
+                    </TreeItem>
+                  ))}
+              </TreeView>
+            </Box>
+          </div>
+          <div className="lg:w-3/4 pl-0 lg:pl-4">
+            {selectedArticle && selectedArticle.Data && !selectedQuestions && (
+              <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
+                <p className="text-lg">{selectedArticle.Data}</p>
+              </div>
+            )}
+            {selectedQuestions &&
+              Object.keys(selectedQuestions).map((selectedQuestionId, index) => {
+                const selectedQuestionDetails =
+                  selectedQuestions[selectedQuestionId];
+                return (
+                  <div
+                    key={index}
+                    className="bg-gray-100 p-6 rounded-lg shadow-md mb-4"
                   >
-                    Submit
-                  </Button>
-                </div>
-              );
-            })}
+                    <p className="text-lg">{selectedQuestionDetails.Question}</p>
+                    <ul className="list-disc pl-6">
+                      {Object.entries(selectedQuestionDetails.Options).map(
+                        ([optionId, optionText]) => (
+                          <ol key={optionId} className="mb-2">
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={selectedAnswer === optionId +selectedArticleId+ selectedChapterId+index}
+                                  onChange={() => handleChange(optionId +selectedArticleId+selectedChapterId+index )}
+                                />
+                              }
+                              label={optionText}
+                            />
+                          </ol>
+                        )
+                      )}
+                    </ul>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        handleAnswerSubmit(
+                          selectedQuestionId,
+                          selectedQuestionDetails.Answer
+                        )
+                      }
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                );
+              })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
+  
 }
 
 export default EbookDetail;

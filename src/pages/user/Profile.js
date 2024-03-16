@@ -21,7 +21,6 @@ import {
 } from "firebase/storage";
 import { toast } from "react-toastify";
 import Logout from "../../components/Logout";
-
 const Profile = () => {
   const [profile, setProfile] = useState({
     name: "",
@@ -34,23 +33,7 @@ const Profile = () => {
   const [email, setEmail] = useState("");
 
   const handleInputChange = () => {};
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [profileImage, setProfileImage] = useState(
-  //   "https://via.placeholder.com/150"
-  // );
-
-  // const handleEditToggle = () => {
-  //   setIsEditing(!isEditing);
-  // };
-
-  // const handleCancelEdit = () => {
-  //   setIsEditing(false);
-  // };
-
-  // const handleImageChange = (event) => {
-  //   setProfileImage(URL.createObjectURL(event.target.files[0]));
-  // };
-  // const handleChange = () => {};
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isloading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -58,13 +41,22 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(
     "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
   );
+  
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
 
   const handleCancelEdit = () => {
+    setProfile({
+      name: data.name,
+      mobile: data.mobile,
+      message: data.message,
+      dob: data.dob,
+      gender: data.gender,
+    });
     setIsEditing(false);
+    
   };
 
   const handleDeleteImage = async (e) => {
@@ -75,8 +67,8 @@ const Profile = () => {
 
     try {
       await remove(imageRef);
-      toast.success("Profile image deleted successfully!");
-      setProfileImage("https://via.placeholder.com/150"); // Clear the profile image from the UI
+      //toast.success("Profile image deleted successfully!");
+      setProfileImage("https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"); // Clear the profile image from the UI
     } catch (error) {
       console.error("Error deleting profile image:", error);
       toast.error("Failed to delete profile image. Please try again.");
@@ -84,48 +76,7 @@ const Profile = () => {
     window.location.reload();
   };
 
-  // const handleImageChange = async (event) => {
-  //   console.log("Image selected:", event.target.files[0]); // Check if function is triggered
-
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onload = async (event) => {
-  //     const imageData = event.target.result; // Base64 string of the image data
-
-  //     const db = getDatabase();
-  //     const uid = auth.currentUser.uid;
-
-  //     // Check if user has an existing profile photo
-  //     const dbRef = ref(db, `user/${uid}/image`);
-  //     try {
-  //       const snapshot = await get(dbRef);
-  //       if (snapshot.exists()) {
-  //         console.log("Existing profile photo found. Deleting...");
-  //         // Delete existing profile photo from database
-  //         await set(ref(db, `user/${uid}/image`), null);
-  //         console.log("Existing profile photo deleted successfully.");
-  //         try {
-  //           console.log("Storing new image data...");
-  //           // Store the new image data in the Realtime Database under the user's node
-  //           await set(ref(db, `user/${uid}/image`), imageData);
-  //           console.log('Image data stored successfully');
-  //         } catch (error) {
-  //           console.error('Error storing image data:', error);
-  //         }
-  //       } else {
-  //         console.log("No existing profile photo found.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error checking for existing profile photo:", error);
-  //     }
-
-  //   };
-
-  //   if (file) {
-  //     reader.readAsDataURL(file); // Read the file as a data URL (base64 string)
-  //   }
-  // };
+ 
   const handleImageChange = async (event) => {
     console.log("Image selected:", event.target.files[0]); // Check if function is triggered
 
@@ -169,6 +120,7 @@ const Profile = () => {
           await set(ref(db, `user/${uid}/image`), imageData);
           console.log("Image data stored successfully");
           setProfileImage(URL.createObjectURL(file)); // Update profile image on the front end
+          
         } catch (storeError) {
           console.error("Error storing image data:", storeError);
         }
@@ -177,12 +129,13 @@ const Profile = () => {
       }
       setTimeout(() => {
         window.location.reload();
-      }, 100);
+      }, 10);
     };
 
     if (file) {
       reader.readAsDataURL(file); // Read the file as a data URL (base64 string)
     }
+    
   };
 
   const handleChange = async (e) => {
@@ -195,6 +148,12 @@ const Profile = () => {
       toast.error("all field requiered");
       return;
     }
+    const mobileRegex = /^\d{10}$/;
+        if (!profile.mobile.match(mobileRegex)) {
+            toast.error("Please enter a valid 10-digit mobile number");
+            return;
+        }
+       
     console.log("i am out");
     const user = auth.currentUser;
     const db = getDatabase(app);
@@ -209,15 +168,16 @@ const Profile = () => {
       toast.error("Failed to update profile. Please try again.");
     }
     // }
-    setProfile({
-      name: "",
-      mobile: "",
-      message: "",
-      dob: "",
-      gender: "",
-    });
+
+    // setProfile({
+    //   name: "",
+    //   mobile: "",
+    //   message: "",
+    //   dob: "",
+    //   gender: "",
+    // });
     setIsEditing(false);
-    window.location.reload();
+    
   };
   useEffect(() => {
     // Authentication state listener
@@ -318,107 +278,104 @@ const Profile = () => {
                             </label>
                           </div>
 
-                          <button
-                            onClick={handleDeleteImage}
-                            className="bg-blue-500 hover:bg-blue-700 w-full text-white font-medium py-2 px-4 rounded"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </div>
-
-                  <Wrapper className="flex flex-col md:flex-row gap-[50px] pt-12 items-center justify-center item-center">
-                    <form
-                      className="gap-6  rounded px-8 pt-6 pb-8 mb-4"
-                      method="POST"
-                    >
-                      <div className=" flex-col md:gap-5">
-                        <div className="mb-4">
-                          {!isEditing ? (
-                            <label
-                              className="block text-blue text-md font-semibold mb-2"
-                              htmlFor="name"
-                            >
-                              Name:- {profile.name}
-                            </label>
-                          ) : (
-                            <label
-                              className="block text-blue text-md font-semibold mb-2"
-                              htmlFor="name"
-                            >
-                              Name
-                            </label>
-                          )}
-                          {isEditing ? (
-                            <input
-                              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                              id="name"
-                              name="name"
-                              type="text"
-                              placeholder="Enter your name"
-                              value={profile.name}
-                              onChange={handleChange}
-                              required
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div className="mb-4">
-                          {!isEditing ? (
-                            <label
-                              className="block text-blue text-md font-semibold mb-2"
-                              htmlFor="email"
-                            >
-                              Email:- {email}
-                            </label>
-                          ) : null}
-                        </div>
-                        <div className="mb-4">
-                          {!isEditing ? (
-                            <label
-                              className="block text-blue text-md font-semibold mb-2"
-                              htmlFor="phone"
-                            >
-                              Phone Number:- {data.mobile}
-                            </label>
-                          ) : (
-                            <label
-                              className="block text-blue text-md font-bold mb-2"
-                              htmlFor="phone"
-                            >
-                              Phone Number
-                            </label>
-                          )}
-                          {isEditing ? (
-                            <input
-                              className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                              id="mobile"
-                              name="mobile"
-                              type="text"
-                              placeholder="Enter your phone number"
-                              value={profile.mobile}
-                              onChange={handleChange}
-                              required
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </div>
+                        <button
+                          onClick={handleDeleteImage}
+                          className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded"
+                        >
+                          Remove
+                        </button>
                       </div>
-
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+ 
+                <Wrapper className="flex flex-col md:flex-row gap-[50px] pt-12 items-center justify-center item-center">
+                  <form
+                    className="gap-6  rounded px-8 pt-6 pb-8 mb-4"
+                    method="POST"
+                  >
+                    <div className=" flex-col md:gap-5">
                       <div className="mb-4">
                         {!isEditing ? (
                           <label
                             className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="dob"
+                            htmlFor="name"
                           >
-                            DOB:- {data.dob}
+                            Name:- {profile.name}
                           </label>
+                        ) : (
+                          <label
+                            className="block text-blue text-md font-semibold mb-2"
+                            htmlFor="name"
+                          >
+                            Name
+                          </label>
+                        )}
+                        {isEditing ? (
+                          <input
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="name"
+                            name="name"
+                            type="text"
+                            placeholder="Enter your name"
+                            value={profile.name}
+                            onChange={handleChange}
+                            required
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        {!isEditing ? (
+                          <label
+                            className="block text-blue text-md font-semibold mb-2"
+                            htmlFor="email"
+                          >
+                            Email:- {email}
+                          </label>
+                        ) : null}
+                      </div>
+                      <div className="mb-4">
+                        {!isEditing ? (
+                          <label
+                            className="block text-blue text-md font-semibold mb-2"
+                            htmlFor="phone"
+                          >
+                            Phone Number:- {profile.mobile}
+                          </label>
+                        ) : (
+                          <label
+                            className="block text-blue text-md font-bold mb-2"
+                            htmlFor="phone"
+                          >
+                            Phone Number
+                          </label>
+                        )}
+                        {isEditing ? (
+                          <input
+                            className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="mobile"
+                            name="mobile"
+                            type="text"
+                            placeholder="Enter your phone number"
+                            value={profile.mobile}
+                            onChange={handleChange}
+                            required
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+
+                      <div className="mb-4">
+                        {!isEditing ? (
+                          <p className="block text-blue text-md font-semibold mb-2">
+                            DOB: {profile.dob}
+                          </p>
                         ) : (
                           <label
                             className="block text-blue text-md font-bold mb-2"
@@ -443,49 +400,46 @@ const Profile = () => {
                         )}
                       </div>
 
-                      <div className="mb-4">
-                        {!isEditing ? (
-                          <label
-                            className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="gender"
-                          >
-                            Gender:- {data.gender}
-                          </label>
-                        ) : (
-                          <label
-                            className="block text-blue text-md font-bold mb-2"
-                            htmlFor="gender"
-                          >
-                            Gender
-                          </label>
-                        )}
-                        {isEditing ? (
-                          <select
-                            className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="gender"
-                            name="gender"
-                            value={profile.gender}
-                            onChange={handleChange}
-                            required
-                          >
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                          </select>
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                    <div className="mb-4">
+                      {!isEditing ? (
+                        <label
+                          className="block text-blue text-md font-semibold mb-2"
+                          htmlFor="gender"
+                        >
+                          Gender:- {profile.gender}
+                        </label>
+                      ) : (
+                        <label
+                          className="block text-blue text-md font-bold mb-2"
+                          htmlFor="gender"
+                        >
+                          Gender
+                        </label>
+                      )}
+                      {isEditing ? (
+                        <select
+                          className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="gender"
+                          name="gender"
+                          value={profile.gender}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      ) : (
+                        ""
+                      )}
+                    </div>
 
                       <div className="mb-6">
                         {!isEditing ? (
-                          <label
-                            className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="message"
-                          >
-                            Bio:-{data.message}
-                          </label>
+                          <p className="block text-blue text-md font-semibold mb-2">
+                            Bio: {profile.message}
+                          </p>
                         ) : (
                           <label
                             className="block text-blue text-md font-semibold mb-2"

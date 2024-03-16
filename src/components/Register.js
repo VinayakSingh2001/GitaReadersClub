@@ -199,9 +199,9 @@ export default function Register() {
   
       // Step 5: Reload the page or navigate to a new page.
       // Consider doing this after a slight delay to ensure all operations have completed.
-      setTimeout(() => {
-        window.location.reload(); // or use navigate('/') for a smoother experience with routing libraries like React Router.
-      }, 10); // Adjust delay as necessary.
+      // setTimeout(() => {
+      //   window.location.reload(); // or use navigate('/') for a smoother experience with routing libraries like React Router.
+      // }, 10); // Adjust delay as necessary.
   
     } catch (error) {
       // Handle any error that occurred during the registration process.
