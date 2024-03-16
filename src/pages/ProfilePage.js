@@ -3,8 +3,8 @@ import profileImg from "../assets/avatarr.png";
 import PageMenu from "../components/PageMenu";
 import Wrapper from "../components/Wrapper";
 import { useEffect } from "react";
-import { auth,app } from "../firebase.config";
-import { getDatabase,ref,get } from "firebase/database";
+import { auth, app } from "../firebase.config";
+import { getDatabase, ref, get } from "firebase/database";
 const initialState = {
   name: "",
   email: "",
@@ -38,7 +38,7 @@ const Profile = () => {
   // };
   // const handleChange = () => {};
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
   useEffect(() => {
     // Authentication state listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -46,14 +46,16 @@ const Profile = () => {
         console.log(user);
         setIsLoggedIn(true); // User is logged in
         fetchData(user.uid); // Fetch user data
-        
       } else {
         setIsLoggedIn(false); // User is not logged in
       }
     });
 
     // Cleanup function
-    return () => {setData('');unsubscribe();};
+    return () => {
+      setData("");
+      unsubscribe();
+    };
   }, []);
 
   const fetchData = async (userId) => {
@@ -79,7 +81,6 @@ const Profile = () => {
                 <div className="profile-photo flex justify-center pt-10">
                   <div>
                     <img src={profileImg} alt="Profileimg" />
-                    
                   </div>
                 </div>
                 <Wrapper className="flex flex-col md:flex-row gap-[50px] md:gap-0 items-center justify-evenly md:items-start">
@@ -154,7 +155,7 @@ const Profile = () => {
 
                     <div className="flex items-center justify-between">
                       <button
-                        className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-blue-500 w-full hover:bg-blue-700  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit"
                       >
                         Update Profile

@@ -26,7 +26,14 @@ const HeroBanner = () => {
         </div>
         <div>
           <img
-            src="https://learngitalivegita.com/blog/wp-content/uploads/2020/07/bg.jpg"
+            src="https://yogajala.com/wp-content/uploads/The-Bhagavad-Gita-Summary_-Chapter-By-Chapter.jpg"
+            alt="Second Slide"
+            className="w-full md:aspect-auto object-cover"
+          />
+        </div>
+        <div>
+          <img
+            src="https://manthanhub.com/wp-content/uploads/2021/11/Bhagavad-gita.jpg"
             alt="Second Slide"
             className="w-full md:aspect-auto object-cover"
           />
