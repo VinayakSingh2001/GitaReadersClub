@@ -6,9 +6,8 @@ import { TreeView } from "@mui/x-tree-view/TreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { get, getDatabase, ref, set } from "firebase/database";
 import { app, auth } from "../../firebase.config";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { toast } from "react-toastify";
-import { Fullscreen } from "@mui/icons-material";
+import { Button, Checkbox ,FormControlLabel} from "@mui/material";
 
 function EbookDetail() {
   const [books, setBooks] = useState([]);
@@ -16,11 +15,11 @@ function EbookDetail() {
   const [selectedChapter, setSelectedChapter] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [selectedQuestions, setSelectedQuestions] = useState(null);
-  // const [selectedQuestionDetails, setSelectedQuestionDetails] = useState(null);
   const [selectedChapterId, setSelectedChapterId] = useState(null);
   const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [openArticles, setOpenArticles] = useState({});
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+
   useEffect(() => {
     const fetchBooks = async () => {
       const db = getDatabase(app);
@@ -36,7 +35,7 @@ function EbookDetail() {
         console.error(error);
       }
     };
-   
+
     fetchBooks();
   }, []);
 
@@ -45,8 +44,6 @@ function EbookDetail() {
     setSelectedBook(book);
     setSelectedChapter(null);
     setSelectedArticle(null);
-    // setSelectedQuestion(null);
-    // setSelectedQuestionDetails(null);
     setOpenArticles({}); // Reset open articles when selecting a new book
   };
 
@@ -55,8 +52,7 @@ function EbookDetail() {
     setSelectedChapterId(chapterId);
     setSelectedChapter(chapter);
     setSelectedArticle(null);
-    // setSelectedQuestion(null);
-    // setSelectedQuestionDetails(null);
+    setSelectedQuestions(null);
     setOpenArticles({}); // Reset open articles when selecting a new chapter
   };
 
@@ -66,19 +62,10 @@ function EbookDetail() {
       [chapterId]: articleId,
     }));
     const article = selectedBook.ChapterId[chapterId].ArticleId[articleId];
-    setSelectedArticleId(articleId)
+    setSelectedArticleId(articleId);
     setSelectedArticle(article);
-    // setSelectedQuestion(null);
-    // setSelectedQuestionDetails(null);
+    setSelectedQuestions(null);
   };
-
-  // const handleQuestionSelect = (questionId) => {
-  //   if (selectedArticle && selectedArticle.QuestionId) {
-  //     const question = selectedArticle.QuestionId[questionId];
-  //     setSelectedQuestion(question);
-  //     // setSelectedQuestionDetails(question);
-  //   }
-  // };
 
   const renderChapterTree = () => {
     if (!selectedBook || !selectedBook.ChapterId) return null;
@@ -92,8 +79,14 @@ function EbookDetail() {
           <TreeItem
             key={chapterId}
             nodeId={chapterId}
-            label={`Chapter: ${chapterId}`}
+            label={
+              <div className="tree-node">
+                <span className="node-icon">📚</span>
+                <span className="node-label">Chapter: {chapterId}</span>
+              </div>
+            }
             onClick={() => handleChapterSelect(chapterId)}
+            selected={selectedChapterId === chapterId}
           >
             {selectedBook.ChapterId[chapterId].ArticleId &&
               renderArticleTree(
@@ -112,14 +105,18 @@ function EbookDetail() {
       <TreeItem
         key={articleId}
         nodeId={chapterId + articleId}
-        label={`Article: ${articleId}`}
+        label={
+          <div className="tree-node">
+            <span className="node-icon">📄</span>
+            <span className="node-label">Article: {articleId}</span>
+          </div>
+        }
         onClick={() => handleArticleSelect(chapterId, articleId)}
         onLabelClick={(e) => {
-          e.preventDefault(); // Prevents the default action of expanding/collapsing the node
+          e.preventDefault();
           handleArticleSelect(chapterId, articleId);
         }}
-        // Set the onLabelClick prop to prevent the default action of expanding/collapsing the node
-        selected={openArticles[chapterId] === articleId} // Set the selected prop to control the expanded state of the node
+        selected={openArticles[chapterId] === articleId}
       >
         {selectedArticle &&
           selectedArticle.QuestionId &&
@@ -139,23 +136,14 @@ function EbookDetail() {
         label="Questions"
         onClick={(e) => {
           e.preventDefault();
-          console.log(questions)
-          setSelectedQuestions(questions)
-        }} // Prevent default action for this node
-      >
-        {/* <select onChange={(e) => handleQuestionSelect(e.target.value)}>
-          <option value="">Select a question</option>
-          {Object.keys(questions).map((questionId) => (
-            <option key={questionId} value={questionId}>
-              {`Question ID: ${questionId}`}
-            </option>
-          ))}
-        </select> */}
-      </TreeItem>
+          setSelectedQuestions(questions);
+        }}
+      ></TreeItem>
     );
   };
+
   const handleChange = (optionId) => {
-    console.log(optionId)
+    console.log(optionId);
     if (selectedAnswer === optionId) {
       setSelectedAnswer(null);
     } else {
@@ -163,38 +151,41 @@ function EbookDetail() {
     }
   };
 
-  const handleAnswerSubmit =  async(questionId,answerId) => {
-    // e.preventDefault();
-    console.log(answerId)
+  const handleAnswerSubmit = async (questionId, answerId) => {
+    if(!selectedAnswer){
+      toast.error('Select Answer');
+      return;
+    }
+    console.log(answerId);
     console.log(selectedChapterId);
-    if(selectedAnswer[0] === answerId){
+    if (selectedAnswer && selectedAnswer[0] === answerId) {
       toast.success("Correct Answer");
       const db = getDatabase(app);
       const user = auth.currentUser;
-      if(user){
+      if (user) {
         const userId = user.uid;
-       const dbRef = ref(db,`progress/${userId}/${selectedChapterId}/${selectedArticleId}/${questionId}`);
-       await set(dbRef,1);
+        const dbRef = ref(
+          db,
+          `progress/${userId}/${selectedChapterId}/${selectedArticleId}/${questionId}`
+        );
+        await set(dbRef, 1);
       }
-      
-    }
-    else{
+    } else {
       toast.error("Wrong Answer");
       const db = getDatabase(app);
       const user = auth.currentUser;
-      if(user){
+      if (user) {
         const userId = user.uid;
-       const dbRef = ref(db,`progress/${userId}/${selectedChapterId}/${selectedArticleId}/${questionId}`);
-       await set(dbRef,0);
+        const dbRef = ref(
+          db,
+          `progress/${userId}/${selectedChapterId}/${selectedArticleId}/${questionId}`
+        );
+        await set(dbRef, 0);
       }
     }
-    // if (selectedQuestion.Answer === selectedAnswer) {
-    //   toast.success("Right Answer");
-    // } else {
-    //   toast.error("wrong Answer");
-    // }
-    // setSelectedAnswer(null);
+    setSelectedAnswer(null);
   };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row">
@@ -210,8 +201,14 @@ function EbookDetail() {
                   <TreeItem
                     key={bookId}
                     nodeId={bookId}
-                    label={books[bookId].Title}
+                    label={
+                      <div className="tree-node">
+                        <span className="node-icon">📖</span>
+                        <span className="node-label">{books[bookId].Title}</span>
+                      </div>
+                    }
                     onClick={() => handleBookSelect(bookId)}
+                    selected={selectedBook && selectedBook.id === bookId}
                   >
                     {selectedBook && renderChapterTree()}
                   </TreeItem>
@@ -220,90 +217,53 @@ function EbookDetail() {
           </Box>
         </div>
         <div className="lg:w-3/4 pl-0 lg:pl-4">
-         {selectedQuestions && Object.keys(selectedQuestions).map((selectedQuestionId,index)=>{
-          const selectedQuestionDetails = selectedQuestions[selectedQuestionId];
-             return (<div
-              style={{
-                width: Fullscreen,
-                backgroundColor: "#f9f9f9",
-                padding: "16px",
-              }}
-            >
-              <h4 className="text-2xl font-semibold py-2">Selected Question</h4>
-              <p className="text-xl">{selectedQuestionDetails.Question}</p>
-
-              <ul>
-                {Object.entries(selectedQuestionDetails.Options).map(
-                  ([optionId, optionText]) => (
-                    <li key={optionId} className="pl-2 pt-2 text-xl">
-                      <label htmlFor={optionId}>
-                        <input
-                          type="radio"
-                          id={index+optionId}
-                          checked={selectedAnswer === optionId+index}
-                          onClick={() => handleChange(optionId+index)}
-                        />
-                        {optionText}
-                      </label>
-                    </li>
-                  )
-                )}
-              </ul>
-
-              <div className="flex pt-4 pb-4">
-                <button
-                  className="bg-blue-200 hover:scale-105 transition-transform  p-2 rounded-lg ml-6"
-                  onClick={()=>handleAnswerSubmit(selectedQuestionId,selectedQuestionDetails.Answer)}
-                >
-                  submit
-                </button>
-              </div>
-            </div>)
-         })}
-          {/* {selectedQuestionDetails ? (
-            <div
-              style={{
-                width: Fullscreen,
-                backgroundColor: "#f9f9f9",
-                padding: "16px",
-              }}
-            >
-              <h4 className="text-2xl font-semibold py-2">Selected Question</h4>
-              <p className="text-xl">{selectedQuestionDetails.Question}</p>
-
-              <ul>
-                {Object.entries(selectedQuestionDetails.Options).map(
-                  ([optionId, optionText]) => (
-                    <li key={optionId} className="pl-2 pt-2 text-xl">
-                      <label htmlFor={optionId}>
-                        <input
-                          type="radio"
-                          id={optionId}
-                          checked={selectedAnswer === optionId}
-                          onClick={() => handleChange(optionId)}
-                        />
-                        {optionText}
-                      </label>
-                    </li>
-                  )
-                )}
-              </ul>
-
-              <div className="flex pt-4 pb-4">
-                <button
-                  className="bg-blue-200 hover:scale-105 transition-transform  p-2 rounded-lg ml-6"
-                  onClick={handleAnswerSubmit}
-                >
-                  submit
-                </button>
-              </div>
+          {selectedArticle && selectedArticle.Data && !selectedQuestions && (
+            <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
+              <p className="text-lg">{selectedArticle.Data}</p>
             </div>
-          ) : selectedArticle && selectedArticle.Data ? (
-            <div className=" bg-slate-100">
-              {/* <h4>Article Data</h4> */}
-              {/* <p className="px-10 py-5 text-xl">{selectedArticle.Data}</p>
-            </div>
-          ) : null} */}
+          )}
+          {selectedQuestions &&
+            Object.keys(selectedQuestions).map((selectedQuestionId, index) => {
+              const selectedQuestionDetails =
+                selectedQuestions[selectedQuestionId];
+              return (
+                <div
+                  key={index}
+                  className="bg-gray-100 p-6 rounded-lg shadow-md mb-4"
+                >
+                  <p className="text-lg">{selectedQuestionDetails.Question}</p>
+                  <ul className="list-disc pl-6">
+                    {Object.entries(selectedQuestionDetails.Options).map(
+                      ([optionId, optionText]) => (
+                        <ol key={optionId} className="mb-2">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={selectedAnswer === optionId +selectedArticleId+ selectedChapterId+index}
+                                onChange={() => handleChange(optionId +selectedArticleId+selectedChapterId+index )}
+                              />
+                            }
+                            label={optionText}
+                          />
+                        </ol>
+                      )
+                    )}
+                  </ul>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      handleAnswerSubmit(
+                        selectedQuestionId,
+                        selectedQuestionDetails.Answer
+                      )
+                    }
+                  >
+                    Submit
+                  </Button>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
