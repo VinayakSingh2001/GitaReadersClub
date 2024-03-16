@@ -8,11 +8,8 @@ import { toast } from "react-toastify";
 const CourseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState([]);
-  const [EnrolledCourses,setEnrolledCourses] = useState([]);
+  const [EnrolledCourses, setEnrolledCourses] = useState([]);
   console.log(course, localStorage.getItem("CourseId"));
-
-  
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,29 +27,27 @@ const CourseDetails = () => {
       }
     };
 
-    const fetchEnrolledCourses = async()=>{
+    const fetchEnrolledCourses = async () => {
       const user = auth.currentUser;
-      if(user){
+      if (user) {
         try {
           const db = getDatabase(app);
-          const dbRef = ref(db,`EnrolledCourse/${user.uid}`);
-        
+          const dbRef = ref(db, `EnrolledCourse/${user.uid}`);
+
           const data = await get(dbRef);
-          if(data.exists()){
-          setEnrolledCourses(Object.keys(data.val()));
+          if (data.exists()) {
+            setEnrolledCourses(Object.keys(data.val()));
           }
         } catch (error) {
-          toast.error(error.message)
+          toast.error(error.message);
         }
-       
       }
-      
     };
     const fetchDataAndEnrolledCourses = async () => {
       await fetchData();
       await fetchEnrolledCourses();
     };
-    fetchDataAndEnrolledCourses(); 
+    fetchDataAndEnrolledCourses();
     console.log(course);
   }, []);
 
@@ -72,7 +67,10 @@ const CourseDetails = () => {
           EnrolledCourses[localStorage.getItem("CourseId")] = true;
           await set(dbRef, EnrolledCourses);
           toast.success("Enrolled successfully");
-          setEnrolledCourses((prevCourses)=> [...prevCourses,localStorage.getItem("CourseId")])
+          setEnrolledCourses((prevCourses) => [
+            ...prevCourses,
+            localStorage.getItem("CourseId"),
+          ]);
         }
       } catch (error) {
         console.log(error.message);
@@ -91,13 +89,17 @@ const CourseDetails = () => {
       ) : (
         <div className="bg-gradient-to-br from-purple-700 to-indigo-800 text-white">
           <Wrapper className=" py-20">
-            <div className="flex gap-20 ">
-              <div className="w-[60%] py-10">
-                <img src={course.img} alt="Course" className=" rounded-lg " />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 ">
+              <div className=" py-3 flex justify-center">
+                <img
+                  src={course.img}
+                  alt="Course"
+                  className=" rounded-lg h-[300px] md:h-[600px] w-full object-cover"
+                />
               </div>
 
               {/* Course Details */}
-              <div className="w-[60%]">
+              <div className="px-10">
                 <h1 className="text-4xl font-extrabold mb-4 text-yellow-300 transition duration-300">
                   {course.title}
                 </h1>
@@ -127,18 +129,23 @@ const CourseDetails = () => {
                   Outcomes:
                 </p>
 
-                <div >
+                <div>
                   <div className="flex ">
-                  <ul className="list-disc ml-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10  md:px-0 justify-center" dangerouslySetInnerHTML={{ __html: course.outcome }} />
-                  </ul>
+                    <ul className="list-disc ml-4">
+                      <div
+                        className="grid grid-cols-1 md:grid-cols-2 gap-10  md:px-0 justify-center"
+                        dangerouslySetInnerHTML={{ __html: course.outcome }}
+                      />
+                    </ul>
                   </div>
                 </div>
               </div>
 
               {/* Speaker Section */}
               <div className="mb-4">
-                <p className="text-2xl font-extrabold mb-4 text-yellow-300 transition duration-300">Speaker:</p>
+                <p className="text-2xl font-extrabold mb-4 text-yellow-300 transition duration-300">
+                  Speaker:
+                </p>
                 <div className="flex  items-center">
                   <div dangerouslySetInnerHTML={{ __html: course.speakers }} />
                 </div>
@@ -146,29 +153,29 @@ const CourseDetails = () => {
 
               {/* Enroll Button */}
               <div className="flex items-center justify-center">
-     {course.status ? (
-       EnrolledCourses ?(
-       EnrolledCourses.includes(localStorage.getItem("CourseId"))?(
-      <></>
-     ):(
-      <button
-      className="bg-green-500 text-white px-4 py-2 rounded-md"
-      onClick={handleClick}
-    >
-      Enroll Now
-    </button>
-     )
-     ):(
-      <>notEnrolled</>
-     )
-     
-  ) : (
-    <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-      Coming Soon...
-    </button>
-  )}
-</div>
-
+                {course.status ? (
+                  EnrolledCourses ? (
+                    EnrolledCourses.includes(
+                      localStorage.getItem("CourseId")
+                    ) ? (
+                      <></>
+                    ) : (
+                      <button
+                        className="bg-green-500 text-white px-4 py-2 rounded-md"
+                        onClick={handleClick}
+                      >
+                        Enroll Now
+                      </button>
+                    )
+                  ) : (
+                    <>notEnrolled</>
+                  )
+                ) : (
+                  <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                    Coming Soon...
+                  </button>
+                )}
+              </div>
             </div>
           </Wrapper>
           {/* Course Image */}

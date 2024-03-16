@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeView } from "@mui/x-tree-view/TreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { get, getDatabase, ref,set } from 'firebase/database';
-import { app } from '../../firebase.config';
-import { FormControlLabel,Radio,RadioGroup } from '@mui/material';
-import { toast } from 'react-toastify';
-// import {  } from '@headlessui/react';
-
+import { get, getDatabase, ref } from "firebase/database";
+import { app } from "../../firebase.config";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { toast } from "react-toastify";
+import { Fullscreen } from "@mui/icons-material";
 
 function EbookDetail() {
   const [books, setBooks] = useState([]);
@@ -19,11 +18,11 @@ function EbookDetail() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [selectedQuestionDetails, setSelectedQuestionDetails] = useState(null);
   const [openArticles, setOpenArticles] = useState({});
-  const [selectedAnswer,setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   useEffect(() => {
     const fetchBooks = async () => {
       const db = getDatabase(app);
-      const dbRef = ref(db, 'Ebook');
+      const dbRef = ref(db, "Ebook");
       try {
         const snapshot = await get(dbRef);
         if (snapshot.exists()) {
@@ -59,7 +58,7 @@ function EbookDetail() {
   };
 
   const handleArticleSelect = (chapterId, articleId) => {
-    setOpenArticles(prevState => ({
+    setOpenArticles((prevState) => ({
       ...prevState,
       [chapterId]: articleId,
     }));
@@ -85,14 +84,18 @@ function EbookDetail() {
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
-        {Object.keys(selectedBook.ChapterId).map(chapterId => (
+        {Object.keys(selectedBook.ChapterId).map((chapterId) => (
           <TreeItem
             key={chapterId}
             nodeId={chapterId}
             label={`Chapter: ${chapterId}`}
             onClick={() => handleChapterSelect(chapterId)}
           >
-            {selectedBook.ChapterId[chapterId].ArticleId && renderArticleTree(chapterId, selectedBook.ChapterId[chapterId].ArticleId)}
+            {selectedBook.ChapterId[chapterId].ArticleId &&
+              renderArticleTree(
+                chapterId,
+                selectedBook.ChapterId[chapterId].ArticleId
+              )}
           </TreeItem>
         ))}
       </TreeView>
@@ -101,10 +104,10 @@ function EbookDetail() {
 
   const renderArticleTree = (chapterId, articles) => {
     if (!articles) return null;
-    return Object.keys(articles).map(articleId => (
+    return Object.keys(articles).map((articleId) => (
       <TreeItem
         key={articleId}
-        nodeId={chapterId+articleId}
+        nodeId={chapterId + articleId}
         label={`Article: ${articleId}`}
         onClick={() => handleArticleSelect(chapterId, articleId)}
         onLabelClick={(e) => {
@@ -114,7 +117,13 @@ function EbookDetail() {
         // Set the onLabelClick prop to prevent the default action of expanding/collapsing the node
         selected={openArticles[chapterId] === articleId} // Set the selected prop to control the expanded state of the node
       >
-        {selectedArticle && selectedArticle.QuestionId && renderQuestionDropdown(chapterId, articleId, selectedArticle.QuestionId)}
+        {selectedArticle &&
+          selectedArticle.QuestionId &&
+          renderQuestionDropdown(
+            chapterId,
+            articleId,
+            selectedArticle.QuestionId
+          )}
       </TreeItem>
     ));
   };
@@ -128,7 +137,7 @@ function EbookDetail() {
       >
         <select onChange={(e) => handleQuestionSelect(e.target.value)}>
           <option value="">Select a question</option>
-          {Object.keys(questions).map(questionId => (
+          {Object.keys(questions).map((questionId) => (
             <option key={questionId} value={questionId}>
               {`Question ID: ${questionId}`}
             </option>
@@ -138,78 +147,89 @@ function EbookDetail() {
     );
   };
   const handleChange = (optionId) => {
-    
-    if(selectedAnswer === optionId){
+    if (selectedAnswer === optionId) {
       setSelectedAnswer(null);
-    }
-    else{
-      setSelectedAnswer(optionId)
+    } else {
+      setSelectedAnswer(optionId);
     }
   };
-  
-const handleAnswerSubmit = async(e)=>{
-  e.preventDefault();
-  if(selectedQuestion.Answer === selectedAnswer){
-    toast.success("Right Answer")
-  }
-  else{
-    toast.error("wrong Answer")
-  }
-  setSelectedAnswer(null);
-}
+
+  const handleAnswerSubmit = async (e) => {
+    e.preventDefault();
+    if (selectedQuestion.Answer === selectedAnswer) {
+      toast.success("Right Answer");
+    } else {
+      toast.error("wrong Answer");
+    }
+    setSelectedAnswer(null);
+  };
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-2 gap-4">
-        <div style={{ backgroundColor: '#f3f4f6', padding: '16px', borderRadius: '8px', maxWidth: '300px' }}>
-          <Box sx={{ minHeight: 180, flexGrow: 1 }}>
+      <div className="flex flex-col lg:flex-row">
+        <div className="lg:w-1/4 h-screen mb-4 lg:mb-0">
+          <Box sx={{ width: 300, flexGrow: 1 }}>
             <TreeView
               aria-label="book navigator"
               defaultCollapseIcon={<ExpandMoreIcon />}
               defaultExpandIcon={<ChevronRightIcon />}
             >
-              {books && Object.keys(books).map(bookId => (
-                <TreeItem
-                  key={bookId}
-                  nodeId={bookId}
-                  label={books[bookId].Title}
-                  onClick={() => handleBookSelect(bookId)}
-                >
-                  {selectedBook && renderChapterTree()}
-                </TreeItem>
-              ))}
+              {books &&
+                Object.keys(books).map((bookId) => (
+                  <TreeItem
+                    key={bookId}
+                    nodeId={bookId}
+                    label={books[bookId].Title}
+                    onClick={() => handleBookSelect(bookId)}
+                  >
+                    {selectedBook && renderChapterTree()}
+                  </TreeItem>
+                ))}
             </TreeView>
           </Box>
         </div>
-        <div style={{ padding: '16px' }}>
+        <div className="lg:w-3/4 pl-0 lg:pl-4">
           {selectedQuestionDetails ? (
-            <div style={{ marginTop: '16px', backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px' }}>
-              <h4>Selected Question</h4>
-              <p>{selectedQuestionDetails.Question}</p>
-              
-              <ul >
-                {Object.entries(selectedQuestionDetails.Options).map(([optionId, optionText]) => (
-                  <li key={optionId} className="pl-2 pt-2">
-                  <label htmlFor={optionId}>
-                    <input
-                      type="radio"
-                      id={optionId}
-                      checked={selectedAnswer === optionId}
-                      onClick={()=>handleChange(optionId)}
-                    />
-                    {optionText}
-                  </label>
-                </li>
-                ))}
+            <div
+              style={{
+                width: Fullscreen,
+                backgroundColor: "#f9f9f9",
+                padding: "16px",
+              }}
+            >
+              <h4 className="text-2xl font-semibold py-2">Selected Question</h4>
+              <p className="text-xl">{selectedQuestionDetails.Question}</p>
+
+              <ul>
+                {Object.entries(selectedQuestionDetails.Options).map(
+                  ([optionId, optionText]) => (
+                    <li key={optionId} className="pl-2 pt-2 text-xl">
+                      <label htmlFor={optionId}>
+                        <input
+                          type="radio"
+                          id={optionId}
+                          checked={selectedAnswer === optionId}
+                          onClick={() => handleChange(optionId)}
+                        />
+                        {optionText}
+                      </label>
+                    </li>
+                  )
+                )}
               </ul>
-             
-              <div className='flex  pt-4 pb-4'>
-              <button className='bg-blue-500  p-2 rounded-lg ml-6' onClick={handleAnswerSubmit}>submit</button>
+
+              <div className="flex pt-4 pb-4">
+                <button
+                  className="bg-blue-200 hover:scale-105 transition-transform  p-2 rounded-lg ml-6"
+                  onClick={handleAnswerSubmit}
+                >
+                  submit
+                </button>
               </div>
             </div>
           ) : selectedArticle && selectedArticle.Data ? (
-            <div style={{ marginTop: '16px', backgroundColor: '#f9f9f9', padding: '16px', borderRadius: '8px' }}>
+            <div className=" bg-slate-100">
               {/* <h4>Article Data</h4> */}
-              <p>{selectedArticle.Data}</p>
+              <p className="px-10 py-5 text-xl">{selectedArticle.Data}</p>
             </div>
           ) : null}
         </div>
