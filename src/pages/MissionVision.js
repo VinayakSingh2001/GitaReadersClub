@@ -3,7 +3,7 @@ import Wrapper from "../components/Wrapper";
 
 const MissionVision = () => {
   return (
-    <div id="about" className="py-20  mx-12 border rounded-md shadow-md">
+    <div id="about" className="py-20  mx-12 border rounded-md shadow-md px-5">
       <div className="flex flex-col items-center py-10">
         <div className="w-full max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-center items-center gap-10">

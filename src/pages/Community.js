@@ -45,7 +45,7 @@ export default function Community() {
   }, []); // empty dependency array to run the effect only once when the component mounts
 
   return (
-    <div className="bg-slate-100 h-screen">
+    <div className="bg-slate-100 h-screen px-6">
       <div className="max-w-5xl mx-auto py-8   flex flex-col items-center justify-center">
         <h1 className="text-gray-1000 text-3xl font-bold mb-6">
           Notifications
