@@ -287,125 +287,144 @@ const Profile = () => {
 </div>
     );
   }else{
-  return (
-    
-    <div className="pb-12">
-      <PageMenu />
-      <Wrapper>
-        <section>
-          <div className="container border flex justify-center rounded-md">
-            <div className="--flex-start profile">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+    return (
+      <div className="pb-12">
+        <PageMenu />
+        <Wrapper>
+          <section>
+            <div className="container border rounded-md flex justify-center">
+              <div className="--flex-start profile">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="flex-cols items-center">
+                    <div className="profile-photo flex justify-center pt-10 items-center">
+                      <div className="w-60 h-60 rounded-full overflow-hidden bg-gray-500 flex items-center justify-center shadow-2xl">
+                        <img
+                          src={profileImage}
+                          className="w-full h-full object-cover"
+                          alt="Profileimg"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {!isEditing ? (
+                        <div className="flex justify-center mt-2">
+                          <div className="mt-2">
+                            <label className="mr-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                              Upload
+                              <input
+                                className="hidden"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                              />
+                            </label>
+                          </div>
 
-                <div className="flex-cols items-center">
-                <div className="profile-photo flex justify-center pt-10 items-center">
-  <div className="w-60 h-60 rounded-full overflow-hidden bg-gray-500 flex items-center justify-center shadow-2xl"> {/* Add shadow-lg class */}
-    <img
-      src={profileImage}
-      className="w-full h-full object-cover"
-      alt="Profileimg"
-    />
-  </div>
-</div>
-                  <div className="flex justify-center items-center ">
-                    {!isEditing ? (
-                      <div className="flex justify-center mt-2">
-                        <div className="mt-2">
-                          <label className="mr-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
-                            Upload
-                            <input
-                              className="hidden"
-                              type="file"
-                              accept="image/*"
-                              onChange={handleImageChange}
-                            />
-                          </label>
+                          <button
+                            onClick={handleDeleteImage}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                          >
+                            Remove
+                          </button>
                         </div>
-
-                        <button
-                          onClick={handleDeleteImage}
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
-                </div>
- 
-                <Wrapper className="flex flex-col md:flex-row gap-[50px] pt-12 items-center justify-center item-center">
-                  <form
-                    className="gap-6  rounded px-8 pt-6 pb-8 mb-4"
-                    method="POST"
-                  >
-                    <div className=" flex-col md:gap-5">
-                      <div className="mb-4">
-                        {!isEditing ? (
-                          <label
-                            className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="name"
-                          >
-                            Name:- {profile.name}
-                          </label>
-                        ) : (
-                          <label
-                            className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="name"
-                          >
-                            Name
-                          </label>
-                        )}
-                        {isEditing ? (
-                          <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="name"
-                            name="name"
-                            type="text"
-                            placeholder="Enter your name"
-                            value={profile.name}
-                            onChange={handleChange}
-                            required
-                          />
-                        ) : (
-                          ""
-                        )}
+
+                  <Wrapper className="flex flex-col md:flex-row gap-[50px] pt-12 items-center justify-center item-center">
+                    <form
+                      className="gap-6 rounded px-8 pt-6 pb-8 mb-4"
+                      method="POST"
+                    >
+                      <div className="flex-col md:gap-5">
+                        <div className="mb-4">
+                          {!isEditing ? (
+                            <p className="block text-blue text-md font-semibold mb-2">
+                              Name: {profile.name}
+                            </p>
+                          ) : (
+                            <label
+                              className="block text-blue text-md font-semibold mb-2"
+                              htmlFor="name"
+                            >
+                              Name
+                            </label>
+                          )}
+                          {isEditing ? (
+                            <input
+                              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              id="name"
+                              name="name"
+                              type="text"
+                              placeholder="Enter your name"
+                              value={profile.name}
+                              onChange={handleChange}
+                              required
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <div className="mb-4">
+                          {!isEditing ? (
+                            <p className="block text-blue text-md font-semibold mb-2">
+                              Email: {email}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="mb-4">
+                          {!isEditing ? (
+                            <p className="block text-blue text-md font-semibold mb-2">
+                              Phone Number: {data.mobile}
+                            </p>
+                          ) : (
+                            <label
+                              className="block text-blue text-md font-bold mb-2"
+                              htmlFor="phone"
+                            >
+                              Phone Number
+                            </label>
+                          )}
+                          {isEditing ? (
+                            <input
+                              className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              id="mobile"
+                              name="mobile"
+                              type="text"
+                              placeholder="Enter your phone number"
+                              value={profile.mobile}
+                              onChange={handleChange}
+                              required
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
+
                       <div className="mb-4">
                         {!isEditing ? (
-                          <label
-                            className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="email"
-                          >
-                            Email:- {email}
-                          </label>
-                        ) : null}
-                      </div>
-                      <div className="mb-4">
-                        {!isEditing ? (
-                          <label
-                            className="block text-blue text-md font-semibold mb-2"
-                            htmlFor="phone"
-                          >
-                            Phone Number:- {data.mobile}
-                          </label>
+                          <p className="block text-blue text-md font-semibold mb-2">
+                            DOB: {data.dob}
+                          </p>
                         ) : (
                           <label
                             className="block text-blue text-md font-bold mb-2"
-                            htmlFor="phone"
+                            htmlFor="dob"
                           >
-                            Phone Number
+                            DOB
                           </label>
                         )}
                         {isEditing ? (
                           <input
                             className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="mobile"
-                            name="mobile"
-                            type="text"
-                            placeholder="Enter your phone number"
-                            value={profile.mobile}
+                            id="dob"
+                            name="dob"
+                            type="Date"
+                            placeholder="Give your birthdate"
+                            value={profile.dob}
                             onChange={handleChange}
                             required
                           />
@@ -413,157 +432,116 @@ const Profile = () => {
                           ""
                         )}
                       </div>
-                    </div>
 
-                    <div className="mb-4">
-                      {!isEditing ? (
-                        <label
-                          className="block text-blue text-md font-semibold mb-2"
-                          htmlFor="dob"
-                        >
-                          DOB:- {data.dob}
-                        </label>
-                      ) : (
-                        <label
-                          className="block text-blue text-md font-bold mb-2"
-                          htmlFor="dob"
-                        >
-                          DOB 
-                        </label>
-                      )}
-                      {isEditing ? (
-                        <input
-                          className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          id="dob"
-                          name="dob"
-                          type="Date"
-                          placeholder="Give your birthdate"
-                          value={profile.dob}
-                          onChange={handleChange}
-                          required
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div className="mb-4">
-                      {!isEditing ? (
-                        <label
-                          className="block text-blue text-md font-semibold mb-2"
-                          htmlFor="gender"
-                        >
-                          Gender:- {data.gender}
-                        </label>
-                      ) : (
-                        <label
-                          className="block text-blue text-md font-bold mb-2"
-                          htmlFor="gender"
-                        >
-                          Gender
-                        </label>
-                      )}
-                      {isEditing ? (
-                        <select
-                          className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          id="gender"
-                          name="gender"
-                          value={profile.gender}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="">Select Gender</option>
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div className="mb-6">
-                      {!isEditing?<label
-                        className="block text-blue text-md font-semibold mb-2"
-                        htmlFor="message"
-                      >
-                        Bio:-{data.message}
-                      </label>:<label
-                        className="block text-blue text-md font-semibold mb-2"
-                        htmlFor="message"
-                      >
-                        Bio
-                      </label>}
-                      {isEditing ? (
-                        <textarea
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          id="message"
-                          name="message"
-                          placeholder="Bio"
-                          rows="5"
-                          value={profile.message}
-                          onChange={handleChange}
-                          required
-                        ></textarea>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      {isEditing ? (
-                        <button
-                          className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                          type="submit"
-                          onClick={handleSubmit}
-                        >
-                          Update Profile
-                        </button>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    {/* <div className="flex justify-center items-center">
-                    <Logout/>
-                    </div> */}
-                    {isEditing ? (
-                      <div className=" flex justify-center items-center mt-2">
-                        <button
-                          onClick={handleCancelEdit}
-                          className=" bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                          Exit
-                        </button>
+                      <div className="mb-4">
+                        {!isEditing ? (
+                          <p className="block text-blue text-md font-semibold mb-2">
+                            Gender: {data.gender}
+                          </p>
+                        ) : (
+                          <label
+                            className="block text-blue text-md font-bold mb-2"
+                            htmlFor="gender"
+                          >
+                            Gender
+                          </label>
+                        )}
+                        {isEditing ? (
+                          <select
+                            className="shadow appearance-none border rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="gender"
+                            name="gender"
+                            value={profile.gender}
+                            onChange={handleChange}
+                            required
+                          >
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                    ) : (
-                      ""
-                    )}
-                    {!isEditing ? (
-                      <div className="flex justify-center items-center mt-2">
-                        <button
-                          onClick={handleEditToggle}
-                          className="py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
-                        >
-                          Edit Profile
-                        </button>
+
+                      <div className="mb-6">
+                        {!isEditing ? (
+                          <p className="block text-blue text-md font-semibold mb-2">
+                            Bio: {data.message}
+                          </p>
+                        ) : (
+                          <label
+                            className="block text-blue text-md font-semibold mb-2"
+                            htmlFor="message"
+                          >
+                            Bio
+                          </label>
+                        )}
+                        {isEditing ? (
+                          <textarea
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="message"
+                            name="message"
+                            placeholder="Bio"
+                            rows="5"
+                            value={profile.message}
+                            onChange={handleChange}
+                            required
+                          ></textarea>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                    ) : (
-                      ""
-                    )}
-                  </form>
 
-                  {/* LEFT END */}
+                      <div className="flex items-center justify-between">
+                        {isEditing ? (
+                          <button
+                            className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            type="submit"
+                            onClick={handleSubmit}
+                          >
+                            Update Profile
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                      </div>
 
-                  {/* RIGHT START */}
-                </Wrapper>
-              
+                      {isEditing ? (
+                        <div className="flex justify-center items-center mt-2">
+                          <button
+                            onClick={handleCancelEdit}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                          >
+                            Exit
+                          </button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+
+                      {!isEditing ? (
+                        <div className="flex justify-center items-center mt-2">
+                          <button
+                            onClick={handleEditToggle}
+                            className="py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded"
+                          >
+                            Edit Profile
+                          </button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </form>
+                  </Wrapper>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      </Wrapper>
-    </div>
-  )
-                    }
-};
+          </section>
+        </Wrapper>
+      </div>
+    );
+  }
+};   
 export default Profile;

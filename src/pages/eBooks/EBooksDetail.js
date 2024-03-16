@@ -1,25 +1,25 @@
-
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeView } from "@mui/x-tree-view/TreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { get, getDatabase, ref } from "firebase/database";
-import { app } from "../../firebase.config";
+import { get, getDatabase, ref, set } from "firebase/database";
+import { app, auth } from "../../firebase.config";
 import { toast } from "react-toastify";
-import { Fullscreen } from "@mui/icons-material";
+import { Button, Checkbox ,FormControlLabel} from "@mui/material";
 
 function EbookDetail() {
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [selectedQuestionDetails, setSelectedQuestionDetails] = useState(null);
+  const [selectedQuestions, setSelectedQuestions] = useState(null);
+  const [selectedChapterId, setSelectedChapterId] = useState(null);
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [openArticles, setOpenArticles] = useState({});
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [loading, setLoading] = useState(true); // State variable for loading
+  const [isloading,setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -32,10 +32,11 @@ function EbookDetail() {
         } else {
           console.log("No data available");
         }
-        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error(error);
-        setLoading(false); // Set loading to false in case of error
+      }
+      finally{
+        setIsLoading(false);
       }
     };
 
@@ -47,17 +48,15 @@ function EbookDetail() {
     setSelectedBook(book);
     setSelectedChapter(null);
     setSelectedArticle(null);
-    setSelectedQuestion(null);
-    setSelectedQuestionDetails(null);
     setOpenArticles({}); // Reset open articles when selecting a new book
   };
 
   const handleChapterSelect = (chapterId) => {
     const chapter = selectedBook.ChapterId[chapterId];
+    setSelectedChapterId(chapterId);
     setSelectedChapter(chapter);
     setSelectedArticle(null);
-    setSelectedQuestion(null);
-    setSelectedQuestionDetails(null);
+    setSelectedQuestions(null);
     setOpenArticles({}); // Reset open articles when selecting a new chapter
   };
 
@@ -67,16 +66,9 @@ function EbookDetail() {
       [chapterId]: articleId,
     }));
     const article = selectedBook.ChapterId[chapterId].ArticleId[articleId];
+    setSelectedArticleId(articleId);
     setSelectedArticle(article);
-    setSelectedQuestion(null);
-    setSelectedQuestionDetails(null);
-  };
-
-  const handleQuestionSelect = () => {
-    if (selectedArticle && selectedArticle.QuestionId) {
-      const questions = Object.values(selectedArticle.QuestionId);
-      setSelectedQuestionDetails(questions);
-    }
+    setSelectedQuestions(null);
   };
 
   const renderChapterTree = () => {
@@ -91,8 +83,14 @@ function EbookDetail() {
           <TreeItem
             key={chapterId}
             nodeId={chapterId}
-            label={`Chapter: ${chapterId}`}
+            label={
+              <div className="tree-node">
+                <span className="node-icon">📚</span>
+                <span className="node-label">Chapter: {chapterId}</span>
+              </div>
+            }
             onClick={() => handleChapterSelect(chapterId)}
+            selected={selectedChapterId === chapterId}
           >
             {selectedBook.ChapterId[chapterId].ArticleId &&
               renderArticleTree(
@@ -105,43 +103,28 @@ function EbookDetail() {
     );
   };
 
-  const renderQuestionTree = (chapterId, articleId, questions) => {
-    return (
-      <TreeItem
-        nodeId={`${chapterId}${articleId}-questions`}
-        label="Questions"
-        onClick={(e) => e.preventDefault()} // Prevent default action for this node
-      >
-        {Object.keys(questions).map((questionId) => (
-          <TreeItem
-            key={questionId}
-            nodeId={`${chapterId}${articleId}${questionId}`}
-            label={`Question ID: ${questionId}`}
-            onClick={() => handleQuestionSelect()}
-          />
-        ))}
-      </TreeItem>
-    );
-  };
-
   const renderArticleTree = (chapterId, articles) => {
     if (!articles) return null;
     return Object.keys(articles).map((articleId) => (
       <TreeItem
         key={articleId}
         nodeId={chapterId + articleId}
-        label={`Article: ${articleId}`}
+        label={
+          <div className="tree-node">
+            <span className="node-icon">📄</span>
+            <span className="node-label">Article: {articleId}</span>
+          </div>
+        }
         onClick={() => handleArticleSelect(chapterId, articleId)}
         onLabelClick={(e) => {
-          e.preventDefault(); // Prevents the default action of expanding/collapsing the node
+          e.preventDefault();
           handleArticleSelect(chapterId, articleId);
         }}
-        // Set the onLabelClick prop to prevent the default action of expanding/collapsing the node
-        selected={openArticles[chapterId] === articleId} // Set the selected prop to control the expanded state of the node
+        selected={openArticles[chapterId] === articleId}
       >
         {selectedArticle &&
           selectedArticle.QuestionId &&
-          renderQuestionTree(
+          renderQuestionDropdown(
             chapterId,
             articleId,
             selectedArticle.QuestionId
@@ -150,7 +133,21 @@ function EbookDetail() {
     ));
   };
 
+  const renderQuestionDropdown = (chapterId, articleId, questions) => {
+    return (
+      <TreeItem
+        nodeId={`${chapterId}${articleId}-questions`}
+        label="Questions"
+        onClick={(e) => {
+          e.preventDefault();
+          setSelectedQuestions(questions);
+        }}
+      ></TreeItem>
+    );
+  };
+
   const handleChange = (optionId) => {
+    console.log(optionId);
     if (selectedAnswer === optionId) {
       setSelectedAnswer(null);
     } else {
@@ -158,25 +155,48 @@ function EbookDetail() {
     }
   };
 
-  const handleAnswerSubmit = async (e) => {
-    e.preventDefault();
-    if (selectedQuestion && selectedQuestion.Answer === selectedAnswer) {
-      toast.success("Right Answer");
+  const handleAnswerSubmit = async (questionId, answerId) => {
+    if(!selectedAnswer){
+      toast.error('Select Answer');
+      return;
+    }
+    console.log(answerId);
+    console.log(selectedChapterId);
+    if (selectedAnswer && selectedAnswer[0] === answerId) {
+      toast.success("Correct Answer");
+      const db = getDatabase(app);
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const dbRef = ref(
+          db,
+          `progress/${userId}/${selectedChapterId}/${selectedArticleId}/${questionId}`
+        );
+        await set(dbRef, 1);
+      }
     } else {
       toast.error("Wrong Answer");
+      const db = getDatabase(app);
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const dbRef = ref(
+          db,
+          `progress/${userId}/${selectedChapterId}/${selectedArticleId}/${questionId}`
+        );
+        await set(dbRef, 0);
+      }
     }
     setSelectedAnswer(null);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {loading ? (
+      {isloading ? (
         <div className="flex justify-center items-center h-screen">
-          <div className="flex flex-col ">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-            <div className="">
-              <p className="text-gray-700">Loading...</p>
-            </div>
+          <div className="flex flex-col items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-2"></div>
+            <p className="text-gray-700">Loading...</p>
           </div>
         </div>
       ) : (
@@ -193,8 +213,14 @@ function EbookDetail() {
                     <TreeItem
                       key={bookId}
                       nodeId={bookId}
-                      label={books[bookId].Title}
+                      label={
+                        <div className="tree-node">
+                          <span className="node-icon">📖</span>
+                          <span className="node-label">{books[bookId].Title}</span>
+                        </div>
+                      }
                       onClick={() => handleBookSelect(bookId)}
+                      selected={selectedBook && selectedBook.id === bookId}
                     >
                       {selectedBook && renderChapterTree()}
                     </TreeItem>
@@ -203,46 +229,59 @@ function EbookDetail() {
             </Box>
           </div>
           <div className="lg:w-3/4 pl-0 lg:pl-4">
-            {selectedQuestionDetails ? (
-              <div className="bg-gray-100 rounded p-4">
-                <h4 className="text-2xl font-semibold py-2">Selected Questions</h4>
-                {selectedQuestionDetails.map((question, index) => (
-                  <div key={index} className="mt-4">
-                    <p className="text-lg">{question.Question}</p>
-                    <ul className="mt-2">
-                      {Object.entries(question.Options).map(([optionId, optionText]) => (
-                        <li key={optionId} className="flex items-center space-x-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            id={optionId}
-                            checked={selectedAnswer === optionId}
-                            onChange={() => handleChange(optionId)}
-                          />
-                          <span>{optionText}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-                <div className="flex justify-end mt-4">
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    onClick={handleAnswerSubmit}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            ) : selectedArticle && selectedArticle.Data ? (
-              <div className="bg-gray-100 rounded p-4">
+            {selectedArticle && selectedArticle.Data && !selectedQuestions && (
+              <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4">
                 <p className="text-lg">{selectedArticle.Data}</p>
               </div>
-            ) : null}
+            )}
+            {selectedQuestions &&
+              Object.keys(selectedQuestions).map((selectedQuestionId, index) => {
+                const selectedQuestionDetails =
+                  selectedQuestions[selectedQuestionId];
+                return (
+                  <div
+                    key={index}
+                    className="bg-gray-100 p-6 rounded-lg shadow-md mb-4"
+                  >
+                    <p className="text-lg">{selectedQuestionDetails.Question}</p>
+                    <ul className="list-disc pl-6">
+                      {Object.entries(selectedQuestionDetails.Options).map(
+                        ([optionId, optionText]) => (
+                          <ol key={optionId} className="mb-2">
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={selectedAnswer === optionId +selectedArticleId+ selectedChapterId+index}
+                                  onChange={() => handleChange(optionId +selectedArticleId+selectedChapterId+index )}
+                                />
+                              }
+                              label={optionText}
+                            />
+                          </ol>
+                        )
+                      )}
+                    </ul>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        handleAnswerSubmit(
+                          selectedQuestionId,
+                          selectedQuestionDetails.Answer
+                        )
+                      }
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}
     </div>
   );
+  
 }
 
 export default EbookDetail;

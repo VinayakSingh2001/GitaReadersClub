@@ -67,7 +67,7 @@ const handleDelete = async (index) => {
   return (
      <div className="bg-blue-200">
         <div className="max-w-5xl mx-auto py-8  rounded-lg shadow-lg flex flex-col items-center justify-center">
-      <h1 className="text-gray-1000 text-3xl font-bold mb-6">Notifications</h1>
+      <h1 className="text-gray-1000 text-3xl font-bold mb-6">Announcement</h1>
 
       {loading ? (
         <div className="flex flex-col items-center">

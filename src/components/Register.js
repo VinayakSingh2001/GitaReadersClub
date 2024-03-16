@@ -5,10 +5,13 @@ import { app, auth } from "../firebase.config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {BiHide,BiShow} from "react-icons/bi";
 
 // import { getDatabase,ref,set } from "firebase/database";
 export default function Register() {
   const [showModal, setShowModal] = React.useState(false);
+  const [showPassword,setShowPassword] = useState(false);
+  const [showPassword2,setShowPassword2] = useState(false);
   // const navigate = useNavigate();
   // const modalRef = useRef(null);
   // useEffect(() => {
@@ -235,7 +238,7 @@ export default function Register() {
   return (
     <>
       <button
-        className=" text-blue-500 px-1 font-semibold  text-sm rounded  mr-1  ease-linear transition-all duration-150 mb-4"
+        className=" text-blue-600 px-1 font-semibold  text-sm rounded  mr-1  ease-linear transition-all duration-150 mb-4"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -353,16 +356,25 @@ export default function Register() {
                       >
                         Password
                       </label>
+                      <div className="relative">
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="Enter your password"
                         value={details.password}
                         onChange={handleChange}
                         required
                       />
+                      <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 px-4 py-1 focus:outline-none"
+                          onClick={() => setShowPassword(!showPassword)} // Toggle password visibility on click
+                        >
+                          {showPassword ? <BiHide/> : <BiShow/>}
+                      </button>
+                      </div>
                     </div>
                     <div className="mb-1">
                       <label
@@ -371,16 +383,25 @@ export default function Register() {
                       >
                         Confirm Password
                       </label>
+                      <div className="relative">
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none"
                         id="confirmPassword"
                         name="confirmPassword"
-                        type="password"
+                        type={showPassword2 ? "text" : "password"}
                         placeholder="Enter your password"
                         value={details.confirmPassword}
                         onChange={handleChange}
                         required
                       />
+                      <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 px-4 py-1 focus:outline-none"
+                           onClick={() => setShowPassword2(!showPassword2)} // Toggle password visibility on click
+                        >
+                          {showPassword2 ? <BiHide/> : <BiShow/>}
+                      </button>
+                      </div>
                        {err !== "" && (
     <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-2 mt-2" role="alert">
         <p className="text-s">{err}</p>
