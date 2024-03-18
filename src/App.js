@@ -28,6 +28,7 @@ import UserCourse from "./pages/user/UserCourse";
 import Course from "./pages/Course";
 import Payment from "./components/Payment";
 import DonationPage from "./pages/DonationPage";
+import FeedbackRead from "./pages/FeedbackReadPage";
 
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
@@ -77,7 +78,7 @@ function App() {
             path="/profile"
             element={
               <Layout>
-<Profile />
+                 <Profile />
               </Layout>
                 
               
@@ -162,6 +163,14 @@ function App() {
             element={
               <Layout>
                 <EditCommunity />
+              </Layout>
+            }
+          />
+          <Route
+            path="/FeedbackRead"
+            element={
+              <Layout>
+                <FeedbackRead />
               </Layout>
             }
           />
